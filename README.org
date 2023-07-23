@@ -6,7 +6,8 @@
 * autoclone.sh介绍
 ** autoclone.sh用于clone
 #+begin_src emacs-lisp :tangle no
-#!/usr/bin/bash # bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
+#!/usr/bin/bash 
+# bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
 
 git clone git@github.com:hexgio/emacs_config.git | xargs chmod -R +x emacs_config # 将仓库 clone 到本地并使其拥有执行权限，专门针对脚本文件
 #+end_src
