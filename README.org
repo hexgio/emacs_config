@@ -3,3 +3,19 @@
 * config.org介绍
 下载 config.org 后用emacs打开该文件，现在 emacs 都自带 org-mode，如果emacs没有 org-mode 就安装一下，然后运行 org-mode，在 config.org 文件中执行 C-c C-v t 导出代码块，然后通过 load-file 加载 init.el 这个配置文件，或者重启 emacs 都可以，如果在加载 emacs 配置文件过程中遇到有插件安装失败了，就通过 package-refresh-contents 刷新插件的库，然后手动加载 emacs 配置文件或者重启 emacs 来加载配置,如果不想加载某个代码块，可以将其在 config.org 中 init.el 代码块相应的加载配置的 load-file 给注释掉然后重新生成代码并加载 init.el  配置文件。
 
+* autoclone.sh介绍
+** autoclone.sh用于clone
+#+begin_src emacs-lisp :tangle no
+#!/usr/bin/bash # bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
+
+git clone git@github.com:hexgio/emacs_config.git | xargs chmod -R +x emacs_config # 将仓库 clone 到本地并使其拥有执行权限，专门针对脚本文件
+#+end_src
+
+* autopush.sh介绍
+** autopush.sh
+#+begin_src emacs-lisp :tangle ~/.emacs.d/
+#!/usr/bin/bash # bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
+
+find ./ -name "*~" -exec rm '{}' \; # 在上传本地文件之前将 emacs 编辑文件过程中产生的 *~ 文件给删除掉
+git add .; git commit -m "config"; git push -u origin main
+#+end_src
