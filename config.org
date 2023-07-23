@@ -130,7 +130,7 @@
 	  (insert code-block)))  ; 在当前位置插入代码块
 
   ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
-  (global-set-key (kbd "C-c b") 'add-code-block)
+  (global-set-key (kbd "C-c SPC r") 'add-code-block)
 #+end_src
 
 ** company.el
