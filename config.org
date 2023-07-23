@@ -9,6 +9,8 @@
   ;; 在~/.emacs.d/目录下编辑org文件，将代码块导出后再在org文件中通过load-file加载或者重启emacs，同时检查家目录下如果出现.emacs就将其删除
   (load-file "~/.emacs.d/basic_config.el")
   (load-file "~/.emacs.d/use-package.el")
+  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 这个主题搜索的时候没有高亮
+  (load-file "~/.emacs.d/dracula-theme.el") ;; 这个主题风格我还算喜欢
   (load-file "~/.emacs.d/gcmh.el")
   (load-file "~/.emacs.d/g-config.el")
   (load-file "~/.emacs.d/g-org-insert-note-header.el")
@@ -30,8 +32,8 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
   (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
   (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
-  (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
-  (add-to-list 'default-frame-alist '(background-color . "#000000"))
+  ;; (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
+  ;; (add-to-list 'default-frame-alist '(background-color . "#000000"))
   (global-linum-mode t)
   (column-number-mode t)
   (xterm-mouse-mode t)
@@ -253,5 +255,26 @@
   (use-package magit
 	:ensure t
 	:defer t
+	)
+#+end_src
+
+** doom-themes
+#+begin_src emacs-lisp :tangle ~/.emacs.d/doom-themes.el
+  (use-package doom-themes
+	:ensure t
+	:config
+	;; Global settings (defaults)
+	(setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
+		  doom-themes-enable-italic t) ; if nil, italics is universally disabled
+	(load-theme 'doom-monokai-octagon t)
+	(doom-themes-treemacs-config))
+#+end_src
+
+** dracula-theme
+#+begin_src emacs-lisp :tangle ~/.emacs.d/dracula-theme.el
+  (use-package dracula-theme
+	:ensure t
+	:config
+	(load-theme 'dracula t)
 	)
 #+end_src
