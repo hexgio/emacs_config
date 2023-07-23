@@ -20,15 +20,16 @@
   (load-file "~/.emacs.d/company.el")
   (load-file "~/.emacs.d/window-numbering.el")
   (load-file "~/.emacs.d/GTD.el")
-  (load-file "~/.emacs.d/ox-hugo.el")
-  (load-file "~/.emacs.d/cnfonts.el")
-  (load-file "~/.emacs.d/org-noter.el")
-  (load-file "~/.emacs.d/pdf-tools.el")
-  (load-file "~/.emacs.d/org-roam.el")
   (load-file "~/.emacs.d/keycast.el")
-  (load-file "~/.emacs.d/magit.el")
+  (load-file "~/.emacs.d/cnfonts.el")
+  (load-file "~/.emacs.d/ox-hugo.el")
   (load-file "~/.emacs.d/markdown.el")
   (load-file "~/.emacs.d/ox-pandoc.el")
+  (load-file "~/.emacs.d/org-noter.el")
+  (load-file "~/.emacs.d/org-roam.el")
+  (load-file "~/.emacs.d/pdf-tools.el")
+  ;; (load-file "~/.emacs.d/magit.el")
+
   #+end_src
 
 ** basic_config.el
@@ -241,7 +242,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
   (use-package org-roam
 	:ensure t  ;; 确保安装 org-roam 插件
-	:after org ;; 在 org 模块加载完成后加载 org-roam 插件
+	:after (org) ;; 在 org 模块加载完成后加载 org-roam 插件
 	:init
 	(setq org-roam-v2-ack t) ;; 设置 org-roam-v2-ack 变量为 true，即确认 V2 升级
 	:config
