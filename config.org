@@ -7,6 +7,7 @@
 ** init.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   ;; 在~/.emacs.d/目录下编辑org文件，将代码块导出后再在org文件中通过load-file加载或者重启emacs，同时检查家目录下如果出现.emacs就将其删除
+  ;; 如果不想加载哪个配置文件，可以将其注释掉
   (load-file "~/.emacs.d/basic_config.el")
   (load-file "~/.emacs.d/use-package.el")
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 这个主题搜索的时候没有高亮
@@ -21,11 +22,13 @@
   (load-file "~/.emacs.d/GTD.el")
   (load-file "~/.emacs.d/ox-hugo.el")
   (load-file "~/.emacs.d/cnfonts.el")
-  ;; (load-file "~/.emacs.d/org-noter.el")
-  ;; (load-file "~/.emacs.d/pdf-tools.el")
-  ;; (load-file "~/.emacs.d/org-roam.el")
+  (load-file "~/.emacs.d/org-noter.el")
+  (load-file "~/.emacs.d/pdf-tools.el")
+  (load-file "~/.emacs.d/org-roam.el")
   (load-file "~/.emacs.d/keycast.el")
-  ;; (load-file "~/.emacs.d/magit.el")
+  (load-file "~/.emacs.d/magit.el")
+  (load-file "~/.emacs.d/markdown.el")
+  (load-file "~/.emacs.d/ox-pandoc.el")
   #+end_src
 
 ** basic_config.el
@@ -252,7 +255,7 @@
 			("C-c n o" . org-id-get-create)
 			("C-c n t" . org-roam-tag-add)
 			("C-c n a" . org-roam-alias-add)
-			("C-c n l" . org-roam-buffer-toggle))))))
+			("C-c n l" . org-roam-buffer-toggle)))))
 #+end_src
 
 ** keycast
@@ -289,5 +292,28 @@
 	:ensure t
 	:config
 	(load-theme 'dracula t)
+	)
+#+end_src
+
+** markdown
+#+begin_src emacs-lisp :tangle ~/.emacs.d/markdown.el
+  (use-package markdown-mode
+	:ensure t
+	:defer t
+	:config
+	;;markdown设置
+	(autoload 'markdown-mode "markdown-mode"
+	  "Major mode for editing Markdown files" t)
+	(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+	(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+	(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+	)
+#+end_src
+
+** ox-pandoc
+#+begin_src emacs-lisp :tangle ~/.emacs.d/ox-pandoc.el
+  (use-package ox-pandoc
+	:ensure t
+	:defer t
 	)
 #+end_src
