@@ -1,5 +1,5 @@
 # emacs_config
 
 * config.org介绍
-下载 #+begin_src config.org #+end_src 后用emacs打开该文件，现在emacs都自带org-mode，如果emacs没有org-mode就安装一下，然后运行org-mode，在org文件中执行C-c C-v t导出代码块，然后通过load-file加载init.el这个配置文件，或者重启emacs都可以，如果在加载emacs配置文件过程中遇到有插件安装失败了，就通过package-refresh-contents刷新插件的库，然后手动加载emacs配置文件或者重启emacs来加载配置。
+下载 config.org 后用emacs打开该文件，现在 emacs 都自带 org-mode，如果emacs没有 org-mode 就安装一下，然后运行 org-mode，在 org 文件中执行 C-c C-v t 导出代码块，然后通过 load-file 加载 init.el 这个配置文件，或者重启 emacs 都可以，如果在加载 emacs 配置文件过程中遇到有插件安装失败了，就通过 package-refresh-contents 刷新插件的库，然后手动加载 emacs 配置文件或者重启 emacs 来加载配置。
 
