@@ -24,7 +24,7 @@
   ;; (load-file "~/.emacs.d/org-roam.el")
   (load-file "~/.emacs.d/keycast.el")
   ;; (load-file "~/.emacs.d/magit.el")
-#+end_src
+  #+end_src
 
 ** basic_config.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
@@ -47,7 +47,7 @@
 	(load-file "~/.emacs.d/init.el"))
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
   (global-set-key (kbd "C-M-z") 'indent-region)
-  #+end_src
+#+end_src
 
 ** use-package.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/use-package.el
