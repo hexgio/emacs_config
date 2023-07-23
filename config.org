@@ -93,7 +93,7 @@
 	:config
 	;; (setq gcmh-verbose t) ; 启用详细输出，可选
 	;; (setq gcmh-high-cons-threshold 16777216) ; 设置高阈值为 16MB，可根据需要调整
-	(setq gcmh-high-cons-threshold 100000000)
+	;; (setq gcmh-high-cons-threshold 100000000) ;; 发现spacemacs的配置设置的是这样的值，虽然用的是其他函数，但是功能想必是差不多的
 	(setq gcmh-idle-delay 5) ; 设置延迟垃圾回收的空闲时间为 5 秒
 
 	;; 其他配置选项...
