@@ -237,9 +237,22 @@
 ** org-roam
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
   (use-package org-roam
-	:ensure t
-	:defer t
-	)
+	:ensure t  ;; 确保安装 org-roam 插件
+	:after org ;; 在 org 模块加载完成后加载 org-roam 插件
+	:init
+	(setq org-roam-v2-ack t) ;; 设置 org-roam-v2-ack 变量为 true，即确认 V2 升级
+	:config
+	(org-roam-setup) ;; 执行 org-roam 的设置
+	:custom
+	(org-roam-directory (concat org-directory "roam/")) ; 设置 org-roam 目录为 "roam/"
+	:bind
+	(("C-c n f" . org-roam-node-find) ;; 绑定键盘快捷键 "C-c n f" 到 org-roam-node-find 命令
+	 (:map org-mode-map
+		   (("C-c n i" . org-roam-node-insert) ;; 在 org-mode-map 下绑定键盘快捷键到对应的命令
+			("C-c n o" . org-id-get-create)
+			("C-c n t" . org-roam-tag-add)
+			("C-c n a" . org-roam-alias-add)
+			("C-c n l" . org-roam-buffer-toggle))))))
 #+end_src
 
 ** keycast

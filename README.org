@@ -1,4 +1,5 @@
 # emacs_config
 
-* 基本配置
+* config.org介绍
+下载config.org后用emacs打开该文件，现在emacs都自带org-mode，如果emacs没有org-mode就安装一下，然后运行org-mode，在org文件中执行C-c C-v t导出代码块，然后通过load-file加载init.el这个配置文件，或者重启emacs都可以，如果在加载emacs配置文件过程中遇到有插件安装失败了，就通过package-refresh-contents刷新插件的库，然后手动加载emacs配置文件或者重启emacs来加载配置。
 
