@@ -10,6 +10,10 @@
   (load-file "~/.emacs.d/basic_config.el")
   (load-file "~/.emacs.d/use-package.el")
   (load-file "~/.emacs.d/gcmh.el")
+  (load-file "~/.emacs.d/g-config.el")
+  (load-file "~/.emacs.d/g-org-insert-note-header.el")
+  (load-file "~/.emacs.d/g-org-code-block.el")
+  (load-file "~/.emacs.d/report.el")
   (load-file "~/.emacs.d/company.el")
   (load-file "~/.emacs.d/window-numbering.el")
   (load-file "~/.emacs.d/GTD.el")
@@ -24,6 +28,8 @@
 
 ** basic_config.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
+  (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
+  (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
   (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF"))
   (add-to-list 'default-frame-alist '(background-color . "#000000"))
   (global-linum-mode t)
@@ -35,21 +41,12 @@
   (setq-default tab-width 4)
   (setq c-default-style "linux")
   (setq c-basic-offset 4)
-  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
-  (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
-	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
-	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
-  (defun g-org-code-block ()
-	(interactive)
-	(insert "#+begin_src emacs-lisp :tangle \n#+end_src")
-	)
-  (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
-  (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))  
   (defun reload-emacs-config ()
 	(interactive)
 	(load-file "~/.emacs.d/init.el"))
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
-#+end_src
+  #+end_src
 
 ** use-package.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/use-package.el
@@ -94,6 +91,46 @@
 	;; 其他配置选项...
 
 	(gcmh-mode 1)) ; 启用 gcmh 插件
+#+end_src
+
+** g-config
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-config.el
+  (defun g-config ()
+	(interactive)
+	(insert "** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n#+end_src")
+	)
+#+end_src
+** g-org-insert-note-header
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-insert-note-header.el
+  (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
+	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
+	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
+#+end_src
+** g-org-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-code-block.el
+  (defun g-org-code-block ()
+	(interactive)
+	(insert "#+begin_src emacs-lisp :tangle no\n#+end_src")
+	)
+#+end_src
+** report
+#+begin_src emacs-lisp :tangle ~/.emacs.d/report.el
+  (defun add-code-block ()
+	"在当前位置添加一个代码块，并以时间作为块名进行命名"
+	(interactive)
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
+		   (block-name (concat clean-time))  ; 构建代码块名
+		   (code-block (format
+						"* %s
+  ,#+BEGIN_SRC emacs-lisp :tangle %s.el
+  %s: name\n1. 
+  ,#+END_SRC"
+						block-name clean-time block-name)))
+	  (insert code-block)))  ; 在当前位置插入代码块
+
+  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
+  (global-set-key (kbd "C-c b") 'add-code-block)
 #+end_src
 
 ** company.el
@@ -217,3 +254,4 @@
 	:defer t
 	)
 #+end_src
+
