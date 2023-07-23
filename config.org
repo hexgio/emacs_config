@@ -10,7 +10,7 @@
   ;; 如果不想加载哪个配置文件，可以将其注释掉
   (load-file "~/.emacs.d/basic_config.el")
   (load-file "~/.emacs.d/use-package.el")
-  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 这个主题搜索的时候没有高亮
+  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 使用这个主题的时候，搜索一些内容的时候没有高亮效果
   (load-file "~/.emacs.d/dracula-theme.el") ;; 这个主题风格我还算喜欢
   (load-file "~/.emacs.d/gcmh.el")
   (load-file "~/.emacs.d/g-config.el")
@@ -28,8 +28,7 @@
   (load-file "~/.emacs.d/org-noter.el")
   (load-file "~/.emacs.d/org-roam.el")
   (load-file "~/.emacs.d/pdf-tools.el")
-  ;; (load-file "~/.emacs.d/magit.el")
-
+  (load-file "~/.emacs.d/magit.el")
   #+end_src
 
 ** basic_config.el
