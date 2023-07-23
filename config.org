@@ -41,7 +41,7 @@
 	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
   (defun g-org-code-block ()
 	(interactive)
-	(insert "#+begin_src emacs-lisp :tangle ~/.emacs.d/\n#+end_src")
+	(insert "#+begin_src emacs-lisp :tangle \n#+end_src")
 	)
   (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
   (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
