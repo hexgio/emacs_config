@@ -23,8 +23,8 @@
   ;; (load-file "~/.emacs.d/pdf-tools.el")
   ;; (load-file "~/.emacs.d/org-roam.el")
   (load-file "~/.emacs.d/keycast.el")
-  (load-file "~/.emacs.d/magit.el")
-  #+end_src
+  ;; (load-file "~/.emacs.d/magit.el")
+#+end_src
 
 ** basic_config.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
@@ -46,6 +46,7 @@
 	(interactive)
 	(load-file "~/.emacs.d/init.el"))
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+  (global-set-key (kbd "C-M-z") 'indent-region)
   #+end_src
 
 ** use-package.el
@@ -97,7 +98,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-config.el
   (defun g-config ()
 	(interactive)
-	(insert "** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n#+end_src")
+	(insert "** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n\n#+end_src")
 	)
 #+end_src
 ** g-org-insert-note-header
@@ -110,7 +111,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-code-block.el
   (defun g-org-code-block ()
 	(interactive)
-	(insert "#+begin_src emacs-lisp :tangle no\n#+end_src")
+	(insert "** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
 	)
 #+end_src
 ** report
@@ -254,4 +255,3 @@
 	:defer t
 	)
 #+end_src
-
