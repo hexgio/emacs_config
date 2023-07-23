@@ -11,7 +11,8 @@
   (load-file "~/.emacs.d/basic_config.el")
   (load-file "~/.emacs.d/use-package.el")
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 使用这个主题的时候，搜索一些内容的时候没有高亮效果
-  (load-file "~/.emacs.d/dracula-theme.el") ;; 这个主题风格我还算喜欢
+  ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 这个主题风格我还算喜欢
+  (load-file "~/.emacs.d/spacemacs-theme.el") ;; spacemacs-theme 也不错
   (load-file "~/.emacs.d/gcmh.el")
   (load-file "~/.emacs.d/g-config.el")
   (load-file "~/.emacs.d/g-org-insert-note-header.el")
@@ -91,7 +92,8 @@
   (use-package gcmh
 	:config
 	;; (setq gcmh-verbose t) ; 启用详细输出，可选
-	(setq gcmh-high-cons-threshold 16777216) ; 设置高阈值为 16MB，可根据需要调整
+	;; (setq gcmh-high-cons-threshold 16777216) ; 设置高阈值为 16MB，可根据需要调整
+	(setq gcmh-high-cons-threshold 100000000)
 	(setq gcmh-idle-delay 5) ; 设置延迟垃圾回收的空闲时间为 5 秒
 
 	;; 其他配置选项...
@@ -292,6 +294,17 @@
 	:ensure t
 	:config
 	(load-theme 'dracula t)
+	)
+#+end_src
+
+** spacemacs-theme
+#+begin_src emacs-lisp :tangle ~/.emacs.d/spacemacs-theme.el
+  (use-package spacemacs-theme
+	:ensure t
+	:config
+	(load-theme 'spacemacs-dark t)  ; Dark theme
+	;; 或者
+	;; (load-theme 'spacemacs-light t) ; Light theme
 	)
 #+end_src
 
