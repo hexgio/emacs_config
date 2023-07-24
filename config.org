@@ -12,25 +12,25 @@
   (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
   (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
   (load-file "~/.emacs.d/gcmh.el") ;; 用于emacs内存垃圾回收
-  (load-file "~/.emacs.d/mwim.el")
-  (load-file "~/.emacs.d/amx.el")
-  (load-file "~/.emacs.d/which-key.el")
-  ;; (load-file "~/.emacs.d/undo-tree.el")
-  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题
+  (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
+  (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
+  (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
+  ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo
+  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
   ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
   (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
-  (load-file "~/.emacs.d/avy.el")
-  (load-file "~/.emacs.d/highlight-symbol.el")
-  (load-file "~/.emacs.d/rainbow-delimiters.el")
+  (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
+  (load-file "~/.emacs.d/highlight-symbol.el") ;; <F8> 打开符号高亮
+  (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
   (load-file "~/.emacs.d/g-config.el") ;; 插件插件配置代码块
   (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
   (load-file "~/.emacs.d/g-org-code-block.el") ;; 插入一般的代码块
   (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
   (load-file "~/.emacs.d/company.el") ;; 补全文本用
-  (load-file "~/.emacs.d/good-scroll.el")
+  ;; (load-file "~/.emacs.d/good-scroll.el") ;; 优化页面滚动，但是我没感觉出效果
   (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
   (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用
-  (load-file "~/.emacs.d/treemacs.el")
+  (load-file "~/.emacs.d/treemacs.el") ;; 
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
   (load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
   (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
@@ -40,11 +40,12 @@
   ;; (load-file "~/.emacs.d/org-noter.el")
   ;; (load-file "~/.emacs.d/org-roam.el")
   ;; (load-file "~/.emacs.d/org-roam-ui.el")
-  ;; (load-file "~/.emacs.d/deft.el")
+  ;; (load-file "~/.emacs.d/deft.el") 
   ;; (load-file "~/.emacs.d/Msys2.el")
   ;; (load-file "~/.emacs.d/pdf-tools.el")
-  ;; (load-file "~/.emacs.d/magit.el")
-  (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读
+  ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
+  (load-file"~/.emacs.d/newsticker.el") ;; 用于rss阅读
+  (load-file"~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
   #+end_src
 
 ** basic_config.el
@@ -266,22 +267,43 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/pdf-tools.el
   (use-package pdf-tools
 	:ensure t
-	:defer t
-	:config
-	(pdf-tools-install t)
-	)
+	:init
+	(pdf-loader-install))
+  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
+
+  (defun pdf-view-kill-rmn-ring-save ()
+	"Copy the region to the `kill-ring' after remove all newline characters."
+	(interactive)
+	(pdf-view-assert-active-region)
+	(let* ((txt (replace-regexp-in-string "\n" " "
+										  (car (pdf-view-active-region-text)))))
+	  (pdf-view-deactivate-region)
+	  (kill-new txt)))
+
+  ;; (use-package pdf-view-mode
+  ;;   :bind
+  ;;   ("C-c C-w" . pdf-view-kill-rmn-ring-save))
 #+end_src
 
 ** org-roam
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
   (use-package org-roam
 	:ensure t
+	:after org
 	:init
-	(setq org-roam-v2-ack t)
-	:custom
-	(org-roam-directory "~/.emacs.d")
+	(setq org-roam-v2-ack t) ;; Acknowledge V2 upgrade
 	:config
-	(org-roam-db-autosync-mode))
+	(org-roam-setup)
+	:custom
+	(org-roam-directory (concat org-directory "roam/")) ; 设置 org-roam 目录
+	:bind
+	(("C-c n f" . org-roam-node-find)
+	 (:map org-mode-map
+		   (("C-c n i" . org-roam-node-insert)
+			("C-c n o" . org-id-get-create)
+			("C-c n t" . org-roam-tag-add)
+			("C-c n a" . org-roam-alias-add)
+			("C-c n l" . org-roam-buffer-toggle)))))
 #+end_src
 
 ** org-roam-ui
@@ -533,4 +555,12 @@
 (use-package lsp-treemacs
   :ensure t
   :after (treemacs lsp))
+#+end_src
+
+** google-this
+#+begin_src emacs-lisp :tangle ~/.emacs.d/google-this.el
+(use-package google-this
+  :ensure t
+  :init
+  (google-this-mode)) 
 #+end_src
