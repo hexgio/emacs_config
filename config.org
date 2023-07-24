@@ -9,24 +9,34 @@
   ;; 在~/.emacs.d/目录下编辑org文件，将代码块导出后再在org文件中通过load-file加载或者重启emacs，同时检查家目录下如果出现.emacs就将其删除
   ;; 如果不想加载哪个配置文件，可以将其注释掉
   ;; 以下几个插件有些问题，暂时没有配置好
-  (load-file "~/.emacs.d/basic_config.el")
-  (load-file "~/.emacs.d/use-package.el")
-  ;; (load-file "~/.emacs.d/doom-themes.el")
-  ;; (load-file "~/.emacs.d/dracula-theme.el")
-  (load-file "~/.emacs.d/spacemacs-theme.el")
-  (load-file "~/.emacs.d/gcmh.el")
-  (load-file "~/.emacs.d/g-config.el")
-  (load-file "~/.emacs.d/g-org-insert-note-header.el")
-  (load-file "~/.emacs.d/g-org-code-block.el")
-  (load-file "~/.emacs.d/report.el")
-  (load-file "~/.emacs.d/company.el")
-  (load-file "~/.emacs.d/window-numbering.el")
-  (load-file "~/.emacs.d/GTD.el")
-  (load-file "~/.emacs.d/keycast.el")
-  (load-file "~/.emacs.d/cnfonts.el")
-  (load-file "~/.emacs.d/ox-hugo.el")
-  (load-file "~/.emacs.d/markdown.el")
-  (load-file "~/.emacs.d/ox-pandoc.el")
+  (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
+  (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
+  (load-file "~/.emacs.d/gcmh.el") ;; 用于emacs内存垃圾回收
+  (load-file "~/.emacs.d/mwim.el")
+  (load-file "~/.emacs.d/amx.el")
+  (load-file "~/.emacs.d/which-key.el")
+  ;; (load-file "~/.emacs.d/undo-tree.el")
+  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题
+  ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
+  (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
+  (load-file "~/.emacs.d/avy.el")
+  (load-file "~/.emacs.d/highlight-symbol.el")
+  (load-file "~/.emacs.d/rainbow-delimiters.el")
+  (load-file "~/.emacs.d/g-config.el") ;; 插件插件配置代码块
+  (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
+  (load-file "~/.emacs.d/g-org-code-block.el") ;; 插入一般的代码块
+  (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
+  (load-file "~/.emacs.d/company.el") ;; 补全文本用
+  (load-file "~/.emacs.d/good-scroll.el")
+  (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
+  (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用
+  (load-file "~/.emacs.d/treemacs.el")
+  (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
+  (load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
+  (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
+  (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
+  (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本
+  ;; (load-file "~/.emacs.d/ox-pandoc.el")
   ;; (load-file "~/.emacs.d/org-noter.el")
   ;; (load-file "~/.emacs.d/org-roam.el")
   ;; (load-file "~/.emacs.d/org-roam-ui.el")
@@ -34,7 +44,7 @@
   ;; (load-file "~/.emacs.d/Msys2.el")
   ;; (load-file "~/.emacs.d/pdf-tools.el")
   ;; (load-file "~/.emacs.d/magit.el")
-  (load-file "~/.emacs.d/newsticker.el")
+  (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读
   #+end_src
 
 ** basic_config.el
@@ -58,6 +68,7 @@
 	(load-file "~/.emacs.d/init.el"))
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
   (global-set-key (kbd "C-M-z") 'indent-region)
+  (global-set-key (kbd "M-j") nil)
 #+end_src
 
 ** use-package.el
@@ -135,8 +146,8 @@
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
 		   (block-name (concat clean-time))  ; 构建代码块名
 		   (code-block (format
-						"* %s
-  ,#+BEGIN_SRC emacs-lisp :tangle %s.el
+						"** %s
+  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
   %s: name\n1. 
   ,#+END_SRC"
 						block-name clean-time block-name)))
@@ -168,6 +179,13 @@
 	:defer t
 	:init (window-numbering-mode t)
 	)
+#+end_src
+
+** ace-window
+#+begin_src emacs-lisp :tangle ~/.emacs.d/ace-window.el
+  (use-package ace-window
+	:ensure t
+	:bind (("C-x o" . 'ace-window)))
 #+end_src
 
 ** GTD
@@ -256,14 +274,14 @@
 
 ** org-roam
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
-(use-package org-roam
-  :ensure t
-  :init
-  (setq org-roam-v2-ack t)
-  :custom
-  (org-roam-directory "~/.emacs.d")
-  :config
-  (org-roam-db-autosync-mode))
+  (use-package org-roam
+	:ensure t
+	:init
+	(setq org-roam-v2-ack t)
+	:custom
+	(org-roam-directory "~/.emacs.d")
+	:config
+	(org-roam-db-autosync-mode))
 #+end_src
 
 ** org-roam-ui
@@ -425,4 +443,94 @@
 	(newsticker-wget-arguments '("--disable" "--silent" "--location" "--proxy" "socks5://127.0.0.1:7890"))
 	(newsticker-url-list-defaults nil)    ;remove default list (i.e. emacswiki)
 	(newsticker-automatically-mark-items-as-old nil))
+#+end_src
+
+** amx
+#+begin_src emacs-lisp :tangle ~/.emacs.d/amx.el
+(use-package amx
+  :ensure t
+  :init (amx-mode))
+#+end_src
+
+** mwim
+#+begin_src emacs-lisp :tangle ~/.emacs.d/mwim.el
+(use-package mwim
+  :ensure t
+  :bind
+  ("C-a" . mwim-beginning-of-code-or-line)
+  ("C-e" . mwim-end-of-code-or-line))
+#+end_src
+
+** undo-tree
+#+begin_src emacs-lisp :tangle ~/.emacs.d/undo-tree.el
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode)
+  :custom
+  (undo-tree-auto-save-history nil))
+#+end_src
+
+** good-scroll
+#+begin_src emacs-lisp :tangle ~/.emacs.d/good-scroll.el
+  (use-package good-scroll
+	:ensure t
+	;; :if window-system          ; 在图形化界面时才使用这个插件
+	:init (good-scroll-mode))
+#+end_src
+
+** which-key
+#+begin_src emacs-lisp :tangle ~/.emacs.d/which-key.el
+(use-package which-key
+  :ensure t
+  :init (which-key-mode))
+#+end_src
+
+** avy
+#+begin_src emacs-lisp :tangle ~/.emacs.d/avy.el
+(use-package avy
+  :ensure t
+  :bind
+  (("M-j" . avy-goto-char-timer)))
+#+end_src
+
+** highlight-symbol
+#+begin_src emacs-lisp :tangle ~/.emacs.d/highlight-symbol.el
+(use-package highlight-symbol
+  :ensure t
+  :init (highlight-symbol-mode)
+  :bind ("<f8>" . highlight-symbol)) ;; 按下 F3 键就可高亮当前符号
+#+end_src
+
+** rainbow-delimiters
+#+begin_src emacs-lisp :tangle ~/.emacs.d/rainbow-delimiters.el
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+** treemacs
+#+begin_src emacs-lisp :tangle ~/.emacs.d/treemacs.el
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (treemacs-tag-follow-mode)
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ;; ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag))
+  (:map treemacs-mode-map
+	("/" . treemacs-advanced-helpful-hydra)))
+
+(use-package treemacs-projectile
+  :ensure t
+  :after (treemacs projectile))
+
+(use-package lsp-treemacs
+  :ensure t
+  :after (treemacs lsp))
 #+end_src
