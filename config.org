@@ -34,6 +34,7 @@
   ;; (load-file "~/.emacs.d/Msys2.el")
   ;; (load-file "~/.emacs.d/pdf-tools.el")
   ;; (load-file "~/.emacs.d/magit.el")
+  (load-file "~/.emacs.d/newsticker.el")
   #+end_src
 
 ** basic_config.el
@@ -360,4 +361,68 @@
   (use-package ox-pandoc
 	:ensure t
 	)
+#+end_src
+
+** newsticker
+#+begin_src emacs-lisp :tangle ~/.emacs.d/newsticker.el
+  (use-package newsticker
+	:ensure nil
+	:defer t
+	:init
+	(setq newsticker-retrieval-interval 0
+		  newsticker-ticker-interval 0)
+	:custom
+	(my/leader-keys
+	 "on" '(my/newsticker-treeview-in-new-tab :wk "newsticker"))
+	:config
+	(defun my/newsticker-treeview-in-new-tab ()
+	  (interactive)
+	  (let (succ)
+		(unwind-protect
+			(progn
+			  (tab-bar-new-tab)
+			  (call-interactively #'newsticker-treeview)
+			  (tab-bar-rename-tab "newsticker")
+			  (setq succ t))
+		  (unless succ
+			(tab-bar-close-tab)))))
+
+	(defun my/newsticker-treeview-quit-and-close-tab ()
+	  (interactive)
+	  (newsticker-treeview-quit)
+	  (newsticker-stop)
+	  (tab-close))
+
+	(general-define-key
+	 :keymaps 'newsticker-treeview-mode-map
+	 :states 'normal
+	 "q" 'my/newsticker-treeview-quit-and-close-tab)
+
+	:custom
+	(newsticker-url-list '(
+						   ;; ("title" "URL" other options)
+						   ("emacs redux" "https://emacsredux.com/atom.xml" nil nil nil)
+						   ("batsov" "https://batsov.com/atom.xml" nil nil nil)
+						   ("meta redux" "https://metaredux.com/feed.xml" nil nil nil)
+						   ("Ruanyifeng" "https://www.ruanyifeng.com/blog/atom.xml" nil nil nil)
+						   ("Sachachua emacs news" "https://sachachua.com/blog/category/emacs-news/feed" nil nil nil)
+						   ("Planet Emacs Life" "https://planet.emacslife.com/atom.xml" nil nil nil)
+						   ("Karthinks" "https://karthinks.com/index.xml" nil nil nil)
+						   ("ruzkuku" "https://ruzkuku.com/all.atom" nil nil nil)
+						   ("lazycat" "https://manateelazycat.github.io/feed.xml" nil nil nil)
+						   ("jlelse" "https://jlelse.blog/.rss")
+						   ("honmaple" "https://honmaple.me/atom.xml")
+						   ("ianthehenry" "https://ianthehenry.com/feed.xml")
+						   ("manueluberti" "https://www.manueluberti.eu/feed.xml")
+						   ("kevq" "https://kevq.uk/feed.xml")
+						   ("hacker news" "https://hnrss.org/frontpage")
+						   ("lobsters" "https://lobste.rs/rss")
+						   ("jameslittle" "https://jameslittle.me/feed.xml")
+						   ("ag91" "https://ag91.github.io/rss.xml")
+						   ))
+	(newsticker-retrieval-method 'extern)
+	(newsticker-wget-name "curl")
+	(newsticker-wget-arguments '("--disable" "--silent" "--location" "--proxy" "socks5://127.0.0.1:7890"))
+	(newsticker-url-list-defaults nil)    ;remove default list (i.e. emacswiki)
+	(newsticker-automatically-mark-items-as-old nil))
 #+end_src
