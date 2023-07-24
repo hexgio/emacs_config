@@ -8,11 +8,12 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   ;; 在~/.emacs.d/目录下编辑org文件，将代码块导出后再在org文件中通过load-file加载或者重启emacs，同时检查家目录下如果出现.emacs就将其删除
   ;; 如果不想加载哪个配置文件，可以将其注释掉
+  ;; 以下几个插件有些问题，暂时没有配置好
   (load-file "~/.emacs.d/basic_config.el")
   (load-file "~/.emacs.d/use-package.el")
-  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 使用这个主题的时候，搜索一些内容的时候没有高亮效果
-  ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 这个主题风格我还算喜欢
-  (load-file "~/.emacs.d/spacemacs-theme.el") ;; spacemacs-theme 也不错
+  ;; (load-file "~/.emacs.d/doom-themes.el")
+  ;; (load-file "~/.emacs.d/dracula-theme.el")
+  (load-file "~/.emacs.d/spacemacs-theme.el")
   (load-file "~/.emacs.d/gcmh.el")
   (load-file "~/.emacs.d/g-config.el")
   (load-file "~/.emacs.d/g-org-insert-note-header.el")
@@ -26,12 +27,13 @@
   (load-file "~/.emacs.d/ox-hugo.el")
   (load-file "~/.emacs.d/markdown.el")
   (load-file "~/.emacs.d/ox-pandoc.el")
-  (load-file "~/.emacs.d/org-noter.el")
-  (load-file "~/.emacs.d/org-roam.el")
-  ;; (load-file "~/.emacs.d/org-roam-server.el")
+  ;; (load-file "~/.emacs.d/org-noter.el")
+  ;; (load-file "~/.emacs.d/org-roam.el")
+  ;; (load-file "~/.emacs.d/org-roam-ui.el")
+  ;; (load-file "~/.emacs.d/deft.el")
   ;; (load-file "~/.emacs.d/Msys2.el")
   ;; (load-file "~/.emacs.d/pdf-tools.el")
-  (load-file "~/.emacs.d/magit.el")
+  ;; (load-file "~/.emacs.d/magit.el")
   #+end_src
 
 ** basic_config.el
@@ -217,6 +219,10 @@
 	:ensure t
 	:defer t
 	:init (cnfonts-mode t)
+	:custom
+	(unless (file-exists-p "~/.emacs.d/roam")
+	  (make-directory "~/.emacs.d/roam")
+	  )
 	:config
 	(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
 	(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
@@ -250,18 +256,42 @@
 
 ** org-roam
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
-  (use-package org-roam
-	:ensure t  ;; 确保安装 org-roam 插件
-	:config
-	(setq org-roam-directory "~/Dropbox/org/roam")
-	)
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/.emacs.d")
+  :config
+  (org-roam-db-autosync-mode))
 #+end_src
 
-** org-roam-server
-#+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam-server.el
-  (use-package org-roam-server
-	:ensure t)
+** org-roam-ui
+#+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam-ui.el
+  (use-package org-roam-ui
+	:ensure t
+	:after org-roam
+	:config
+	(setq org-roam-ui-port 9000
+		  org-roam-ui-sync-theme t
+		  org-roam-ui-follow t
+		  org-roam-ui-update-on-save t
+		  org-roam-ui-open-on-start nil))
 #+end_src
+
+** deft
+#+begin_src emacs-lisp :tangle ~/.emacs.d/deft.el
+  (use-package deft
+	:ensure t
+	:commands (deft)
+	:custom
+	(unless (file-exists-p "~/.emacs.d/roam")
+	  (make-directory "~/.emacs.d/roam")
+	  )
+	(deft-directory "~/.emacs.d/roam")
+	(deft-recursive t))
+#+end_src
+
 
 ** keycast
 #+begin_src emacs-lisp :tangle ~/.emacs.d/keycast.el
