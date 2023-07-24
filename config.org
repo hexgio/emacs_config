@@ -12,6 +12,7 @@
   (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
   (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
   (load-file "~/.emacs.d/gcmh.el") ;; 用于emacs内存垃圾回收
+  (load-file "~/.emacs.d/dashboard.el")
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
   (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
@@ -19,6 +20,7 @@
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
   ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
   (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
+  (load-file "~/.emacs.d/tiny.el")
   (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
   (load-file "~/.emacs.d/highlight-symbol.el") ;; <F8> 打开符号高亮
   (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
@@ -29,11 +31,12 @@
   (load-file "~/.emacs.d/company.el") ;; 补全文本用
   ;; (load-file "~/.emacs.d/good-scroll.el") ;; 优化页面滚动，但是我没感觉出效果
   (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
-  (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用
+  ;; (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用
   (load-file "~/.emacs.d/treemacs.el") ;; 
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
   (load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
   (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
+  (load-file "~/.emacs.d/easy-hugo.el")
   (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
   (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本
   ;; (load-file "~/.emacs.d/ox-pandoc.el")
@@ -162,7 +165,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/company.el
   (use-package company
 	:ensure t
-	:defer t
+	:defer 2
 	:init (global-company-mode t)
 	:config
 	(setq company-minimum-prefix-length 1)
@@ -177,7 +180,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/window-numbering.el
   (use-package window-numbering
 	:ensure t
-	:defer t
+	:defer 2
 	:init (window-numbering-mode t)
 	)
 #+end_src
@@ -222,12 +225,21 @@
   (setq org-tag-alist '(("@office" . ?w) ("@home" . ?h) ("traffic" . ?t) ("computer" . ?c) ("nocomputer" . ?n) ("either" . ?e) ("immediately" . ?i) ("wait" . ?w) ("action" . ?a)))
 #+end_src
 
+** easy-hugo
+#+begin_src emacs-lisp :tangle ~/.emacs.d/easy-hugo.el
+  (use-package easy-hugo
+	:ensure t
+	:after (org markdown txt)
+	)
+#+end_src
+
 ** ox-hugo
 #+begin_src emacs-lisp :tangle ~/.emacs.d/ox-hugo.el
   (use-package ox-hugo
 	:ensure t
+	:after (org markdown txt)
 	)
-#+end_src
+	#+end_src
 
 ** cnfogts
 参考链接:
@@ -236,7 +248,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/cnfonts.el
   (use-package cnfonts
 	:ensure t
-	:defer t
+	:defer 2
 	:init (cnfonts-mode t)
 	:custom
 	(unless (file-exists-p "~/.emacs.d/roam")
@@ -252,7 +264,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-noter.el
   (use-package org-noter
 	:ensure t
-	:defer t
+	:defer 2
 	)
 #+end_src
 
@@ -337,7 +349,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/keycast.el
   (use-package keycast
 	:ensure t
-	:defer t
+	:defer 2
 	)
 #+end_src
 
@@ -345,7 +357,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/magit.el
   (use-package magit
 	:ensure t
-	:defer t
+	:defer 2
 	)
 #+end_src
 
@@ -385,7 +397,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/markdown.el
   (use-package markdown-mode
 	:ensure t
-	:defer t
+	:defer 2
 	:config
 	;;markdown设置
 	(autoload 'markdown-mode "markdown-mode"
@@ -407,14 +419,14 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/newsticker.el
   (use-package newsticker
 	:ensure nil
-	:defer t
 	:init
 	(setq newsticker-retrieval-interval 0
 		  newsticker-ticker-interval 0)
-	:custom
-	(my/leader-keys
-	 "on" '(my/newsticker-treeview-in-new-tab :wk "newsticker"))
 	:config
+	(global-set-key (kbd "C-c n") 'newsticker-show-news)
+	(setq newsticker-show-full-article-content t)
+	(defun my/leader-keys ()
+	  "on" '(my/newsticker-treeview-in-new-tab :wk "newsticker"))
 	(defun my/newsticker-treeview-in-new-tab ()
 	  (interactive)
 	  (let (succ)
@@ -433,32 +445,16 @@
 	  (newsticker-stop)
 	  (tab-close))
 
-	(general-define-key
-	 :keymaps 'newsticker-treeview-mode-map
-	 :states 'normal
-	 "q" 'my/newsticker-treeview-quit-and-close-tab)
+	(defun general-define-key ()
+	  :keymaps 'newsticker-treeview-mode-map
+	  :states 'normal
+	  "q" 'my/newsticker-treeview-quit-and-close-tab)
 
 	:custom
 	(newsticker-url-list '(
 						   ;; ("title" "URL" other options)
-						   ("emacs redux" "https://emacsredux.com/atom.xml" nil nil nil)
-						   ("batsov" "https://batsov.com/atom.xml" nil nil nil)
-						   ("meta redux" "https://metaredux.com/feed.xml" nil nil nil)
-						   ("Ruanyifeng" "https://www.ruanyifeng.com/blog/atom.xml" nil nil nil)
-						   ("Sachachua emacs news" "https://sachachua.com/blog/category/emacs-news/feed" nil nil nil)
-						   ("Planet Emacs Life" "https://planet.emacslife.com/atom.xml" nil nil nil)
-						   ("Karthinks" "https://karthinks.com/index.xml" nil nil nil)
-						   ("ruzkuku" "https://ruzkuku.com/all.atom" nil nil nil)
-						   ("lazycat" "https://manateelazycat.github.io/feed.xml" nil nil nil)
-						   ("jlelse" "https://jlelse.blog/.rss")
-						   ("honmaple" "https://honmaple.me/atom.xml")
-						   ("ianthehenry" "https://ianthehenry.com/feed.xml")
-						   ("manueluberti" "https://www.manueluberti.eu/feed.xml")
-						   ("kevq" "https://kevq.uk/feed.xml")
-						   ("hacker news" "https://hnrss.org/frontpage")
-						   ("lobsters" "https://lobste.rs/rss")
-						   ("jameslittle" "https://jameslittle.me/feed.xml")
-						   ("ag91" "https://ag91.github.io/rss.xml")
+						   ("少数派" "https://sspai.com/feed")
+						   ("Luckydesigner" "https://www.luckydesigner.space/feed")
 						   ))
 	(newsticker-retrieval-method 'extern)
 	(newsticker-wget-name "curl")
@@ -469,98 +465,131 @@
 
 ** amx
 #+begin_src emacs-lisp :tangle ~/.emacs.d/amx.el
-(use-package amx
-  :ensure t
-  :init (amx-mode))
+  (use-package amx
+	:ensure t
+	:defer 2
+	:init (amx-mode))
 #+end_src
 
 ** mwim
 #+begin_src emacs-lisp :tangle ~/.emacs.d/mwim.el
-(use-package mwim
-  :ensure t
-  :bind
-  ("C-a" . mwim-beginning-of-code-or-line)
-  ("C-e" . mwim-end-of-code-or-line))
+  (use-package mwim
+	:ensure t
+	:defer 2
+	:bind
+	("C-a" . mwim-beginning-of-code-or-line)
+	("C-e" . mwim-end-of-code-or-line))
 #+end_src
 
 ** undo-tree
 #+begin_src emacs-lisp :tangle ~/.emacs.d/undo-tree.el
-(use-package undo-tree
-  :ensure t
-  :init (global-undo-tree-mode)
-  :custom
-  (undo-tree-auto-save-history nil))
+  (use-package undo-tree
+	:ensure t
+	:defer 2
+	:init (global-undo-tree-mode)
+	:custom
+	(undo-tree-auto-save-history nil))
 #+end_src
 
 ** good-scroll
 #+begin_src emacs-lisp :tangle ~/.emacs.d/good-scroll.el
   (use-package good-scroll
 	:ensure t
+	:defer 2
 	;; :if window-system          ; 在图形化界面时才使用这个插件
 	:init (good-scroll-mode))
 #+end_src
 
 ** which-key
 #+begin_src emacs-lisp :tangle ~/.emacs.d/which-key.el
-(use-package which-key
-  :ensure t
-  :init (which-key-mode))
+  (use-package which-key
+	:ensure t
+	:defer 2
+	:init (which-key-mode))
 #+end_src
 
 ** avy
 #+begin_src emacs-lisp :tangle ~/.emacs.d/avy.el
-(use-package avy
-  :ensure t
-  :bind
-  (("M-j" . avy-goto-char-timer)))
+  (use-package avy
+	:ensure t
+	:defer 2
+	:bind
+	(("M-j" . avy-goto-char-timer)))
 #+end_src
 
 ** highlight-symbol
 #+begin_src emacs-lisp :tangle ~/.emacs.d/highlight-symbol.el
-(use-package highlight-symbol
-  :ensure t
-  :init (highlight-symbol-mode)
-  :bind ("<f8>" . highlight-symbol)) ;; 按下 F3 键就可高亮当前符号
+  (use-package highlight-symbol
+	:ensure t
+	:defer 2
+	:init (highlight-symbol-mode)
+	:bind ("<f8>" . highlight-symbol)) ;; 按下 F3 键就可高亮当前符号
 #+end_src
 
 ** rainbow-delimiters
 #+begin_src emacs-lisp :tangle ~/.emacs.d/rainbow-delimiters.el
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
+  (use-package rainbow-delimiters
+	:ensure t
+	:defer 2
+	:hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 ** treemacs
 #+begin_src emacs-lisp :tangle ~/.emacs.d/treemacs.el
-(use-package treemacs
-  :ensure t
-  :defer t
-  :config
-  (treemacs-tag-follow-mode)
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ;; ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag))
-  (:map treemacs-mode-map
-	("/" . treemacs-advanced-helpful-hydra)))
+  (use-package treemacs
+	:ensure t
+	:defer 2
+	:config
+	(treemacs-tag-follow-mode)
+	:bind
+	(:map global-map
+		  ("M-0"       . treemacs-select-window)
+		  ("C-x t 1"   . treemacs-delete-other-windows)
+		  ("C-x t t"   . treemacs)
+		  ("C-x t B"   . treemacs-bookmark)
+		  ;; ("C-x t C-t" . treemacs-find-file)
+		  ("C-x t M-t" . treemacs-find-tag))
+	(:map treemacs-mode-map
+		  ("/" . treemacs-advanced-helpful-hydra)))
 
-(use-package treemacs-projectile
-  :ensure t
-  :after (treemacs projectile))
+  (use-package treemacs-projectile
+	:ensure t
+	:after (treemacs projectile))
 
-(use-package lsp-treemacs
-  :ensure t
-  :after (treemacs lsp))
+  (use-package lsp-treemacs
+	:ensure t
+	:after (treemacs lsp))
 #+end_src
 
 ** google-this
 #+begin_src emacs-lisp :tangle ~/.emacs.d/google-this.el
-(use-package google-this
-  :ensure t
-  :init
-  (google-this-mode)) 
+  (use-package google-this
+	:ensure t
+	:defer 2
+	:init
+	(google-this-mode)) 
+#+end_src
+
+** dashboard
+#+begin_src emacs-lisp :tangle ~/.emacs.d/dashboard.el
+  (use-package dashboard
+	:ensure t
+	:config
+	(setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
+	;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
+	(setq dashboard-startup-banner 'official) ;; 也可以自定义图片
+	(setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
+							(bookmarks . 5)  ;; 显示多少个最近书签
+							(projects . 10))) ;; 显示多少个最近项目
+	(dashboard-setup-startup-hook))
+#+end_src
+
+** tiny
+#+begin_src emacs-lisp :tangle ~/.emacs.d/tiny.el
+  (use-package tiny
+	:ensure t
+	:defer 2
+	;; 可选绑定快捷键，笔者个人感觉不绑定快捷键也无妨
+	:bind
+	("C-;" . tiny-expand))
 #+end_src
