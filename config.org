@@ -206,7 +206,6 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/ox-hugo.el
   (use-package ox-hugo
 	:ensure t
-	:defer t
 	)
 #+end_src
 
