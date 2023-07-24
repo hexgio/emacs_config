@@ -359,6 +359,5 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/ox-pandoc.el
   (use-package ox-pandoc
 	:ensure t
-	:defer t
 	)
 #+end_src
