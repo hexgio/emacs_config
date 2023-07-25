@@ -22,7 +22,7 @@
   (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
   (load-file "~/.emacs.d/tiny.el")
   (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
-  (load-file "~/.emacs.d/highlight-symbol.el") ;; <F8> 打开符号高亮
+  (load-file "~/.emacs.d/highlight-symbol.el") ;; <F10> 打开符号高亮
   (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
   (load-file "~/.emacs.d/g-config.el") ;; 插件插件配置代码块
   (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
@@ -37,7 +37,7 @@
   (load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
   (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
   (load-file "~/.emacs.d/easy-hugo.el")
-  (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
+  ;; (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
   (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本
   ;; (load-file "~/.emacs.d/ox-pandoc.el")
   ;; (load-file "~/.emacs.d/org-noter.el")
@@ -47,8 +47,9 @@
   ;; (load-file "~/.emacs.d/Msys2.el")
   ;; (load-file "~/.emacs.d/pdf-tools.el")
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
-  (load-file"~/.emacs.d/newsticker.el") ;; 用于rss阅读
-  (load-file"~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
+  (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读
+  (load-file "~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
+  ;; (load-file "~/.emacs.d/eww.el")
   #+end_src
 
 ** basic_config.el
@@ -60,6 +61,8 @@
   (global-linum-mode t)
   (column-number-mode t)
   (xterm-mouse-mode t)
+  (prefer-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
   (recentf-mode t)
   (save-place-mode t)
   (setq-default indent-tabs-mode t)
@@ -73,6 +76,7 @@
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
   (global-set-key (kbd "C-M-z") 'indent-region)
   (global-set-key (kbd "M-j") nil)
+  (global-set-key (kbd "<F10>") nil)
 #+end_src
 
 ** use-package.el
@@ -229,7 +233,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/easy-hugo.el
   (use-package easy-hugo
 	:ensure t
-	:after (org markdown txt)
+	:defer 2
 	)
 #+end_src
 
@@ -237,7 +241,19 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/ox-hugo.el
   (use-package ox-hugo
 	:ensure t
-	:after (org markdown txt)
+	:defer 2
+	:custom
+	(unless (file-exists-p "~/hugo/")
+	  (make-directory "~/hugo/")
+	  )
+	(unless (file-exists-p "~/hugo/project/")
+	  (make-directory "~/hugo/project/")
+	  )
+	(unless (file-exists-p "~/hugo/static/")
+	  (make-directory "~/hugo/static/")
+	  )
+	:config
+	(setq org-hugo-base-dir "~/hugo/project/")
 	)
 	#+end_src
 
@@ -523,7 +539,7 @@
 	:ensure t
 	:defer 2
 	:init (highlight-symbol-mode)
-	:bind ("<f8>" . highlight-symbol)) ;; 按下 F3 键就可高亮当前符号
+	:bind ("<f10>" . highlight-symbol)) ;; 按下 F10 键就可高亮当前符号
 #+end_src
 
 ** rainbow-delimiters
@@ -592,4 +608,19 @@
 	;; 可选绑定快捷键，笔者个人感觉不绑定快捷键也无妨
 	:bind
 	("C-;" . tiny-expand))
+#+end_src
+
+** eww
+#+begin_src emacs-lisp :tangle ~/.emacs.d/eww.el
+  (use-package eww
+	:ensure nil
+	:config
+	(setq eww-use-external-webkit t)
+	(setq-default eww-ems-internal-uses-webkit t)
+	;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
+	;; (setq browse-url-generic-program "浏览器命令")
+	;; (setq browse-url-browser-function 'browse-url-generic)
+	;; (setq browse-url-generic-program "firefox")
+	;; (setq browse-url-browser-function 'browse-url-generic)
+	)
 #+end_src
