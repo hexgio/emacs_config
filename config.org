@@ -49,7 +49,7 @@
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
   (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读
   (load-file "~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
-  ;; (load-file "~/.emacs.d/eww.el")
+  (load-file "~/.emacs.d/eww.el")
   #+end_src
 
 ** basic_config.el
@@ -255,7 +255,7 @@
 	:config
 	(setq org-hugo-base-dir "~/hugo/project/")
 	)
-	#+end_src
+#+end_src
 
 ** cnfogts
 参考链接:
@@ -615,6 +615,10 @@
   (use-package eww
 	:ensure nil
 	:config
+	(with-eval-after-load 'eww  
+	  (custom-set-variables  
+	   '(eww-search-prefix "https://bing.com/search?q="))  
+	  )
 	(setq eww-use-external-webkit t)
 	(setq-default eww-ems-internal-uses-webkit t)
 	;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
