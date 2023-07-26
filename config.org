@@ -158,7 +158,7 @@
 		   (code-block (format
 						"** %s
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1. 
+  %s: name\n1、
   ,#+END_SRC"
 						block-name clean-time block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
