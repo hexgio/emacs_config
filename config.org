@@ -65,8 +65,6 @@
   (global-linum-mode t)
   (column-number-mode t)
   (xterm-mouse-mode t)
-  ;; (prefer-coding-system 'utf-8)
-  ;; (setq-default buffer-file-coding-system 'utf-8)
   (recentf-mode t)
   (save-place-mode t)
   (setq-default indent-tabs-mode t)
@@ -626,6 +624,8 @@
 	  (custom-set-variables  
 	   '(eww-search-prefix "https://bing.com/search?q="))  
 	  )
+  (prefer-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
 	(setq eww-use-external-webkit t)
 	(setq-default eww-ems-internal-uses-webkit t)
 	;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
