@@ -18,6 +18,7 @@
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
   (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
+  (load-file "~/.emacs.d/tiny.el")  
   (load-file "~/.emacs.d/company.el") ;; 补全文本用
   (load-file "~/.emacs.d/treemacs.el") ;;   
   (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
@@ -28,7 +29,6 @@
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
   ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
   (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
-  ;; (load-file "~/.emacs.d/tiny.el")
   (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
   (load-file "~/.emacs.d/highlight-symbol.el") ;; <F10> 打开符号高亮
   (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
@@ -65,8 +65,8 @@
   (global-linum-mode t)
   (column-number-mode t)
   (xterm-mouse-mode t)
-  (prefer-coding-system 'utf-8)
-  (setq-default buffer-file-coding-system 'utf-8)
+  ;; (prefer-coding-system 'utf-8)
+  ;; (setq-default buffer-file-coding-system 'utf-8)
   (recentf-mode t)
   (save-place-mode t)
   (setq-default indent-tabs-mode t)
@@ -608,7 +608,7 @@
 #+end_src
 
 ** tiny
-#+begin_src emacs-lisp :tangle ~/k.emacs.d/tiny.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/tiny.el
   (use-package tiny
 	:ensure t
 	:defer 2
