@@ -45,7 +45,7 @@
   ;; (load-file "~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
   ;; (load-file "~/.emacs.d/good-scroll.el") ;; 优化页面滚动，但是我没感觉出效果
   ;; (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用
-  ;; (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
+  (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
   ;; (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
   ;; (load-file "~/.emacs.d/ox-pandoc.el")
   ;; (load-file "~/.emacs.d/org-noter.el")
