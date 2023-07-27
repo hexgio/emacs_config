@@ -9,37 +9,40 @@
   ;; 在~/.emacs.d/目录下编辑org文件，将代码块导出后再在org文件中通过load-file加载或者重启emacs，同时检查家目录下如果出现.emacs就将其删除
   ;; 如果不想加载哪个配置文件，可以将其注释掉
   ;; 以下几个插件有些问题，暂时没有配置好
-  (load-file "~/.emacs.d/gcmh.el") ;; 用于emacs内存垃圾回收  
-  (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
-  (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
-  ;; (load-file "~/.emacs.d/el-get.el")
+  ;; (load-file "~/.emacs.d/gcmh.el") ;; 用于emacs内存垃圾回收
   ;; (load-file "~/.emacs.d/esup.el") ;; 待尝试用el-get安装
+  (load-file "~/.emacs.d/gc-head.el")
+  (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
+  (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
+  (load-file "~/.emacs.d/display_time.el")
+  ;; (load-file "~/.emacs.d/el-get.el")
+  ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo
+  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
+  ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
+  (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题  
   (load-file "~/.emacs.d/dashboard.el")
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
   (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
-  (load-file "~/.emacs.d/tiny.el")  
   (load-file "~/.emacs.d/company.el") ;; 补全文本用
-  (load-file "~/.emacs.d/treemacs.el") ;;   
-  (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
-  (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
-  (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
-  (load-file "~/.emacs.d/easy-hugo.el")  
-  ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo
-  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
-  ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
-  (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
   (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
+  (load-file "~/.emacs.d/tiny.el")  
+  ;; (load-file "~/.emacs.d/treemacs.el")
+  (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
   (load-file "~/.emacs.d/highlight-symbol.el") ;; <F10> 打开符号高亮
   (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
   (load-file "~/.emacs.d/g-config.el") ;; 插件插件配置代码块
   (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
   (load-file "~/.emacs.d/g-org-code-block.el") ;; 插入一般的代码块
   (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
+  (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
+  (load-file "~/.emacs.d/easy-hugo.el")  
+  (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
   (load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
-  (load-file "~/.emacs.d/eww.el")  
-  (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读  
-  (load-file "~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
+  (load-file "~/.emacs.d/eww.el")
+  ;; (load-file "~/.emacs.d/test_emacs_speed.el")
+  ;; (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读
+  ;; (load-file "~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
   ;; (load-file "~/.emacs.d/good-scroll.el") ;; 优化页面滚动，但是我没感觉出效果
   ;; (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用
   ;; (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
@@ -54,31 +57,104 @@
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
   ;; (load-file "~/.emacs.d/yasnippet.el")
   ;; (load-file "~/.emacs.d/elfeed.el")
+
+  (load-file "~/.emacs.d/gc-tail.el")
   #+end_src
 
 ** basic_config
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
-  ;; (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
-  ;; (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+  (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
+  (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+
   ;; (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF")) ;; 我最初的主题设定
   ;; (add-to-list 'default-frame-alist '(background-color . "#000000"))
+
   (global-linum-mode t)
   (column-number-mode t)
+
   (xterm-mouse-mode t)
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+
   (recentf-mode t)
+
   (save-place-mode t)
+
   (setq-default indent-tabs-mode t)
   (setq-default tab-width 4)
   (setq c-default-style "linux")
   (setq c-basic-offset 4)
-  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))  
+
+  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
   (defun reload-emacs-config ()
 	(interactive)
 	(load-file "~/.emacs.d/init.el"))
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+
   (global-set-key (kbd "C-M-z") 'indent-region)
+
   (global-set-key (kbd "M-j") nil)
+
   (global-set-key (kbd "<F10>") nil)
+
+  (setq kill-ring-max 200)
+  ;;设置粘贴缓冲条目数量.用一个很大的kill ring(最多的记录个数). 这样防止我不小心删掉重要的东西
+
+  (setq enable-recursive-minibuffers t)
+  ;;可以递归的使用 minibuffer
+
+  (setq scroll-margin 3 scroll-conservatively 10000)
+  ;;防止页面滚动时跳动， scroll-margin 3 可以在靠近屏幕边沿3行时就开始滚动，可以很好的看到上下文。
+
+  ;; (setq-default auto-fill-function 'do-auto-fill)
+  ;; ;; Autofill in all modes;;
+  ;; (setq default-fill-column 120)
+  ;; ;;把 fill-column 设为 60. 这样的文字更好读
+
+  ;; (setq default-major-mode 'text-mode)
+  ;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  ;;设置缺省主模式是text，,并进入auto-fill次模式.而不是基本模式fundamental-mode
+
+  (mouse-avoidance-mode 'animate)
+  ;;光标靠近鼠标指针时，让鼠标指针自动让开，别挡住视线。
+
+  ;; (setq frame-title-format "emacs@%b")
+  (setq frame-title-format "%b")
+  ;;在标题栏显示buffer的名字，而不是 emacs@wangyin.com 这样没用的提示。
+
+  (setq uniquify-buffer-name-style 'forward) ;;好像没起作用
+  ;; 当有两个文件名相同的缓冲时，使用前缀的目录名做 buffer 名字，不用原来的foobar 形式
+
+  (add-hook 'comint-output-filter-functions
+			'comint-watch-for-password-prompt)
+  ;;当你在shell、telnet、w3m等模式下时，必然碰到过要输入密码的情况,此时加密显出你的密码
+
+  ;; (setq version-control t);;启用版本控制，即可以备份多次
+  ;; (setq kept-old-versions 2);;备份最原始的版本两次，及第一次编辑前的文档，和第二次编辑前的文档
+  ;; (setq kept-new-versions 1);;备份最新的版本1次，理解同上
+  ;; (setq delete-old-versions t);;删掉不属于以上3中版本的版本
+  ;; (setq backup-directory-alist '(("." . "~/backups")));;设置备份文件的路径
+  ;; (setq backup-by-copying t);;备份设置方法，直接拷贝
+  ;; Emacs 中，改变文件时，默认都会产生备份文件(以 ~ 结尾的文件)。可以完全去掉; (并不可取)，也可以制定备份的方式。这里采用的是，把所有的文件备份都放在一个固定的地方("~/backups")。对于每个备份文件，保留最原始的两个版本和最新的1个版本。并且备份的时候，备份文件是复本，而不是原件。
+
+  ;; (setq make-backup-files nil)
+  ;; ;; 设定不产生备份文件
+
+  ;; ;;(setq auto-save-mode nil)
+  ;; ;;自动保存模式
+
+  ;; (setq-default make-backup-files nil)
+  ;; ;; 不生成临时文件
+
+  ;; ;;允许emacs和外部其他程序的粘贴
+  ;; (setq x-select-enable-clipboard t)
+
+  (setq mouse-yank-at-point t)
+  ;;使用鼠标中键可以粘贴
+  ;;不要在鼠标点击的那个地方插入剪贴板内容。我不喜欢那样，经常把我的文档搞的一团糟。我觉得先用光标定位，然后鼠标中键点击要好的多。不管你的光标在文档的那个位置，或是在 minibuffer，鼠标中键一点击，X selection 的内容就被插入到那个位置。
+
+
 #+end_src
 
 ** use-package.el
@@ -118,8 +194,8 @@
   (use-package gcmh
 	:config
 	;; (setq gcmh-verbose t) ; 启用详细输出，可选
-	(setq gcmh-high-cons-threshold 16777216) ; 设置高阈值为 16MB，可根据需要调整
-	;; (setq gcmh-high-cons-threshold 100000000) ;; 发现spacemacs的配置设置的是这样的值，虽然用的是其他函数，但是功能想必是差不多的
+	;; (setq gcmh-high-cons-threshold 16777216) ; 设置高阈值为 16MB，可根据需要调整
+	(setq gcmh-high-cons-threshold 100000000) ;; 发现spacemacs的配置设置的是这样的值，虽然用的是其他函数，但是功能想必是差不多的
 	(setq gcmh-idle-delay 5) ; 设置延迟垃圾回收的空闲时间为 5 秒
 
 	;; 其他配置选项...
@@ -147,6 +223,7 @@
 	(insert "** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
 	)
 #+end_src
+
 ** report
 #+begin_src emacs-lisp :tangle ~/.emacs.d/report.el
   (defun add-code-block ()
@@ -186,7 +263,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/window-numbering.el
   (use-package window-numbering
 	:ensure t
-	:defer 2
+	;; :defer 2
 	:init (window-numbering-mode t)
 	)
 #+end_src
@@ -195,6 +272,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/ace-window.el
   (use-package ace-window
 	:ensure t
+	:defer 2
 	:bind (("C-x o" . 'ace-window)))
 #+end_src
 
@@ -367,7 +445,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/keycast.el
   (use-package keycast
 	:ensure t
-	:defer 2
+	:defer t
 	)
 #+end_src
 
@@ -375,7 +453,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/magit.el
   (use-package magit
 	:ensure t
-	:defer 2
+	:defer t
 	)
 #+end_src
 
@@ -415,7 +493,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/markdown.el
   (use-package markdown-mode
 	:ensure t
-	:defer 2
+	:defer t
 	:config
 	;;markdown设置
 	(autoload 'markdown-mode "markdown-mode"
@@ -525,7 +603,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/which-key.el
   (use-package which-key
 	:ensure t
-	:defer 2
+	:defer 1
 	:init (which-key-mode))
 #+end_src
 
@@ -586,7 +664,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/google-this.el
   (use-package google-this
 	:ensure t
-	:defer 2
+	:defer t
 	:init
 	(google-this-mode)) 
 #+end_src
@@ -609,7 +687,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/tiny.el
   (use-package tiny
 	:ensure t
-	:defer 2
+	:defer t
 	;; 可选绑定快捷键，笔者个人感觉不绑定快捷键也无妨
 	:bind
 	("C-;" . tiny-expand))
@@ -619,13 +697,14 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/eww.el
   (use-package eww
 	:ensure nil
+	:defer t
 	:config
 	(with-eval-after-load 'eww  
 	  (custom-set-variables  
 	   '(eww-search-prefix "https://bing.com/search?q="))  
 	  )
-  (prefer-coding-system 'utf-8)
-  (setq-default buffer-file-coding-system 'utf-8)
+	(prefer-coding-system 'utf-8)
+	(setq-default buffer-file-coding-system 'utf-8)
 	(setq eww-use-external-webkit t)
 	(setq-default eww-ems-internal-uses-webkit t)
 	;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
@@ -670,4 +749,50 @@
   (use-package el-get
 	:ensure t
 	)
+#+end_src
+
+** esup
+#+begin_src emacs-lisp :tangle ~/.emacs.d/esup.el
+  ;; 使用use-package安装esup
+  (use-package esup
+	:ensure t
+	:commands (esup)
+	)
+#+end_src
+
+** test_emacs_speed
+#+begin_src emacs-lisp :tangle ~/.emacs.d/test_emacs_speed.el
+  ;; Use a hook so the message doesn't get clobbered by other messages.
+  (add-hook 'emacs-startup-hook
+			(lambda ()
+			  (message "Emacs ready in %s with %d garbage collections."
+					   (format "%.2f seconds"
+							   (float-time
+								(time-subtract after-init-time before-init-time)))
+					   gcs-done)))
+#+end_src
+
+** gc-head
+#+begin_src emacs-lisp :tangle ~/.emacs.d/gc-head.el
+  ;; Make startup faster by reducing the frequency of garbage
+  ;; collection.  The default is 0.8MB.  Measured in bytes.
+  (setq gc-cons-threshold (* 50 1000 1000))
+  ;; Portion of heap used for allocation.  Defaults to 0.1.
+  (setq gc-cons-percentage 0.6)
+#+end_src
+
+** gc-tail
+#+begin_src emacs-lisp :tangle ~/.emacs.d/gc-tail.el
+  ;; Make gc pauses faster by decreasing the threshold.
+  (setq gc-cons-threshold (* 2 1000 1000))
+#+end_src
+
+** 显示时间设置
+** display_time
+#+begin_src emacs-lisp :tangle ~/.emacs.d/display_time.el
+  (display-time-mode 1);;启用时间显示设置，在minibuffer上面的那个杠上
+  (setq display-time-24hr-format t);;时间使用24小时制
+  (setq display-time-day-and-date t);;时间显示包括日期和具体时间
+  ;; (setq display-time-use-mail-icon t);;时间栏旁边启用邮件设置
+  ;; (setq display-time-interval 10);;时间的变化频率，单位多少来着？
 #+end_src
