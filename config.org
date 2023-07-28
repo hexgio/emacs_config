@@ -19,7 +19,7 @@
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
   ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
   (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
-  (load-file "~/.emacs.d/dashboard.el")
+  ;; (load-file "~/.emacs.d/dashboard.el")
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
   (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
@@ -62,13 +62,22 @@
   (load-file "~/.emacs.d/display-calendar.el")
   (load-file "~/.emacs.d/diary.el")
 
+  (when (display-graphic-p)
+	(load "~/.emacs.d/dashboard.el"))
+
   (load-file "~/.emacs.d/gc-tail.el")
-  #+end_src
+ #+end_src
 
 ** basic_config
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
   (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
   (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+
+  (if tool-bar-mode
+	  (tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+
+  ;; (if menu-bar-mode
+  ;; 	(menu-bar-mode -1))
 
   ;; (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF")) ;; 我最初的主题设定
   ;; (add-to-list 'default-frame-alist '(background-color . "#000000"))
@@ -177,10 +186,18 @@
   ;;(setq next-line-add-newlines nil)
   ;;Emacs 21 中已经是缺省设置。按 C-n 或向下键时不添加新行。
 
-    ;; (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+  ;; (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
   ;; (setq sentence-end-double-space nil)
   (setq sentence-end-double-space t)
   ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
+
+  ;; (if (display-graphic-p)
+  ;; 	(progn
+  ;; 	  ;; GUI环境下的配置
+  ;; 	  (load "~/.emacs.d/gui-config.el"))
+  ;;   (progn
+  ;; 	;; 非GUI环境下的配置
+  ;; 	(load "~/.emacs.d/non-gui-config.el")))
 #+end_src
 
 ** use-package.el
