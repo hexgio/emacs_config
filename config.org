@@ -14,7 +14,6 @@
   (load-file "~/.emacs.d/gc-head.el")
   (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
   (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
-  (load-file "~/.emacs.d/display_time.el")
   ;; (load-file "~/.emacs.d/el-get.el")
   ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo,不太习惯,可能是因为用得少或者不够熟悉该插件的使用方法
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
@@ -51,7 +50,7 @@
   ;; (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
   ;; (load-file "~/.emacs.d/ox-pandoc.el")
   ;; (load-file "~/.emacs.d/org-noter.el")
-  (load-file "~/.emacs.d/org-roam.el")
+  ;; (load-file "~/.emacs.d/org-roam.el")
   ;; (load-file "~/.emacs.d/org-roam-ui.el")
   ;; (load-file "~/.emacs.d/deft.el") 
   ;; (load-file "~/.emacs.d/Msys2.el")
@@ -59,6 +58,7 @@
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
   (load-file "~/.emacs.d/yasnippet.el")
   ;; (load-file "~/.emacs.d/elfeed.el")
+  (load-file "~/.emacs.d/display_time.el")
   (load-file "~/.emacs.d/display-calendar.el")
   (load-file "~/.emacs.d/diary.el")
 
@@ -421,10 +421,11 @@
   (use-package org-roam
 	:ensure t
 	:after org
-	;; :init
-	;; (setq org-roam-v2-ack t) ;; Acknowledge V2 upgrade
-	:config
-	(org-roam-setup) 
+	:init
+	(setq org-roam-v2-ack t) ;; Acknowledge V2 upgrade
+	;; :config
+	;; (org-roam-setup) ;; 该配置有问题， 尚不清楚原因
+  
 	:custom
 	(org-roam-directory "~/.emacs.d/roam/") ; 设置 org-roam 目录
 	:bind
@@ -969,5 +970,4 @@
 				  ("\\.phtml\\'" . html-helper-mode)
 				  ("\\.css\\'" . css-mode))
 				auto-mode-alist))
-  
 #+end_src
