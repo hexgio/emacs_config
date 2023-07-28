@@ -16,10 +16,10 @@
   (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
   (load-file "~/.emacs.d/display_time.el")
   ;; (load-file "~/.emacs.d/el-get.el")
-  ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo
+  ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo,不太习惯,可能是因为用得少或者不够熟悉该插件的使用方法
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
   ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
-  (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题  
+  (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
   (load-file "~/.emacs.d/dashboard.el")
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
@@ -31,7 +31,9 @@
   (load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体
   (load-file "~/.emacs.d/highlight-symbol.el") ;; <F10> 打开符号高亮
   (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
+  (load-file "~/.emacs.d/hideshow.el")
   (load-file "~/.emacs.d/g-config.el") ;; 插件插件配置代码块
+  (load-file "~/.emacs.d/auto-mode-alist.el")
   (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
   (load-file "~/.emacs.d/g-org-code-block.el") ;; 插入一般的代码块
   (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
@@ -49,14 +51,16 @@
   ;; (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
   ;; (load-file "~/.emacs.d/ox-pandoc.el")
   ;; (load-file "~/.emacs.d/org-noter.el")
-  ;; (load-file "~/.emacs.d/org-roam.el")
+  (load-file "~/.emacs.d/org-roam.el")
   ;; (load-file "~/.emacs.d/org-roam-ui.el")
   ;; (load-file "~/.emacs.d/deft.el") 
   ;; (load-file "~/.emacs.d/Msys2.el")
   ;; (load-file "~/.emacs.d/pdf-tools.el")
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
-  ;; (load-file "~/.emacs.d/yasnippet.el")
+  (load-file "~/.emacs.d/yasnippet.el")
   ;; (load-file "~/.emacs.d/elfeed.el")
+  (load-file "~/.emacs.d/display-calendar.el")
+  (load-file "~/.emacs.d/diary.el")
 
   (load-file "~/.emacs.d/gc-tail.el")
   #+end_src
@@ -154,7 +158,29 @@
   ;;使用鼠标中键可以粘贴
   ;;不要在鼠标点击的那个地方插入剪贴板内容。我不喜欢那样，经常把我的文档搞的一团糟。我觉得先用光标定位，然后鼠标中键点击要好的多。不管你的光标在文档的那个位置，或是在 minibuffer，鼠标中键一点击，X selection 的内容就被插入到那个位置。
 
+  (setq user-full-name "yenao")
+  (setq user-mail-address "hexgio@outlook.com")
+  ;;设置有用的个人信息,这在很多地方有用。
 
+  ;; (setq require-final-newline t)
+  ;; ;; 自动的在文件末增加一新行
+
+  (setq-default transient-mark-mode t)
+  ;; 高亮显示选中区域
+
+  (setq track-eol t)
+  ;; 当光标在行尾上下移动的时候，始终保持在行尾。
+
+  ;; (setq Man-notify-method 'pushy)
+  ;; ;; 当浏览 man page 时，直接跳转到 man buffer。
+
+  ;;(setq next-line-add-newlines nil)
+  ;;Emacs 21 中已经是缺省设置。按 C-n 或向下键时不添加新行。
+
+    ;; (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+  ;; (setq sentence-end-double-space nil)
+  (setq sentence-end-double-space t)
+  ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
 #+end_src
 
 ** use-package.el
@@ -285,7 +311,7 @@
   (unless (file-exists-p "~/.emacs.d/OneDrive/org")
 	(make-directory "~/.emacs.d/OneDrive/org")
 	);; 检测org目录是否存在，如果不存在就创建这个目录
-  (let ((filename "~/.emacs.d/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往 该文件内写入内容，将该段该中insert的注释取消即可
+  (let ((filename "~/.emacs.d/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
 	(unless (file-exists-p filename)
 	  (with-temp-file filename
 		;; (insert "这是文件内容") ;; 写入文件内容
@@ -319,19 +345,17 @@
 
 ** ox-hugo
 #+begin_src emacs-lisp :tangle ~/.emacs.d/ox-hugo.el
+  (unless (file-exists-p "~/hugo/")
+	(make-directory "~/hugo/")
+	)
+  (unless (file-exists-p "~/hugo/project/")
+	(make-directory "~/hugo/project/")
+	)
+  (unless (file-exists-p "~/hugo/static/")
+	(make-directory "~/hugo/static/")
+	)
   (use-package ox-hugo
 	:ensure t
-	:defer 2
-	:custom
-	(unless (file-exists-p "~/hugo/")
-	  (make-directory "~/hugo/")
-	  )
-	(unless (file-exists-p "~/hugo/project/")
-	  (make-directory "~/hugo/project/")
-	  )
-	(unless (file-exists-p "~/hugo/static/")
-	  (make-directory "~/hugo/static/")
-	  )
 	:config
 	(setq org-hugo-base-dir "~/hugo/project/")
 	)
@@ -346,10 +370,6 @@
 	:ensure t
 	:defer 2
 	:init (cnfonts-mode t)
-	:custom
-	(unless (file-exists-p "~/.emacs.d/roam")
-	  (make-directory "~/.emacs.d/roam")
-	  )
 	:config
 	(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
 	(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
@@ -395,6 +415,9 @@
 
 ** org-roam
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
+  (unless (file-exists-p "~/.emacs.d/roam")
+	(make-directory "~/.emacs.d/roam")
+	)
   (use-package org-roam
 	:ensure t
 	:after org
@@ -403,7 +426,7 @@
 	:config
 	(org-roam-setup)
 	:custom
-	(org-roam-directory (concat org-directory "roam/")) ; 设置 org-roam 目录
+	(org-roam-directory "~/.emacs.d/roam/") ; 设置 org-roam 目录
 	:bind
 	(("C-c n f" . org-roam-node-find)
 	 (:map org-mode-map
@@ -429,13 +452,13 @@
 
 ** deft
 #+begin_src emacs-lisp :tangle ~/.emacs.d/deft.el
+  (unless (file-exists-p "~/.emacs.d/roam")
+	(make-directory "~/.emacs.d/roam")
+	)  
   (use-package deft
 	:ensure t
 	:commands (deft)
 	:custom
-	(unless (file-exists-p "~/.emacs.d/roam")
-	  (make-directory "~/.emacs.d/roam")
-	  )
 	(deft-directory "~/.emacs.d/roam")
 	(deft-recursive t))
 #+end_src
@@ -674,7 +697,8 @@
   (use-package dashboard
 	:ensure t
 	:config
-	(setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
+	;; (setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
+	(setq dashboard-banner-logo-title 'nil) ;; 个性签名，随读者喜好设置
 	;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
 	(setq dashboard-startup-banner 'official) ;; 也可以自定义图片
 	(setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
@@ -717,6 +741,9 @@
 
 ** elfeed
 #+begin_src emacs-lisp :tangle ~/.emacs.d/elfeed.el
+  (unless (file-exists-p "~/.emacs.d/.elfeed")
+	(make-directory "~/.emacs.d/.elfeed")
+	)
   (use-package elfeed
 	:ensure t
 	:bind ("C-x w" . elfeed)
@@ -732,16 +759,16 @@
 
 ** yasnippet
 #+begin_src emacs-lisp :tangle ~/.emacs.d/yasnippet.el
-  (use-package yasnippet
-	:ensure t
-	:config
-	(yas-global-mode 1)
-	(add-to-list 'load-path
-				 "~/.emacs.d/plugins/yasnippet")
-	;; (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-	;; ;; 或者使用以下代码指定 yasnippet 的安装文件夹
-	;; ;; (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-	)
+	(unless (file-exists-p "~/.emacs.d/snippets")
+	  (make-directory "~/.emacs.d/snippets"))
+	(use-package yasnippet
+	  :ensure t
+	  :config
+	  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+	(yas-reload-all)
+	(add-hook 'prog-mode-hook #'yas-minor-mode)
+	(add-hook 'org-mode-hook #'yas-minor-mode)
+	:bind ("C-c y" . yas-expand))
 #+end_src
 
 ** el-get
@@ -795,4 +822,152 @@
   (setq display-time-day-and-date t);;时间显示包括日期和具体时间
   ;; (setq display-time-use-mail-icon t);;时间栏旁边启用邮件设置
   ;; (setq display-time-interval 10);;时间的变化频率，单位多少来着？
+#+end_src
+
+** display-calendar
+#+begin_src emacs-lisp :tangle ~/.emacs.d/display-calendar.el
+  ;; 设置 calendar 的显示
+  (setq calendar-remove-frame-by-deleting t)
+  (setq calendar-week-start-day 1) ; 设置星期一为每周的第一天
+  (setq mark-diary-entries-in-calendar t) ; 标记calendar上有diary的日期
+  (setq mark-holidays-in-calendar nil) ; 为了突出有diary的日期，calendar上不标记节日
+  (setq view-calendar-holidays-initially nil) ; 打开calendar的时候不显示一堆节日
+
+  ;; 去掉不关心的节日，设定自己在意的节日，在 calendar 上用 h 显示节日
+  (setq christian-holidays nil)
+  (setq hebrew-holidays nil)
+  (setq islamic-holidays nil)
+  (setq solar-holidays nil)
+  (setq general-holidays '((holiday-fixed 1 1 "元旦")
+						   (holiday-fixed 2 14 "情人节")
+						   (holiday-fixed 3 14 "白色情人节")
+						   (holiday-fixed 4 1 "愚人节")
+						   (holiday-fixed 5 1 "劳动节")
+						   (holiday-float 5 0 2 "母亲节")
+						   (holiday-fixed 6 1 "儿童节")
+						   (holiday-float 6 0 3 "父亲节")
+						   (holiday-fixed 7 1 "建党节")
+						   (holiday-fixed 8 1 "建军节")
+						   (holiday-fixed 9 10 "教师节")
+						   (holiday-fixed 10 1 "国庆节")
+						   (holiday-fixed 12 25 "圣诞节")))
+
+  ;;Calendar模式支持各种方式来更改当前日期
+  ;;（这里的“前”是指还没有到来的那一天，“后”是指已经过去的日子）
+  ;; q 退出calendar模式
+  ;; C-f 让当前日期向前一天
+  ;; C-b 让当前日期向后一天
+  ;; C-n 让当前日期向前一周
+  ;; C-p 让当前日期向后一周
+  ;; M-} 让当前日期向前一个月
+  ;; M-{ 让当前日期向后一个月
+  ;; C-x ] 让当前日期向前一年
+  ;; C-x [ 让当前日期向后一年
+  ;; C-a 移动到当前周的第一天
+  ;; C-e 移动到当前周的最后一天
+  ;; M-a 移动到当前月的第一天
+  ;; M-e 多动到当前月的最后一天
+  ;; M-< 移动到当前年的第一天
+  ;; M-> 移动到当前年的最后一天
+
+  ;;Calendar模式支持移动多种移动到特珠日期的方式
+  ;; g d 移动到一个特别的日期
+  ;; o 使某个特殊的月分作为中间的月分
+  ;; . 移动到当天的日期
+  ;; p d 显示某一天在一年中的位置，也显示本年度还有多少天。
+  ;; C-c C-l 刷新Calendar窗口
+
+  ;; Calendar支持生成LATEX代码。
+  ;; t m 按月生成日历
+  ;; t M 按月生成一个美化的日历
+  ;; t d 按当天日期生成一个当天日历
+  ;; t w 1 在一页上生成这个周的日历
+  ;; t w 2 在两页上生成这个周的日历
+  ;; t w 3 生成一个ISO-SYTLE风格的当前周日历
+  ;; t w 4 生成一个从周一开始的当前周日历
+  ;; t y 生成当前年的日历
+
+  ;;EMACS Calendar支持配置节日：
+  ;; h 显示当前的节日
+  ;; x 定义当天为某个节日
+  ;; u 取消当天已被定义的节日
+  ;; e 显示所有这前后共三个月的节日。
+  ;; M-x holiday 在另外的窗口的显示这前后三个月的节日。
+
+
+  ;; 另外，还有一些特殊的，有意思的命令：
+  ;; S 显示当天的日出日落时间(是大写的S)
+  ;; p C 显示农历可以使用
+  ;; g C 使用农历移动日期可以使用
+
+  ;;-----------日历设置结束----------------
+#+end_src
+
+** diary
+#+begin_src emacs-lisp :tangle ~/.emacs.d/diary.el
+  ;;-----------日记设置---------------------
+
+  (unless (file-exists-p "~/diary/")
+	(make-directory "~/diary/")
+	)
+  (let ((filename "~/diary/diary")) 
+	(unless (file-exists-p filename)
+	  (with-temp-file filename)))  
+  (setq diary-file "~/diary/diary");; 默认的日记文件
+  (setq diary-mail-addr "hexgio@outlook.com")
+  (add-hook 'diary-hook 'appt-make-list)
+  ;;当你创建了一个'~/diary'文件，你就可以使用calendar去查看里面的内容。你可以查看当天的事件，相关命令如下 ：
+  ;; d 显示被选中的日期的所有事件
+  ;; s 显示所有事件，包括过期的，未到期的等等
+
+  ;; 创建一个事件的样例：
+  ;; 02/11/1989
+  ;; Bill B. visits Princeton today
+  ;; 2pm Cognitive Studies Committee meeting
+  ;; 2:30-5:30 Liz at Lawrenceville
+  ;; 4:00pm Dentist appt
+  ;; 7:30pm Dinner at George's
+  ;; 8:00-10:00pm concert
+
+  ;; 创建事件的命令：
+  ;; i d 为当天日期添加一个事件
+  ;; i w 为当天周创建一个周事件
+  ;; i m 为当前月创建一个月事件
+  ;; i y 为当前年创建一个年事件
+  ;; i a 为当前日期创建一个周年纪念日
+  ;; i c 创建一个循环的事件
+
+  ;;----------日记设置结束-----------------
+#+end_src
+
+** hideshow
+#+begin_src emacs-lisp :tangle ~/.emacs.d/hideshow.el
+;;代码折叠
+(load-library "hideshow")
+(add-hook 'c-mode-hook 'hs-minor-mode)
+(add-hook 'c++-mode-hook 'hs-minor-mode)
+(add-hook 'java-mode-hook 'hs-minor-mode)
+(add-hook 'perl-mode-hook 'hs-minor-mode)
+(add-hook 'php-mode-hook 'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+;;能把一个代码块缩起来，需要的时候再展开
+;; M-x hs-minor-mode
+;; C-c @ ESC C-s show all
+;; C-c @ ESC C-h hide all
+;; C-c @ C-s show block
+;; C-c @ C-h hide block
+;; C-c @ C-c toggle hide/show
+#+end_src
+
+** auto-mode-alist
+#+begin_src emacs-lisp :tangle ~/.emacs.d/auto-mode-alist.el
+  (setq auto-mode-alist
+		;; 将文件模式和文件后缀关联起来
+		(append '(("\\.py\\'" . python-mode)
+				  ("\\.s?html?\\'" . html-helper-mode)
+				  ("\\.asp\\'" . html-helper-mode)
+				  ("\\.phtml\\'" . html-helper-mode)
+				  ("\\.css\\'" . css-mode))
+				auto-mode-alist))
+  
 #+end_src
