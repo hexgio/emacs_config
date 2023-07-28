@@ -333,7 +333,7 @@
 
   (setq org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAITTING(w)" "SOMEDAY(s)" "|" "DONE(d@/!)" "ABORT(a@/!)")))
   (setq org-tag-alist '(("@office" . ?w) ("@home" . ?h) ("traffic" . ?t) ("computer" . ?c) ("nocomputer" . ?n) ("either" . ?e) ("immediately" . ?i) ("wait" . ?w) ("action" . ?a)))
-#+end_src
+	#+end_src
 
 ** easy-hugo
 #+begin_src emacs-lisp :tangle ~/.emacs.d/easy-hugo.el
@@ -418,13 +418,12 @@
   (unless (file-exists-p "~/.emacs.d/roam")
 	(make-directory "~/.emacs.d/roam")
 	)
+  (org-roam-setup) ;; 该模式有问题，不清楚什么原因
   (use-package org-roam
 	:ensure t
 	:after org
 	:init
 	(setq org-roam-v2-ack t) ;; Acknowledge V2 upgrade
-	:config
-	(org-roam-setup)
 	:custom
 	(org-roam-directory "~/.emacs.d/roam/") ; 设置 org-roam 目录
 	:bind
