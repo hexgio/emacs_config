@@ -1,13 +1,15 @@
 # emacs_config
 
-* 仓库介绍
-我的配置文件的配置会经常发生变化，因为我喜欢折腾的原因吧，这个仓库存在的最大意义是让我可以很方便的在多个地方的多个设备上自由的下载我自己的配置文件，如果有人喜欢我的配置风格或者我的配置也可以下载我的 config.org  配置文件
+** 仓库介绍
+我的配置文件的配置会经常发生变化，因为我喜欢折腾的原因吧，这个仓库存在的最大意义是让我可以很方便的在多个地方的多个设备上自由的下载我自己的配置文件，如果有人喜欢我的配置风格或者我的配置也可以下载我的 streamline_config.org  配置文件，
 
-* config.org介绍
-下载 config.org 后用emacs打开该文件，现在 emacs 都自带 org-mode，如果emacs没有 org-mode 就安装一下，然后运行 org-mode，在 config.org 文件中执行 C-c C-v t 或者 C-c C-v C-t 导出代码块，然后通过 load-file 加载 init.el 这个配置文件，或者重启 emacs 都可以，如果在加载 emacs 配置文件过程中遇到有插件安装失败了，就通过 package-refresh-contents 刷新插件的库，然后手动加载 emacs 配置文件或者重启 emacs 来加载配置,如果不想加载某个代码块，可以将其在 config.org 中 init.el 代码块相应的加载配置的 load-file 给注释掉然后重新生成代码并加载 init.el  配置文件。
+*** streamline_config
+最初提交的是 config.org 配置文件，后来觉得里面加的东西太多，很多我都注释掉不去用，也有一些是安装遇到问题没有解决的，然后我就将 config.org 文件略微简化，有了streamline_config 这个配置文件，有了这个精简的版本后，优先使用这个配置文件，目前我也主要更新这个配置文件，不用担心配置有问题，遇到问题我会尽快完善，可以通过提交issue指出配置文件的问题或者发邮箱给我，我的邮箱 hexgio@outlook.com。
 
-* autoclone.sh介绍
-** autoclone.sh用于clone
+*** 使用方法
+下载 streamline_config.org 后用emacs打开该文件，现在 emacs 都自带 org-mode，如果emacs没有 org-mode 就安装一下，然后运行 org-mode，在 streamline_config.org 文件中执行 C-c C-v t 或者 C-c C-v C-t 导出代码块，然后通过 load-file 加载 init.el 这个配置文件，或者重启 emacs 都可以，如果在加载 emacs 配置文件过程中遇到有插件安装失败了，就通过 package-refresh-contents 刷新插件的库，然后手动加载 emacs 配置文件或者重启 emacs 来加载配置,如果不想加载某个代码块，可以将其在 streamline_config.org 中 init.el 代码块相应的加载配置的 load-file 给注释掉然后重新生成代码并加载 init.el  配置文件。
+
+*** autoclone.sh用于clone
 #+begin_src emacs-lisp :tangle no
 #!/usr/bin/bash 
 # bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
@@ -16,8 +18,7 @@ git clone git@github.com:hexgio/emacs_config.git | xargs chmod -R +x emacs_confi
 # 将 git@github.com:hexgio/emacs_config.git 仓库的文本 clone 下来
 #+end_src
 
-* autopush.sh介绍
-** autopush.sh
+*** autopush.sh
 #+begin_src emacs-lisp :tangle no
 #!/usr/bin/bash 
 # bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
@@ -28,12 +29,11 @@ git add .; git commit -m "config"; git push -u origin main
 # 添加文件，提交修改，上传到远程仓库分支
 #+end_src
 
-* change.sh介绍
-** change.sh
+*** change.sh
 #+begin_src emacs-lisp :tangle no
 #!/usr/bin/bash
 # bash的位置根据终端环境的不同会有变化，可以根据自己终端环境进行修改
 
-source clone.sh && mv emacs_config/* ./ && rm -rf emacs_config
+source clone.sh && mv emacs_config/** ./ && rm -rf emacs_config
 # 运行clone脚本，然后将clone到本地的文件目录下的所有移动覆盖当前文件，并将clone下来的文件目录删除
 #+end_src
