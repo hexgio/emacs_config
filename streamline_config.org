@@ -1,6 +1,20 @@
 https://www.gnu.org/prep/ftp.html
 https://mirrors.aliyun.com/gnu/emacs/
+http://mirrors.ustc.edu.cn/gnu/emacs/
 http://git.savannah.gnu.org/cgit/emacs.git
+
+** 从源码构建emacs
+*** 获取版本信息
+curl http://mirrors.ustc.edu.cn/gnu/emacs/ | grep emacs
+*** 下载最新版本
+wget http://mirrors.ustc.edu.cn/gnu/emacs/最新版本emacs.tgr.xz
+*** 解压
+tar -xf 最新版本emacs.tar.xz
+*** 编译安装emacs
+进入目录后执行下面的命令
+#+begin_src bash
+  ./configure --without-x --with-gnutls=no && chmod +x ./* && make && sudo make install
+#+end_src
 
 ** streamline_config
 *** init.el
