@@ -357,7 +357,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-insert-note-header.el
   (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
 	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
-	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:3 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
+	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:10 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
 *** g-org-code-block
