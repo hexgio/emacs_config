@@ -55,7 +55,7 @@ tar -xf 最新版本emacs.tar.xz
   (load-file "~/.emacs.d/evil.el")
   (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
   (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
-  (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练0
+  (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
   ;; GTD任务管理配置
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
@@ -206,9 +206,9 @@ tar -xf 最新版本emacs.tar.xz
   ;; 设置软件包源
   (setq package-archives
 		'(
-		  ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-		  ("MELPA Stable" . "https://stable.melpa.org/packages/")
-		  ("melpa" . "https://melpa.org/packages/")
+		  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+		  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
+		  ;; ("melpa" . "https://melpa.org/packages/")
 		  ;; 国内镜像包源
 		  ("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
 		  ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
