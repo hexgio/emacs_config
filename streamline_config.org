@@ -12,7 +12,7 @@ wget http://mirrors.ustc.edu.cn/gnu/emacs/最新版本emacs.tgr.xz
 tar -xf 最新版本emacs.tar.xz
 *** 编译安装emacs
 进入目录后执行下面的命令
-#+begin_src bash
+#+begin_src bash :tangle no
   ./configure --without-x --with-gnutls=no && chmod +x ./* && make && sudo make install
 #+end_src
 
@@ -35,6 +35,7 @@ tar -xf 最新版本emacs.tar.xz
 
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
+  (load-file "~/.emacs.d/cnfonts.el") ;; 调整字体大小
   (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
   (load-file "~/.emacs.d/company.el") ;; 补全文本用
   (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
@@ -53,9 +54,9 @@ tar -xf 最新版本emacs.tar.xz
 
   ;; 文本编辑插件
   (load-file "~/.emacs.d/evil.el")
-  (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
-  (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
-  (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
+  (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本
+  ;; (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
+  ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
   ;; GTD任务管理配置
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
