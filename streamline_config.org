@@ -62,7 +62,13 @@ tar -xf 最新版本emacs.tar.xz
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
 
   ;; 配置eww浏览器使用习惯  
-  (load-file "~/.emacs.d/eww.el")
+  ;; (load-file "~/.emacs.d/eww.el")
+  (custom-set-variables  
+   '(eww-search-prefix "https://bing.com/search?q="))
+  (prefer-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
+  (setq eww-use-external-webkit t)
+  (setq-default eww-ems-internal-uses-webkit t)
 
   ;; 配置日历与日记
   (load-file "~/.emacs.d/display_time.el")
