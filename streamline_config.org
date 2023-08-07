@@ -13,7 +13,7 @@ tar -xf 最新版本emacs.tar.xz
 *** 编译安装emacs
 进入目录后执行下面的命令
 #+begin_src bash :tangle no
-  ./configure --without-x --with-gnutls=no && chmod +x ./* && make && sudo make install
+  ./configure --without-x --with-gnutls=no && chmod +x ./* && sudo make && sudo make install
 #+end_src
 
 ** streamline_config
