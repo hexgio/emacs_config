@@ -136,15 +136,16 @@ tar -xf 最新版本emacs.tar.xz
   (defun reload-emacs-config ()
 	(interactive)
 	(load-file "~/.emacs.d/init.el"))
-  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
-
-  (global-set-key (kbd "C-M-z") 'indent-region)
 
   (global-set-key (kbd "M-j") nil)
 
   (global-set-key (kbd "<F10>") nil)
 
   (global-set-key (kbd "C-x C-z") nil)
+
+  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+
+  (global-set-key (kbd "C-M-z") 'indent-region)
 
   (setq kill-ring-max 200)
   ;;设置粘贴缓冲条目数量.用一个很大的kill ring(最多的记录个数). 这样防止我不小心删掉重要的东西
@@ -211,7 +212,7 @@ tar -xf 最新版本emacs.tar.xz
   (package-initialize)
 
   ;; 设置软件包源
-  (setq package-archives
+  (setq package-archivse
 		'(
 		  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
 		  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
@@ -220,6 +221,7 @@ tar -xf 最新版本emacs.tar.xz
 		  ("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
 		  ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
 		  ("nongnu" . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
+		  ;; ("emacs-china" . "https://elpa.emacs-china.org/")
 		  )
 		)
   ;; 安装 use-package（如果还未安装）
