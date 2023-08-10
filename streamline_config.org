@@ -384,6 +384,7 @@ tar -xf 最新版本emacs.tar.xz
 	(insert "*** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n\n#+end_src")
 	)
 #+end_src
+
 *** g-org-insert-note-header
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-insert-note-header.el
   (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
