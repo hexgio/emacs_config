@@ -214,14 +214,14 @@ tar -xf 最新版本emacs.tar.xz
   ;; 设置软件包源
   (setq package-archivse
 		'(
-		  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-		  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
-		  ;; ("melpa" . "https://melpa.org/packages/")
-		  ;; 国内镜像包源
-		  ("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
-		  ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
-		  ("nongnu" . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
-		  ;; ("emacs-china" . "https://elpa.emacs-china.org/")
+		  ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+		  ("MELPA Stable" . "https://stable.melpa.org/packages/")
+		  ("melpa" . "https://melpa.org/packages/")
+		  ;; ;; 国内镜像包源
+		  ;; ("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+		  ;; ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
+		  ;; ("nongnu" . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
+		  ;; ;; ("emacs-china" . "https://elpa.emacs-china.org/")
 		  )
 		)
   ;; 安装 use-package（如果还未安装）
