@@ -1,5 +1,5 @@
 #+options: ^:nil
-#+title: config
+#+title: simple.org
 #+options: \n:t
 #+author: yenao
 #+OPTIONS: H:3 toc:t
@@ -11,15 +11,6 @@
   ;; Portion of heap used for allocation.  Defaults to 0.1.
   (setq gc-cons-percentage 0.6)
 
-  ;; 在~/.emacs.d/目录下编辑org文件，将代码块导出后再在org文件中通过load-file加载或者重启emacs，同时检查家目录下如果出现.emacs就将其删除
-  ;; 如果不想加载哪个配置文件，可以将其注释掉
-  ;; 以下几个插件有些问题，暂时没有配置好
-
-  ;; 垃圾回收值
-  ;; (load-file "~/.emacs.d/gc-head.el")
-
-  ;; (load-file "~/.emacs.d/gcmh.el") ;; 用于emacs内存垃圾回收
-
   ;; 基本配置
   (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
   (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
@@ -28,7 +19,7 @@
   ;; (when (display-graphic-p)
   ;;   (load-file "~/.emacs.d/dashboard.el"))
   (load-file "~/.emacs.d/dashboard.el")
-  (load-file "~/.emacs.d/ projectile.el")
+  (load-file "~/.emacs.d/projectile.el")
 
   ;; 主题配置
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
@@ -275,18 +266,55 @@
 
 #+end_src
 
-*** gcmh
-#+begin_src emacs-lisp :tangle ~/.emacs.d/gcmh.el
-  (use-package gcmh
+*** dashboard
+#+begin_src emacs-lisp :tangle ~/.emacs.d/dashboard.el
+  (use-package dashboard
+	:ensure t
 	:config
-	;; (setq gcmh-verbose t) ; 启用详细输出，可选
-	;; (setq gcmh-high-cons-threshold 16777216) ; 设置高阈值为 16MB，可根据需要调整
-	(setq gcmh-high-cons-threshold 100000000) ;; 发现spacemacs的配置设置的是这样的值，虽然用的是其他函数，但是功能想必是差不多的
-	(setq gcmh-idle-delay 5) ; 设置延迟垃圾回收的空闲时间为 5 秒
+	;; (setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
+	;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
+	(setq dashboard-startup-banner 'official) ;; 也可以自定义图片
+	(setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
+							(bookmarks . 5)  ;; 显示多少个最近书签
+							(projects . 10))) ;; 显示多少个最近项目
+	(dashboard-setup-startup-hook))
+#+end_src
 
-	;; 其他配置选项...
+*** projectile
+#+begin_src emacs-lisp :tangle ~/.emacs.d/projectile.el
+  (use-package projectile
+	:ensure t)
+#+end_src
+*** doom-themes
+#+begin_src emacs-lisp :tangle ~/.emacs.d/doom-themes.el
+  (use-package doom-themes
+	:ensure t
+	:config
+	;; Global settings (defaults)
+	(setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
+		  doom-themes-enable-italic t) ; if nil, italics is universally disabled
+	(load-theme 'doom-monokai-octagon t)
+	(doom-themes-treemacs-config))
+#+end_src
 
-	(gcmh-mode 1)) ; 启用 gcmh 插件
+*** dracula-theme
+#+begin_src emacs-lisp :tangle ~/.emacs.d/dracula-theme.el
+  (use-package dracula-theme
+	:ensure t
+	:config
+	(load-theme 'dracula t)
+	)
+#+end_src
+
+*** spacemacs-theme
+#+begin_src emacs-lisp :tangle ~/.emacs.d/spacemacs-theme.el
+  (use-package spacemacs-theme
+	:ensure t
+	:config
+	(load-theme 'spacemacs-dark t)  ; Dark theme
+	;; 或者
+	;; (load-theme 'spacemacs-light t) ; Light theme
+	)
 #+end_src
 
 *** g-config
@@ -296,18 +324,20 @@
 	(insert "*** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n\n#+end_src")
 	)
 #+end_src
+
 *** g-org-insert-note-header
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-insert-note-header.el
   (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
 	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
-	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:3 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
+	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:10 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
+
 *** g-org-code-block
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-code-block.el
   (defun g-org-code-block ()
 	(interactive)
-	(insert "** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
+	(insert "*** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
 	)
 #+end_src
 
@@ -320,7 +350,7 @@
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
 		   (block-name (concat clean-time))  ; 构建代码块名
 		   (code-block (format
-						"** %s
+						"*** %s
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
   %s: name\n1、
   ,#+END_SRC"
@@ -329,30 +359,6 @@
 
   ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
   (global-set-key (kbd "C-c SPC r") 'add-code-block)
-#+end_src
-
-*** company.el
-#+begin_src emacs-lisp :tangle ~/.emacs.d/company.el
-  (use-package company
-	:ensure t
-	:defer 3
-	:init (global-company-mode t)
-	:config
-	(setq company-minimum-prefix-length 1)
-	(setq company-tooltip-align-annotations t)
-	(setq company-idle-delay 0.0)
-	(setq company-show-numbers t)
-	(setq company-selection-wrap-around t)
-	(setq company-transformers '(company-sort-by-occurrence)))
-#+end_src
-
-*** window-numbering
-#+begin_src emacs-lisp :tangle ~/.emacs.d/window-numbering.el
-  (use-package window-numbering
-	:ensure t
-	;; :defer 3
-	:init (window-numbering-mode t)
-	)
 #+end_src
 
 *** ace-window
@@ -423,33 +429,11 @@
 	)
 #+end_src
 
-*** cnfonts
-参考链接:
-[[https://github.com/tumashu/cnfonts][cnfonts，A simple Chinese fonts config tool]]
-[[https://blog.csdn.net/fareast_mzh/article/details/94720439][emacs 调整字体大小]]
-#+begin_src emacs-lisp :tangle ~/.emacs.d/cnfonts.el
-  (use-package cnfonts
-	:ensure t
-	:defer 3
-	:init (cnfonts-mode t)
-	:config
-	(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
-	(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
-	)
-#+end_src
-
 *** org-noter
 #+begin_src emacs-lisp :tangle ~/.emacs.d/org-noter.el
   (use-package org-noter
 	:ensure t
 	:defer 3
-	)
-#+end_src
-
-*** Msys2
-#+begin_src emacs-lisp :tangle ~/.emacs.d/Msys2.el
-  (use-package Msys2
-	:ensure t
 	)
 #+end_src
 
@@ -526,14 +510,6 @@
 	(deft-recursive t))
 #+end_src
 
-*** keycast
-#+begin_src emacs-lisp :tangle ~/.emacs.d/keycast.el
-  (use-package keycast
-	:ensure t
-	:defer t
-	)
-#+end_src
-
 *** magit
 #+begin_src emacs-lisp :tangle ~/.emacs.d/magit.el
   (use-package magit
@@ -542,36 +518,10 @@
 	)
 #+end_src
 
-*** doom-themes
-#+begin_src emacs-lisp :tangle ~/.emacs.d/doom-themes.el
-  (use-package doom-themes
-	:ensure t
-	:config
-	;; Global settings (defaults)
-	(setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
-		  doom-themes-enable-italic t) ; if nil, italics is universally disabled
-	(load-theme 'doom-monokai-octagon t)
-	(doom-themes-treemacs-config))
-#+end_src
-
-*** dracula-theme
-#+begin_src emacs-lisp :tangle ~/.emacs.d/dracula-theme.el
-  (use-package dracula-theme
-	:ensure t
-	:config
-	(load-theme 'dracula t)
-	)
-#+end_src
-
-*** spacemacs-theme
-#+begin_src emacs-lisp :tangle ~/.emacs.d/spacemacs-theme.el
-  (use-package spacemacs-theme
-	:ensure t
-	:config
-	(load-theme 'spacemacs-dark t)  ; Dark theme
-	;; 或者
-	;; (load-theme 'spacemacs-light t) ; Light theme
-	)
+*** projectile
+#+begin_src emacs-lisp :tangle ~/.emacs.d/projectile.el
+  (use-package projectile
+	:ensure t)
 #+end_src
 
 *** markdown
@@ -648,14 +598,6 @@
 	(newsticker-automatically-mark-items-as-old nil))
 #+end_src
 
-*** amx
-#+begin_src emacs-lisp :tangle ~/.emacs.d/amx.el
-  (use-package amx
-	:ensure t
-	:defer 3
-	:init (amx-mode))
-#+end_src
-
 *** mwim
 #+begin_src emacs-lisp :tangle ~/.emacs.d/mwim.el
   (use-package mwim
@@ -666,23 +608,12 @@
 	("C-e" . mwim-end-of-code-or-line))
 #+end_src
 
-*** undo-tree
-#+begin_src emacs-lisp :tangle ~/.emacs.d/undo-tree.el
-  (use-package undo-tree
+*** amx
+#+begin_src emacs-lisp :tangle ~/.emacs.d/amx.el
+  (use-package amx
 	:ensure t
 	:defer 3
-	:init (global-undo-tree-mode)
-	:custom
-	(undo-tree-auto-save-history nil))
-#+end_src
-
-*** good-scroll
-#+begin_src emacs-lisp :tangle ~/.emacs.d/good-scroll.el
-  (use-package good-scroll
-	:ensure t
-	:defer 3
-	;; :if window-system          ; 在图形化界面时才使用这个插件
-	:init (good-scroll-mode))
+	:init (amx-mode))
 #+end_src
 
 *** which-key
@@ -691,6 +622,21 @@
 	:ensure t
 	:defer 1
 	:init (which-key-mode))
+#+end_src
+
+*** company.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/company.el
+  (use-package company
+	:ensure t
+	:defer 3
+	:init (global-company-mode t)
+	:config
+	(setq company-minimum-prefix-length 1)
+	(setq company-tooltip-align-annotations t)
+	(setq company-idle-delay 0.0)
+	(setq company-show-numbers t)
+	(setq company-selection-wrap-around t)
+	(setq company-transformers '(company-sort-by-occurrence)))
 #+end_src
 
 *** avy
@@ -702,21 +648,14 @@
 	(("M-j" . avy-goto-char-timer)))
 #+end_src
 
-*** highlight-symbol
-#+begin_src emacs-lisp :tangle ~/.emacs.d/highlight-symbol.el
-  (use-package highlight-symbol
+*** tiny
+#+begin_src emacs-lisp :tangle ~/.emacs.d/tiny.el
+  (use-package tiny
 	:ensure t
 	:defer 3
-	:init (highlight-symbol-mode)
-	:bind ("<f10>" . highlight-symbol)) ;; 按下 F10 键就可高亮当前符号
-#+end_src
-
-*** rainbow-delimiters
-#+begin_src emacs-lisp :tangle ~/.emacs.d/rainbow-delimiters.el
-  (use-package rainbow-delimiters
-	:ensure t
-	:defer 3
-	:hook (prog-mode . rainbow-delimiters-mode))
+	;; 可选绑定快捷键，笔者个人感觉不绑定快捷键也无妨
+	:bind
+	("C-;" . tiny-expand))
 #+end_src
 
 *** treemacs
@@ -746,43 +685,53 @@
 	:after (treemacs lsp))
 #+end_src
 
-*** google-this
-#+begin_src emacs-lisp :tangle ~/.emacs.d/google-this.el
-  (use-package google-this
-	:ensure t
-	:defer t
-	:init
-	(google-this-mode)) 
-#+end_src
-
-*** dashboard
-#+begin_src emacs-lisp :tangle ~/.emacs.d/dashboard.el
-  (use-package dashboard
-	:ensure t
-	:config
-	;; (setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
-	;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
-	(setq dashboard-startup-banner 'official) ;; 也可以自定义图片
-	(setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
-							(bookmarks . 5)  ;; 显示多少个最近书签
-							(projects . 10))) ;; 显示多少个最近项目
-	(dashboard-setup-startup-hook))
-#+end_src
-
-*** projectile
-#+begin_src emacs-lisp :tangle ~/.emacs.d/projectile.el
-  (use-package projectile
-	:ensure t)
-#+end_src
-
-*** tiny
-#+begin_src emacs-lisp :tangle ~/.emacs.d/tiny.el
-  (use-package tiny
+*** cnfonts
+参考链接:
+[[https://github.com/tumashu/cnfonts][cnfonts，A simple Chinese fonts config tool]]
+[[https://blog.csdn.net/fareast_mzh/article/details/94720439][emacs 调整字体大小]]
+#+begin_src emacs-lisp :tangle ~/.emacs.d/cnfonts.el
+  (use-package cnfonts
 	:ensure t
 	:defer 3
-	;; 可选绑定快捷键，笔者个人感觉不绑定快捷键也无妨
-	:bind
-	("C-;" . tiny-expand))
+	:init (cnfonts-mode t)
+	:config
+	(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
+	(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
+	)
+#+end_src
+
+*** highlight-symbol
+#+begin_src emacs-lisp :tangle ~/.emacs.d/highlight-symbol.el
+  (use-package highlight-symbol
+	:ensure t
+	:defer 3
+	:init (highlight-symbol-mode)
+	:bind ("<f10>" . highlight-symbol)) ;; 按下 F10 键就可高亮当前符号
+#+end_src
+
+*** rainbow-delimiters
+#+begin_src emacs-lisp :tangle ~/.emacs.d/rainbow-delimiters.el
+  (use-package rainbow-delimiters
+	:ensure t
+	:defer 3
+	:hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+*** window-numbering
+#+begin_src emacs-lisp :tangle ~/.emacs.d/window-numbering.el
+  (use-package window-numbering
+	:ensure t
+	;; :defer 3
+	:init (window-numbering-mode t)
+	)
+#+end_src
+
+*** keycast
+#+begin_src emacs-lisp :tangle ~/.emacs.d/keycast.el
+  (use-package keycast
+	:ensure t
+	:defer t
+	)
 #+end_src
 
 *** eww
@@ -811,65 +760,6 @@
 	;; (when (display-graphic-p)
 	;; 	(setq eww-toggle-images t))
 	)
-#+end_src
-
-*** elfeed
-#+begin_src emacs-lisp :tangle ~/.emacs.d/elfeed.el
-  (unless (file-exists-p "~/.emacs.d/.elfeed")
-	(make-directory "~/.emacs.d/.elfeed")
-	)
-  (use-package elfeed
-	:ensure t
-	:bind ("C-x w" . elfeed)
-	:config
-	(setq elfeed-db-directory "~/.emacs.d/.elfeed") ;; 设置 Elfeed 数据库目录
-	(setq elfeed-feeds
-		  '(
-			"https://sspai.com/feed"
-			"https://www.luckydesigner.space/feed"
-			)
-		  ))
-#+end_src
-
-*** yasnippet
-#+begin_src emacs-lisp :tangle ~/.emacs.d/yasnippet.el
-  (unless (file-exists-p "~/.emacs.d/snippets")
-	(make-directory "~/.emacs.d/snippets"))
-  (use-package yasnippet
-	:ensure t
-	:config
-	(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-	(yas-reload-all)
-	(add-hook 'prog-mode-hook #'yas-minor-mode)
-	(add-hook 'org-mode-hook #'yas-minor-mode)
-	:bind ("C-c y" . yas-expand))
-#+end_src
-
-*** el-get
-#+begin_src emacs-lisp :tangle ~/.emacs.d/el-get.el
-  (unless (file-exists-p "~/.emacs.d/el-get/")
-	(make-directory "~/.emacs.d/el-get/"))
-  (unless (require 'el-get nil 'noerror)
-	(with-temp-buffer
-	  (url-insert-file-contents "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-	  (eval-buffer)
-	  (el-get-elpa-build-local-recipes))
-	)
-#+end_src
-
-*** gc-head
-#+begin_src emacs-lisp :tangle ~/.emacs.d/gc-head.el
-  ;; Make startup faster by reducing the frequency of garbage
-  ;; collection.  The default is 0.8MB.  Measured in bytes.
-  (setq gc-cons-threshold (* 50 1000 1000))
-  ;; Portion of heap used for allocation.  Defaults to 0.1.
-  (setq gc-cons-percentage 0.6)
-#+end_src
-
-*** gc-tail
-#+begin_src emacs-lisp :tangle ~/.emacs.d/gc-tail.el
-  ;; Make gc pauses faster by decreasing the threshold.
-  (setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
 
 *** display_time
