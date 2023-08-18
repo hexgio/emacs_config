@@ -7,7 +7,7 @@ http://git.savannah.gnu.org/cgit/emacs.git
 *** 获取版本信息
 curl http://mirrors.ustc.edu.cn/gnu/emacs/ | grep emacs
 *** 下载最新版本
-wget http://mirrors.ustc.edu.cn/gnu/emacs/最新版本emacs.tgr.xz
+wget http://mirrors.ustc.edu.cn/gnu/emacs/最新版本emacs.tar.xz
 *** 解压
 tar -xf 最新版本emacs.tar.xz
 *** 编译安装emacs
