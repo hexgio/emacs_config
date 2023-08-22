@@ -45,7 +45,8 @@
   (load-file "~/.emacs.d/g-config.el") ;; 配置插件的代码块
   (load-file "~/.emacs.d/auto-mode-alist.el")
   (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
-  (load-file "~/.emacs.d/g-org-code-block.el") ;; 插入一般的代码块
+  (load-file "~/.emacs.d/g-org-c-code-block.el") ;; 插入c代码块
+  (load-file "~/.emacs.d/g-org-emacs-lisp-code-block.el") ;; 插入一般的代码块
   (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
 
   ;; 文本编辑插件
@@ -333,11 +334,19 @@
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
 
-*** g-org-code-block
-#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-code-block.el
-  (defun g-org-code-block ()
+*** g-org-emacs-lisp-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-emacs-lisp-code-block.el
+  (defun g-org-emacs-lisp-code-block ()
 	(interactive)
 	(insert "*** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
+	)
+#+end_src
+
+*** g-org-c-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-c-code-block.el
+  (defun g-org-c-code-block ()
+	(interactive)
+	(insert "*** \n#+begin_src c :tangle no\n\n#+end_src")
 	)
 #+end_src
 
