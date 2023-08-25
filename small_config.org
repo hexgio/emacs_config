@@ -49,14 +49,19 @@
   (defun reload-emacs-config ()
 	(interactive)
 	(load-file "~/.emacs.d/init.el"))
+  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+
+  (defun close-current-window ()
+	(interactive)
+	(delete-window)
+	)
+  (global-set-key (kbd "C-c z") 'close-current-window)
 
   (global-set-key (kbd "M-j") nil)
 
   (global-set-key (kbd "<F10>") nil)
 
   (global-set-key (kbd "C-x C-z") nil)
-
-  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
 
   (global-set-key (kbd "C-M-z") 'indent-region)
 
@@ -137,9 +142,9 @@
 		   (block-name (concat clean-time))  ; 构建代码块名
 		   (code-block (format
 						"*** %s
-	  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-	  %s: name\n1、
-	  ,#+END_SRC"
+		,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+		%s: name\n1、
+		,#+END_SRC"
 						block-name clean-time block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
 
