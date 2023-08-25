@@ -908,3 +908,14 @@
 				auto-mode-alist))
 #+end_src
 
+*** use-package_simple
+#+begin_src emacs-lisp :tangle no
+  (require 'package)
+  (package-initialize)
+  (unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+  (eval-when-compile
+	(require 'use-package))
+  (require 'bind-key)
+#+end_src
