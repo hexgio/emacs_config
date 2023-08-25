@@ -140,6 +140,12 @@
 	(load-file "~/.emacs.d/init.el"))
   (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
 
+  (defun close-current-window ()
+	(interactive)
+	(delete-window)
+	)
+  (global-set-key (kbd "C-c z") 'close-current-window)
+
   (global-set-key (kbd "C-M-z") 'indent-region)
 
   (global-set-key (kbd "M-j") nil)
@@ -333,6 +339,8 @@
 	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:10 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
+
+*** close-current-window
 
 *** g-org-emacs-lisp-code-block
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-emacs-lisp-code-block.el
