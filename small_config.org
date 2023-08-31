@@ -321,4 +321,10 @@
   ;; i c 创建一个循环的事件
 
   ;;----------日记设置结束-----------------
+
+  ;; 无差别对所有文件以只读模式打开
+  (defun read-only-setup () 
+	(read-only-mode)
+	)
+  (add-hook 'find-file-hook #'read-only-setup)
 #+end_src
