@@ -324,9 +324,9 @@
   (use-package spacemacs-theme
 	:ensure t
 	:config
-	(load-theme 'spacemacs-dark t)  ; Dark theme
+	;; (load-theme 'spacemacs-dark t)  ; Dark theme
 	;; 或者
-	;; (load-theme 'spacemacs-light t) ; Light theme
+	(load-theme 'spacemacs-light t) ; Light theme
 	)
 #+end_src
 
