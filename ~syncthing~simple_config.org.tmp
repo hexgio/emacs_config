@@ -49,7 +49,6 @@
   (load-file "~/.emacs.d/g-org-emacs-lisp-code-block.el") ;; 插入一般的代码块
   (load-file "~/.emacs.d/g-org-c-code-block.el") ;; 插入c代码块
   (load-file "~/.emacs.d/g-org-bash-code-block.el") ;; 插入bash代码块
-  (load-file "~/.emacs.d/g-org-html-code-block.el") ;; 插入html代码块
   (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
   (load-file "~/.emacs.d/web-mode.el") ;; web-mode 提供了很好的wen配件（HTML、JavaScript、CSS、PHP等）的代码缩进、折叠和高亮等出色的功能
 
@@ -350,6 +349,8 @@
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
 
+*** close-current-window
+
 *** g-org-emacs-lisp-code-block
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-emacs-lisp-code-block.el
   (defun g-org-emacs-lisp-code-block ()
@@ -368,17 +369,9 @@
 
 *** g-org-bash-code-block
 #+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-bash-code-block.el
-  (defun g-org-bash-code-block ()
+  (defun g-org-c-code-block ()
 	(interactive)
 	(insert "#+begin_src bash :tangle no\n\n#+end_src")
-	)
-#+end_src
-
-*** g-org-html-code-block
-#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-html-code-block.el
-  (defun g-org-html-code-block ()
-	(interactive)
-	(insert "#+begin_src html :tangle no\n\n#+end_src")
 	)
 #+end_src
 
