@@ -15,7 +15,7 @@ tar -xf 最新版本emacs.tar.xz
 #+begin_src bash :tangle no
   ./configure --without-x --with-gnutls=no && chmod +x ./* && sudo make && sudo make install
 #+end_src
-** 非源码安装
+** 非源码安装（不推荐），安装后运行 emacs-snapshot
 *** emacs-snapshot
 #+begin_src bash :tangle no
   $sudo add-apt-repository ppa:ubuntu-elisp/ppa
