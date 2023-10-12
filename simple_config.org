@@ -62,7 +62,10 @@
   (load-file "~/.emacs.d/web-mode.el") ;; web-mode 提供了很好的wen配件（HTML、JavaScript、CSS、PHP等）的代码缩进、折叠和高亮等出色的功能
 
   ;; 文本编辑插件
-  (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
+  (when (version<= "27.1" emacs-version)
+	(load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
+	)
+
   (when (version<= "25.1" emacs-version)
 	(load-file "~/.emacs.d/easy-hugo.el"))
   (when (version<= "26.1" emacs-version)
@@ -94,7 +97,7 @@
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
   ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
-						 ;;; 疑难杂症区
+							 ;;; 疑难杂症区
   ;; 插件管理器
   ;; (load-file "~/.emacs.d/el-get.el")
 
