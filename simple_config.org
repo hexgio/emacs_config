@@ -19,8 +19,11 @@
   ;; 配置启动欢迎界面
   ;; (when (display-graphic-p)
   ;;   (load-file "~/.emacs.d/dashboard.el"))
-  (load-file "~/.emacs.d/dashboard.el")
-  (load-file "~/.emacs.d/projectile.el")
+  (when (version<= "26.1" emacs-version)
+	(load-file "~/.emacs.d/dashboard.el")
+	)
+  (when (version<= "25.1" emacs-version)
+	(load-file "~/.emacs.d/projectile.el"))
 
   ;; 主题配置
   ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
@@ -30,7 +33,9 @@
   (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
   (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
   (load-file "~/.emacs.d/which-key.el") ;; 快捷键提示
-  (load-file "~/.emacs.d/company.el") ;; 补全文本用
+  (when (version<= "25.1" emacs-version)
+	(load-file "~/.emacs.d/company.el") ;; 补全文本用  
+	)
   (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
   (load-file "~/.emacs.d/tiny.el")
   ;; (load-file "~/.emacs.d/treemacs.el")
@@ -38,7 +43,10 @@
   (load-file "~/.emacs.d/highlight-symbol.el") ;; <F10> 打开符号高亮
   (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
   (load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
-  (load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
+  (when (version<= "25.3" emacs-version)
+	(load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
+	)
+
   ;; (load-file "~/.emacs.d/good-scroll.el") ;; 优化页面滚动，但是我没感觉出效果
   ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo,不太习惯,可能是因为用得少或者不够熟悉该插件的使用方法
 
@@ -55,9 +63,14 @@
 
   ;; 文本编辑插件
   (load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
-  (load-file "~/.emacs.d/easy-hugo.el")
-  (load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本
-  (load-file "~/.emacs.d/ox-pandoc.el")
+  (when (version<= "25.1" emacs-version)
+	(load-file "~/.emacs.d/easy-hugo.el"))
+  (when (version<= "26.1" emacs-version)
+	(load-file "~/.emacs.d/ox-pandoc.el")
+	)
+  (when (version<= "26.3" emacs-version)
+	(load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本	
+	)
 
   ;; GTD任务管理配置
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
@@ -81,7 +94,7 @@
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
   ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
-	 ;;; 疑难杂症区
+						 ;;; 疑难杂症区
   ;; 插件管理器
   ;; (load-file "~/.emacs.d/el-get.el")
 
