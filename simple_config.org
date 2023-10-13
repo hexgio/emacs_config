@@ -106,7 +106,7 @@
 
   ;; (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用，感觉没有window-numbering好用
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
-  ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
+  (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
 										 ;;; 疑难杂症区
   ;; 插件管理器
@@ -613,6 +613,43 @@
 	:ensure t
 	:defer t
 	)
+#+end_src
+
+*** yasnippet
+#+begin_src emacs-lisp :tangle ~/.emacs.d/yasnippet.el
+  ;; (defun move-file-to-folder (file folder)
+  ;;   "Move FILE to FOLDER. If FOLDER does not exist, create it."
+  ;;   (unless (file-exists-p folder)
+  ;; 	(make-directory folder t))
+  ;;   (let ((new-path (expand-file-name (file-name-nondirectory file) folder)))
+  ;; 	(rename-file file new-path)
+  ;; 	(message "Moved %s to %s" file new-path)
+  ;; 	))
+
+  ;; (move-file-to-folder "~/.emacs.d/hugo" "~/.emacs.d/snippets/org-mode/")
+
+  (unless (file-exists-p "~/.emacs.d/snippets")
+	(make-directory "~/.emacs.d/snippets"))
+  (unless (file-exists-p "~/.emacs.d/snippets/org-mode")
+	(make-directory "~/.emacs.d/snippets/org-mode"))
+
+  (defun move-file-if-not-exists (file folder)
+	"Move FILE to FOLDER if FILE does not exist in the folder."
+	(let ((new-path (expand-file-name (file-name-nondirectory file) folder)))
+	  (unless (file-exists-p new-path)
+		(rename-file file new-path)
+		(message "Moved %s to %s" file new-path))))
+
+  (move-file-if-not-exists "~/.emacs.d/hugo" "~/.emacs.d/snippets/org-mode/")
+
+  (use-package yasnippet
+	:ensure t
+	:init (yas-global-mode t)
+	:config
+	(yas-reload-all)
+	(add-hook 'prog-mode-hook #'yas-minor-mode)
+	(add-hook 'org-mode-hook #'yas-minor-mode)
+	:bind ("C-c y" . yas-expand))
 #+end_src
 
 *** projectile
