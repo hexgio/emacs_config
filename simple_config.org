@@ -628,10 +628,15 @@
 
   ;; (move-file-to-folder "~/.emacs.d/hugo" "~/.emacs.d/snippets/org-mode/")
 
-  (unless (file-exists-p "~/.emacs.d/snippets")
-	(make-directory "~/.emacs.d/snippets"))
-  (unless (file-exists-p "~/.emacs.d/snippets/org-mode")
-	(make-directory "~/.emacs.d/snippets/org-mode"))
+  ;; (unless (file-exists-p "~/.emacs.d/snippets")
+  ;;   (make-directory "~/.emacs.d/snippets"))
+  ;; (unless (file-exists-p "~/.emacs.d/snippets/org-mode")
+  ;;   (make-directory "~/.emacs.d/snippets/org-mode"))
+
+  (unless (file-exists-p "~/snippets")
+	(make-directory "~/snippets"))
+  (unless (file-exists-p "~/snippets/org-mode")
+	(make-directory "~/snippets/org-mode"))
 
   (defun move-file-if-not-exists (file folder)
 	"Move FILE to FOLDER if FILE does not exist in the folder."
@@ -640,7 +645,7 @@
 		(rename-file file new-path)
 		(message "Moved %s to %s" file new-path))))
 
-  (move-file-if-not-exists "~/.emacs.d/hugo" "~/.emacs.d/snippets/org-mode/")
+  (move-file-if-not-exists "~/hugo" "~/snippets/org-mode/")
 
   (use-package yasnippet
 	:ensure t
@@ -649,7 +654,7 @@
 	(yas-reload-all)
 	(add-hook 'prog-mode-hook #'yas-minor-mode)
 	(add-hook 'org-mode-hook #'yas-minor-mode)
-	:bind ("C-c y" . yas-expand))
+	;; :bind ("C-c y" . yas-expand))
 #+end_src
 
 *** projectile
