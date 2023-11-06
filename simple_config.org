@@ -70,6 +70,9 @@
   (load-file "~/.emacs.d/g-org-bash-code-block.el") ;; 插入bash代码块
   (load-file "~/.emacs.d/g-org-html-code-block.el") ;; 插入html代码块
   (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
+  (load-file "~/.emacs.d/insert-timestamp.el") ;; 插入时间戳
+  (load-file "~/.emacs.d/show-current-time.el") ;; 显示时间戳
+  (load-file "~/.emacs.d/create-dated-diary.el") ;; 用于写日记
   (load-file "~/.emacs.d/web-mode.el") ;; web-mode 提供了很好的wen配件（HTML、JavaScript、CSS、PHP等）的代码缩进、折叠和高亮等出色的功能
 
   ;; 文本编辑插件
@@ -106,7 +109,7 @@
 
   ;; (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用，感觉没有window-numbering好用
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
-  (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
+  ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
 										 ;;; 疑难杂症区
   ;; 插件管理器
@@ -119,6 +122,8 @@
   ;; (load-file "~/.emacs.d/org-roam.el")
   ;; (load-file "~/.emacs.d/org-roam-ui.el")
   ;; (load-file "~/.emacs.d/deft.el") ;; 笔记管理工具，不熟悉
+
+  ;; (load-file "~/.emacs.d/graphviz-dot-mode.el")
 
   ;; 垃圾回收值
   ;; (load-file "~/.emacs.d/gc-tail.el")
@@ -433,24 +438,84 @@
 
 *** report
 #+begin_src emacs-lisp :tangle ~/.emacs.d/report.el
-  (defun add-code-block ()
-	"在当前位置添加一个代码块，并以时间作为块名进行命名"
-	(interactive)
-	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
-		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
-		   (block-name (concat clean-time))  ; 构建代码块名
-		   (code-block (format
-						"*** %s
-  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1、
-  ,#+END_SRC"
-						block-name clean-time block-name)))
-	  (insert code-block)))  ; 在当前位置插入代码块
+	  (defun add-code-block ()
+		"在当前位置添加一个代码块，并以时间作为块名进行命名"
+		(interactive)
+		(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+			   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
+			   (block-name (concat clean-time))  ; 构建代码块名
+			   (code-block (format
+							"*** %s
+	  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+	  %s: name\n1、
+	  ,#+END_SRC"
+							block-name clean-time block-name)))
+		  (insert code-block)))  ; 在当前位置插入代码块
 
-  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
-  (global-set-key (kbd "C-c SPC r") 'add-code-block)
+	  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
+	  (global-set-key (kbd "C-c SPC r") 'add-code-block)
+  ;; 为什么%s会被替换为时间戳而不是其他内容被替换为时间戳，原理是什么
+  ;; 	这是因为在 Emacs Lisp 中，`format` 函数的工作方式类似于 C 语言中的 `printf` 函数。`format` 函数接受一个格式字符串和一系列参数，然后根据格式字符串中的格式指定符（如 `%s`、`%d` 等）将后续的参数插入到格式字符串中。
+
+  ;;   在你的代码中，`format` 函数的格式字符串是：
+
+  ;;   ```lisp
+  ;;   "*** %s
+  ;;   #+BEGIN_SRC emacs-lisp :tangle %s.txt
+  ;;   %s: name\n1、
+  ;;   #+END_SRC"
+  ;;   ```
+
+  ;;   这个字符串中有三个 `%s`，所以 `format` 函数需要三个额外的参数。在你的代码中，这三个参数都是 `block-name`，即你处理过的时间戳。
+
+  ;;   所以，当 `format` 函数运行时，它会依次取出 `block-name`，并将其插入到格式字符串中的 `%s` 的位置。这就是为什么 `%s` 会被替换为时间戳的原理。
+
+  ;;   如果你希望将不同的内容插入到格式字符串中，你只需提供不同的参数即可。例如：
+
+  ;;   ```lisp
+  ;;   (format "Hello, %s! Today is %s." "Alice" "Monday")
+  ;;   ```
+
+  ;;   这段代码会返回字符串 "Hello, Alice! Today is Monday."。
+  ;; ******************************************************************************
+  ;; 这句有什么用：(block-name (concat clean-time))  ; 构建代码块名
+  ;;   这一句 `(block-name (concat clean-time))` 的作用是创建一个新的变量 `block-name`，并将其设置为 `clean-time` 的值。
+
+  ;; 在这个上下文中，`clean-time` 是一个已经去除了破折号和冒号的时间字符串。`concat` 函数通常用于连接多个字符串，但在这里，它只有一个参数 `clean-time`，所以它实际上只是返回 `clean-time` 的值。
+
+  ;; 因此，这一句的效果就是创建了一个新的变量 `block-name`，并将其设置为与 `clean-time` 相同的值。后面的代码中使用 `block-name` 作为代码块的名字。
+
+  ;; 如果你的代码中没有需要使用不同的名称来表示清理过的时间戳，那么这一行代码实际上是不必要的，你可以直接使用 `clean-time`。但是，如果你打算在后续的代码中修改 `block-name` 或 `clean-time` 的值，那么这一行代码就很有用了，因为它确保了 `block-name` 和 `clean-time` 是两个独立的变量，修改一个不会影响另一个。
 #+end_src
 
+*** insert-timestamp
+#+begin_src emacs-lisp :tangle ~/.emacs.d/insert-timestamp.el
+  (defun insert-timestamp ()
+	(interactive)
+	(insert (format-time-string "%Y%m%d%H%M%S")))
+
+  (global-set-key (kbd "C-c t") 'insert-timestamp)
+#+end_src
+*** show-current-time
+#+begin_src emacs-lisp :tangle ~/.emacs.d/show-current-time.el
+(defun show-current-time ()
+  (interactive)
+  (let ((current-time (format-time-string "%Y%m%d%H%M%S")))
+    (message "%s" current-time)))
+
+(global-set-key (kbd "C-c s") 'show-current-time)  ; 绑定到快捷键 C-c s
+#+end_src
+*** create-dated-diary
+#+begin_src emacs-lisp :tangle ~/.emacs.d/create-dated-diary.el
+  (defun create-dated-diary ()
+	(interactive)
+	(let* ((current-date-time (format-time-string "%Y%m%d%H%M%S"))
+		   (diary-filename (concat "~/diary/diary_" current-date-time ".org")))
+	  (find-file diary-filename)))
+
+  (global-set-key (kbd "C-c d") 'create-dated-diary)
+
+#+end_src
 *** web-mode
 #+begin_src emacs-lisp :tangle ~/.emacs.d/web-mode.el
   (use-package web-mode
@@ -1066,3 +1131,13 @@
 	(require 'use-package))
   (require 'bind-key)
 #+end_src
+
+*** graphviz-dot-mode
+#+begin_src emacs-lisp :tangle ~/.emacs.d/graphviz-dot-mode.el
+(use-package graphviz-dot-mode
+  :ensure t
+  :config
+  (setq graphviz-dot-indent-width 4))
+
+(use-package company-graphviz-dot)
+#+end_src 
