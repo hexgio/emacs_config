@@ -140,6 +140,8 @@
 
 *** basic_config
 #+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
+  ;; 获取内存报告，执行"memory-report"
+
   (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
   (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
 
