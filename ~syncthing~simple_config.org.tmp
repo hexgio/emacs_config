@@ -127,12 +127,11 @@
 
   ;; 垃圾回收值
   ;; (load-file "~/.emacs.d/gc-tail.el")
-
-  ;; ;; 无差别对所有文件以只读模式打开
-  ;; (defun read-only-setup () 
-  ;;   (read-only-mode)
-  ;;   )
-  ;; (add-hook 'find-file-hook #'read-only-setup)
+  ;; 无差别对所有文件以只读模式打开
+  (defun read-only-setup () 
+	(read-only-mode)
+	)
+  (add-hook 'find-file-hook #'read-only-setup)
 #+end_src
 
 *** basic_config
@@ -439,23 +438,22 @@
 
 *** report
 #+begin_src emacs-lisp :tangle ~/.emacs.d/report.el
-  (defun add-code-block ()
-	"在当前位置添加一个代码块，并以时间作为块名进行命名"
-	(interactive)
-	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
-		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
-		   (block-name (concat clean-time))  ; 构建代码块名
-		   (code-block (format
-						"*** %s
-  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1、
-  ,#+END_SRC"
-						block-name clean-time block-name)))
-	  (insert code-block)))  ; 在当前位置插入代码块
+	  (defun add-code-block ()
+		"在当前位置添加一个代码块，并以时间作为块名进行命名"
+		(interactive)
+		(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+			   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
+			   (block-name (concat clean-time))  ; 构建代码块名
+			   (code-block (format
+							"*** %s
+	  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+	  %s: name\n1、
+	  ,#+END_SRC"
+							block-name clean-time block-name)))
+		  (insert code-block)))  ; 在当前位置插入代码块
 
-  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
-  (global-set-key (kbd "C-c SPC r") 'add-code-block)
-
+	  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
+	  (global-set-key (kbd "C-c SPC r") 'add-code-block)
   ;; 为什么%s会被替换为时间戳而不是其他内容被替换为时间戳，原理是什么
   ;; 	这是因为在 Emacs Lisp 中，`format` 函数的工作方式类似于 C 语言中的 `printf` 函数。`format` 函数接受一个格式字符串和一系列参数，然后根据格式字符串中的格式指定符（如 `%s`、`%d` 等）将后续的参数插入到格式字符串中。
 
