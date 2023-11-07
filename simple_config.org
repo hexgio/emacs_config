@@ -1151,7 +1151,7 @@
 #+begin_src emacs-lisp :tangle ~/.emacs.d/read-only-file-list.el
   (defvar read-only-file-list
 	(list
-	 (expand-file-name "~/test.org")
+	 (expand-file-name "~/testReadOnly.org")
 	 ))
 
   (defun enable-read-only-fn ()
