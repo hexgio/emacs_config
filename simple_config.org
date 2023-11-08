@@ -8,6 +8,10 @@
 ** config
 *** init.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (load-file "~/.emacs.d/loadFile.el")
+#+end_src
+*** loadFile.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/loadFile.el
   (setq gc-cons-threshold (* 50 1000 1000))
   ;; Portion of heap used for allocation.  Defaults to 0.1.
   (setq gc-cons-percentage 0.6)
