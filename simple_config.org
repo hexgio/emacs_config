@@ -324,9 +324,9 @@
   ;; 设置软件包源
   (setq package-archives
 		'(
-		  ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-		  ("MELPA Stable" . "https://stable.melpa.org/packages/")
-		  ("melpa" . "https://melpa.org/packages/")
+		  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+		  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
+		  ;; ("melpa" . "https://melpa.org/packages/")
 		  ("melpa-cn" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
 		  ("nongnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
 		  ("gnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
