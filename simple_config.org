@@ -505,7 +505,7 @@
 	(interactive)
 	(insert (format-time-string "%Y%m%d%H%M%S")))
 
-  (global-set-key (kbd "C-c t") 'insert-timestamp)
+  ;; (global-set-key (kbd "C-c t") 'insert-timestamp)
 #+end_src
 *** show-current-time
 #+begin_src emacs-lisp :tangle ~/.emacs.d/show-current-time.el
