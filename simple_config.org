@@ -548,26 +548,29 @@
 *** GTD
 #+begin_src emacs-lisp :tangle ~/.emacs.d/GTD.el
   ;; 尝试配置GTD
-  (unless (file-exists-p "~/.emacs.d/OneDrive")
-	(make-directory "~/.emacs.d/OneDrive")
+  (unless (file-exists-p "~/GTD")
+	(make-directory "~/GTD")
 	);; 检测OneDrive目录是否存在，如果不存在就创建这个目录
-  (unless (file-exists-p "~/.emacs.d/OneDrive/org")
-	(make-directory "~/.emacs.d/OneDrive/org")
+  (unless (file-exists-p "~/GTD/OneDrive")
+	(make-directory "~/GTD/OneDrive")
+	);; 检测OneDrive目录是否存在，如果不存在就创建这个目录
+  (unless (file-exists-p "~/GTD/OneDrive/org")
+	(make-directory "~/GTD/OneDrive/org")
 	);; 检测org目录是否存在，如果不存在就创建这个目录
-  (let ((filename "~/.emacs.d/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+  (let ((filename "~/GTD/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
 	(unless (file-exists-p filename)
 	  (with-temp-file filename
 		;; (insert "这是文件内容") ;; 写入文件内容
 		)))
-  (let ((filename "~/.emacs.d/OneDrive/org/todo.org")) ;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+  (let ((filename "~/GTD/OneDrive/org/todo.org")) ;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
 	(unless (file-exists-p filename)
 	  (with-temp-file filename
 		;; (insert "这是文件内容") ;; 写入文件内容
 		)))
 
-  (load-file "~/.emacs.d/my-agenda.el") ;; 加载my-agenda.el配置文件
-  (setq org-agenda-files '("~/.emacs.d/OneDrive/org")) ;; 指定data存放目录
-  (setq org-default-notes-file "~/.emacs.d/OneDrive/org/todo.org") ;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/Onedrive/org/todo.org文件下
+  (load-file "~/GTD/my-agenda.el") ;; 加载my-agenda.el配置文件
+  (setq org-agenda-files '("~/GTD/OneDrive/org")) ;; 指定data存放目录
+  (setq org-default-notes-file "~/GTD/OneDrive/org/todo.org") ;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/GTD/Onedrive/org/todo.org文件下
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-cc" 'org-capture)
   (global-set-key "\C-ca" 'org-agenda)
