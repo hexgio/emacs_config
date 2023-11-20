@@ -303,8 +303,12 @@
   (setq split-height-threshold nil)
 
   ;; TAB键设置，在Emacs里不使用TAB键，所有的TAB默认为4个空格
-  (setq-default indent-tabs-mode nil)
+  ;; (setq-default indent-tabs-mode nil)
+  ;; (setq-default tab-width 4)
+  (setq-default indent-tabs-mode t)
   (setq-default tab-width 4)
+  (setq c-default-style "linux")
+  (setq c-basic-offset 4)
 
   ;; yes或no提示设置，通过下面这个函数设置当缓冲区名字匹配到预设的字符串时自动回答yes
   (setq original-y-or-n-p 'y-or-n-p)
