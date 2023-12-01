@@ -1,6 +1,9 @@
 https://www.gnu.org/prep/ftp.html
+
 https://mirrors.aliyun.com/gnu/emacs/
+
 http://mirrors.ustc.edu.cn/gnu/emacs/
+
 http://git.savannah.gnu.org/cgit/emacs.git
 
 ** 从源码构建emacs
