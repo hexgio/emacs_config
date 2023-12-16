@@ -390,7 +390,9 @@
   (prefer-coding-system 'utf-8)
   (setq-default buffer-file-coding-system 'utf-8)
 #+end_src
+
 ** keycast按键展示
+
 [[https://github.com/tarsius/keycast][keycast mode]] 插件可以在模式栏上展示所有的按键，以及对应的函数。
 
 #+BEGIN_SRC emacs-lisp
@@ -948,10 +950,10 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
 		   (block-name (concat clean-time))  ; 构建代码块名
 		   (code-block (format
-						"*** %s
+						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
   %s: name\n1、
-  ,#+END_SRC"
+  ,#+END_SRC\n\n"
 						block-name clean-time block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
 
@@ -1978,7 +1980,7 @@ Emacs文件管理设置。
 
 cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工 具。可以比较方便地实现中文字体和英文字体等宽（也就是大家常说的中英 文对齐）。
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no 
   (use-package cnfonts
 	:ensure t
 	:defer 3
@@ -1987,6 +1989,141 @@ cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工
 	(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
 	(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
 	)
+#+end_src
+
+** bhj-fonts字体配置
+
+参考链接
+
+[[https://baohaojun.github.io/perfect-emacs-chinese-font.html][狠狠地折腾了一把Emacs中文字体]]
+
+[[https://baohaojun.github.io/blog/2013/05/09/0-emacs-font-global-scaling.html][全局放大Emacs字体]]
+
+[[https://raw.githubusercontent.com/baohaojun/system-config/master/.emacs_d/lisp/bhj-fonts.el][bhj-fonts]]
+
+#+begin_src emacs-lisp
+  (defun qiang-font-existsp (font)
+	(if (null (x-list-fonts font))
+		nil t))
+
+  (defun qiang-make-font-string (font-name font-size)
+	(if (and (stringp font-size)
+			 (equal ":" (string (elt font-size 0))))
+		(format "%s%s" font-name font-size)
+	  (format "%s-%s" font-name font-size)))
+
+  (defvar bhj-english-font-size nil)
+  (defun qiang-set-font (english-fonts
+						 english-font-size
+						 chinese-fonts
+						 &optional chinese-fonts-scale
+						 )
+	(setq chinese-fonts-scale (or chinese-fonts-scale 1.2))
+	(save-excursion
+	  (with-current-buffer (find-file-noselect "~/.config/system-config/emacs-font-size")
+		(delete-region (point-min) (point-max))
+		(insert (format "%s" english-font-size))
+		(let ((before-save-hook nil)
+			  (after-save-hook nil))
+		  (save-buffer))
+		(kill-buffer)))
+	(setq face-font-rescale-alist `(("Microsoft Yahei" . ,chinese-fonts-scale)
+									("Microsoft_Yahei" . ,chinese-fonts-scale)
+									("微软雅黑" . ,chinese-fonts-scale)
+									("WenQuanYi Zen Hei" . ,chinese-fonts-scale)))
+	"english-font-size could be set to \":pixelsize=18\" or a integer.
+  If set/leave chinese-font-size to nil, it will follow english-font-size"
+	(require 'cl)                         ; for find if
+	(setq bhj-english-font-size english-font-size)
+	(let ((en-font (qiang-make-font-string
+					(find-if #'qiang-font-existsp english-fonts)
+					english-font-size))
+		  (zh-font (font-spec :family (find-if #'qiang-font-existsp chinese-fonts))))
+
+	  ;; Set the default English font
+	  ;;
+	  ;; The following 2 method cannot make the font settig work in new frames.
+	  ;; (set-default-font "Consolas:pixelsize=18")
+	  ;; (add-to-list 'default-frame-alist '(font . "Consolas:pixelsize=18"))
+	  ;; We have to use set-face-attribute
+	  (set-face-attribute
+	   'default nil :font en-font)
+	  (condition-case font-error
+		  (progn
+			(set-face-font 'italic (font-spec :family "JetBrains Mono" :slant 'italic :weight 'normal :size (+ 0.0 english-font-size)))
+			(set-face-font 'bold-italic (font-spec :family "JetBrains Mono" :slant 'italic :weight 'bold :size (+ 0.0 english-font-size)))
+
+			(set-fontset-font t 'symbol (font-spec :family "JetBrains Mono")))
+		(error nil))
+	  (set-fontset-font t 'symbol (font-spec :family "Unifont") nil 'append)
+	  (set-fontset-font
+	   t '(#x2009 . #x2009) (font-spec :family "B&H LucidaBright"))
+	  (set-fontset-font t nil (font-spec :family "DejaVu Sans"))
+
+	  ;; Set Chinese font
+	  ;; Do not use 'unicode charset, it will cause the english font setting invalid
+	  (dolist (charset '(kana han cjk-misc bopomofo))
+		(set-fontset-font t charset zh-font)))
+	(when (and (boundp 'global-emojify-mode)
+			   global-emojify-mode)
+	  (global-emojify-mode 1))
+	(shell-command-to-string "setsid sawfish-client -e '(maximize-window (input-focus))'"))
+
+
+  (defvar bhj-english-fonts '("JetBrains Mono" "Monaco" "Consolas" "DejaVu Sans Mono" "Monospace" "Courier New"))
+  (defvar bhj-chinese-fonts '("Microsoft Yahei" "Microsoft_Yahei" "微软雅黑" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体"))
+
+  (qiang-set-font
+   bhj-english-fonts
+   (if (file-exists-p "~/.config/system-config/emacs-font-size")
+	   (save-excursion
+		 (find-file "~/.config/system-config/emacs-font-size")
+		 (goto-char (point-min))
+		 (let ((monaco-font-size (read (current-buffer))))
+		   (kill-buffer (current-buffer))
+		   (if (numberp monaco-font-size)
+			   monaco-font-size
+			 12.5)))
+	 12.5)
+   bhj-chinese-fonts)
+
+  (defvar chinese-font-size-scale-alist nil)
+
+  ;; On different platforms, I need to set different scaling rate for
+  ;; differnt font size.
+  (cond
+   ((and (boundp '*is-a-mac*) *is-a-mac*)
+	(setq chinese-font-size-scale-alist '((10.5 . 1.3) (11.5 . 1.3) (16 . 1.3) (18 . 1.25))))
+   ((and (boundp '*is-a-win*) *is-a-win*)
+	(setq chinese-font-size-scale-alist '((11.5 . 1.25) (16 . 1.25))))
+   (t ;; is a linux:-)
+	(setq chinese-font-size-scale-alist '((12 . 1.25) (12.5 . 1.25) (14 . 1.20) (16 . 1.25) (20 . 1.20)))))
+
+  (defvar bhj-english-font-size-steps '(9 10.5 11.5 12 12.5 13 14 16 18 20 22 40))
+  (defun bhj-step-frame-font-size (step)
+	(let ((steps bhj-english-font-size-steps)
+		  next-size)
+	  (when (< step 0)
+		(setq steps (reverse bhj-english-font-size-steps)))
+	  (setq next-size
+			(cadr (member bhj-english-font-size steps)))
+	  (when next-size
+		(qiang-set-font bhj-english-fonts next-size bhj-chinese-fonts (cdr (assoc next-size chinese-font-size-scale-alist)))
+		(message "Your font size is set to %.1f" next-size))))
+
+  ;; (global-set-key (kbd "C-x M--") (lambda () (interactive) (bhj-step-frame-font-size -1)))
+  ;; (global-set-key (kbd "C-x M-=") (lambda () (interactive) (bhj-step-frame-font-size 1)))
+  (global-set-key (kbd "C--") (lambda () (interactive) (bhj-step-frame-font-size -1)))
+  (global-set-key (kbd "C-=") (lambda () (interactive) (bhj-step-frame-font-size 1)))
+
+  (set-face-attribute 'default nil :font (font-spec))
+
+  ;; {%org-mode%}
+  ;; here are 20 hanzi and 40 english chars, see if they are the same width
+  ;; 你你你你你你你你你你你你你你你你你你你你
+  ;; aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  ;; /aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/
+  ;; {%/org-mode%}
 #+end_src
 
 ** init-tools.el 文件尾
