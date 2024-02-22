@@ -172,7 +172,7 @@
 	:ensure nil
 #+end_src
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   ;; 安装 `quelpa'
   (use-package quelpa
 	:ensure t
