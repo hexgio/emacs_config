@@ -367,7 +367,10 @@
 
   (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil))) ;自动换行(折行)
 
-  (global-linum-mode t)                   ;显示行号
+  ;; 显示行号
+  (if (>= emacs-major-version 29)
+	  (global-display-line-numbers-mode)
+	(global-linum-mode t))
 
   (defun reload-emacs-config ()
 	(interactive)
@@ -1242,7 +1245,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 
 [[https://github.com/toshism/org-super-links][org-super-links]] 插件可以设置反向链接。
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (quelpa
    '(org-super-liks
 	 :fetcher git
@@ -1980,7 +1983,7 @@ Emacs文件管理设置。
 
 cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工 具。可以比较方便地实现中文字体和英文字体等宽（也就是大家常说的中英 文对齐）。
 
-#+begin_src emacs-lisp :tangle no 
+#+begin_src emacs-lisp
   (use-package cnfonts
 	:ensure t
 	:defer 3
@@ -2001,7 +2004,7 @@ cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工
 
 [[https://raw.githubusercontent.com/baohaojun/system-config/master/.emacs_d/lisp/bhj-fonts.el][bhj-fonts]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun qiang-font-existsp (font)
 	(if (null (x-list-fonts font))
 		nil t))

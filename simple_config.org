@@ -85,7 +85,10 @@
 	)
 
   (when (version<= "25.1" emacs-version)
-	(load-file "~/.emacs.d/easy-hugo.el"))
+	(when (version<= "26.1" emacs-version)
+	  (load-file "~/.emacs.d/easy-hugo.el")
+	  )
+	)
   (when (version<= "26.1" emacs-version)
 	(load-file "~/.emacs.d/ox-pandoc.el")
 	)
