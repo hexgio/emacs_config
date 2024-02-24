@@ -103,7 +103,8 @@
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
-		'(("melpa-cn" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
+		'(
+		  ("melpa-cn" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
 		  ("nongnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
 		  ("gnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
 		  ;; ("melpa"  . "https://melpa.org/packages/")
@@ -112,7 +113,7 @@
 		  ))
 
   (package-initialize)
-#+end_src
+			#+end_src
 
 ** 安装use-package插件
 [[https://github.com/jwiegley/use-package][use-package]] 是一个让Emacs配置更加结构化更加清晰的一个宏插件。
