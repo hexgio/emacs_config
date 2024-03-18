@@ -96,6 +96,11 @@
 	(load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本	
 	)
 
+  (load-file "~/.emacs.d/Emacs备份设置.el")
+  (load-file "~/.emacs.d/super-save自动保存.el")
+  (load-file "~/.emacs.d/解除一些不常用的快捷键.el")
+  (load-file "~/.emacs.d/mwim.el")
+
   ;; GTD任务管理配置
   (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
 
@@ -118,7 +123,7 @@
   ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
   ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
 
-										 ;;; 疑难杂症区
+										   ;;; 疑难杂症区
   ;; 插件管理器
   ;; (load-file "~/.emacs.d/el-get.el")
 
@@ -515,12 +520,12 @@
 #+end_src
 *** show-current-time
 #+begin_src emacs-lisp :tangle ~/.emacs.d/show-current-time.el
-(defun show-current-time ()
-  (interactive)
-  (let ((current-time (format-time-string "%Y%m%d%H%M%S")))
-    (message "%s" current-time)))
+  (defun show-current-time ()
+	(interactive)
+	(let ((current-time (format-time-string "%Y%m%d%H%M%S")))
+	  (message "%s" current-time)))
 
-(global-set-key (kbd "C-c s") 'show-current-time)  ; 绑定到快捷键 C-c s
+  (global-set-key (kbd "C-c s") 'show-current-time)  ; 绑定到快捷键 C-c s
 #+end_src
 *** create-dated-diary
 #+begin_src emacs-lisp :tangle ~/.emacs.d/create-dated-diary.el
@@ -753,9 +758,9 @@
   ;;   ;; :bind ("C-c y" . yas-expand))
 
   (use-package yasnippet
-  :ensure t
-  :init (yas-global-mode 1)
-  :config (yas-reload-all))
+	:ensure t
+	:init (yas-global-mode 1)
+	:config (yas-reload-all))
 
 #+end_src
 
@@ -1154,12 +1159,12 @@
 
 *** graphviz-dot-mode
 #+begin_src emacs-lisp :tangle ~/.emacs.d/graphviz-dot-mode.el
-(use-package graphviz-dot-mode
-  :ensure t
-  :config
-  (setq graphviz-dot-indent-width 4))
+  (use-package graphviz-dot-mode
+	:ensure t
+	:config
+	(setq graphviz-dot-indent-width 4))
 
-(use-package company-graphviz-dot)
+  (use-package company-graphviz-dot)
 #+end_src 
 
 *** read-only-file-list
@@ -1175,3 +1180,75 @@
 
   (add-hook 'find-file-hook #'enable-read-only-fn)
 #+end_src
+
+*** Emacs备份设置
+
+不使用Emacs的自动备份设置。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/Emacs备份设置.el
+  (setq make-backup-files nil)                                  ; 不自动备份
+  (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
+#+END_SRC
+
+*** super-save自动保存
+
+[[https://hub.nuaa.cf/bbatsov/super-save][super-save]] 插件能自动保存缓冲区。它可以设置在某些行为（如窗口切换、或窗口空闲一段时间）下自动保存。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/super-save自动保存.el
+  (use-package super-save
+	:ensure t
+	:hook (after-init . super-save-mode)
+	:config
+	;; Emacs空闲是否自动保存，这里不设置
+	(setq super-save-auto-save-when-idle nil)
+	;; 切换窗口自动保存
+	(add-to-list 'super-save-triggers 'other-window)
+	;; 查找文件时自动保存
+	(add-to-list 'super-save-hook-triggers 'find-file-hook)
+	;; 远程文件编辑不自动保存
+	(setq super-save-remote-files nil)
+	;; 特定后缀名的文件不自动保存
+	(setq super-save-exclude '(".gpg"))
+	;; 自动保存时，保存所有缓冲区
+	(defun super-save/save-all-buffers ()
+	  (save-excursion
+		(dolist (buf (buffer-list))
+		  (set-buffer buf)
+		  (when (and buffer-file-name
+					 (buffer-modified-p (current-buffer))
+					 (file-writable-p buffer-file-name)
+					 (if (file-remote-p buffer-file-name) super-save-remote-files t))
+			(save-buffer)))))
+	(advice-add 'super-save-command :override 'super-save/save-all-buffers)
+	)
+#+END_SRC
+
+*** 解除一些不常用的快捷键
+
+将一些不常用的快捷键解除，防止误操作。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/解除一些不常用的快捷键.el
+  ;; 解除不常用的快捷键定义
+  (global-set-key (kbd "s-q") nil)
+  (global-set-key (kbd "M-z") nil)
+  (global-set-key (kbd "M-m") nil)
+  (global-set-key (kbd "C-x C-z") nil)
+  (global-set-key [mouse-2] nil)
+#+END_SRC
+
+*** mwim 优化光标移动到行首/行尾
+
+[[https://github.com/alezost/mwim.el][mwim - GitHub 主页]]
+
+C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当代码有缩进时，前者会把光标移动到行首（到空格之前），后者会移动到代码文字的开头（到空格之后）。那么实际中这两个按法差别较大，且不易区分，使用起来不方便。mwim 就将二者合并，覆盖 C-a 为 mwim-beginning-of-code-or-line，这样按一次 C-a 时移动到代码文字开头，再按一次则是移动到整行的行首，如此反复。
+
+同时，更有意义的是，它还可以覆盖 C-e move-end-of-line 为 mwim-end-of-code-or-line，当本行代码结尾有注释时，第一次按 C-e 将光标移动到代码尾部、注释之前。再按一次则是移动到整行的行尾。 这就大大提高了写代码的效率。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/mwim.el
+  (use-package mwim
+	:ensure t
+	:bind
+	("C-a" . mwim-beginning-of-code-or-line)
+	("C-e" . mwim-end-of-code-or-line))
+#+end_src
+
