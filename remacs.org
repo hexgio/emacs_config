@@ -979,7 +979,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
 	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
 	(insert
-	 "#+TITLE: \n#+AUTHOR: yenao\n#+OPTIONS: toc:t num:10 H:10 ^:nil \\n:t pri:t\n#+STARTUP: overview\n#+HTML_HEAD: \<link rel=\"stylesheet\" type=\"text\/css\" href=\"http:\/\/gongzhitaao.org\/orgcss\/org.css\"\/\>\n"
+	 "#+TITLE: \n#+AUTHOR: yenao\n#+OPTIONS: toc:t num:10 H:10 ^:nil \\n:t broken-links:nil pri:t\n#+STARTUP: overview\n#+HTML_HEAD: \<link rel=\"stylesheet\" type=\"text\/css\" href=\"http:\/\/gongzhitaao.org\/orgcss\/org.css\"\/\>\n"
 	 )) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+OPTIONS: ^:nil、#+TITLE:  和#+AUTHOR: yenao
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
