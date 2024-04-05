@@ -1032,6 +1032,17 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   )
 #+end_src
 
+*** g-org-javascript-code-block 插入html语言的代码块
+
+用于插入html语言的代码块
+
+#+begin_src bash
+  (defun g-org-javascript-code-block ()
+   (interactive)
+   (insert "#+begin_src javascript\n\n#+end_src")
+  )
+#+end_src
+
 *** markdown
 
 使emacs支持markdown模式编辑文件
@@ -2520,3 +2531,338 @@ Emacs 内置 EWW 浏览器配置。
 
 * small_config
 
+** init.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle ~/.emacs.d/init.el
+:END:
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (setq gc-cons-threshold (* 50 1000 1000))
+  (setq gc-cons-percentage 0.6)
+
+  (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF")) ;; 我最初的主题设定
+  (add-to-list 'default-frame-alist '(background-color . "#000000"))
+
+  (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
+  (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+
+  ;; (when tool-bar-mode
+  ;;   (tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+  (if tool-bar-mode
+	  (tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+
+  ;; (when menu-bar-mode
+  ;;   (menu-bar-mode -1))
+
+  ;; ;; 禁止滚动条，对gui界面有效，终端环境不支持滚动栏，因此终端环境会报错
+  ;; (when scroll-bar-mode
+  ;;   (scroll-bar-mode -1))
+
+  ;; (global-set-key (kbd "C-SPC") 'nil)
+  ;; ;;取消control+space键设为mark
+  (global-set-key (kbd "C-SPC") 'set-mark-command)
+  ;; 取消control+space键设为mark
+
+  (global-linum-mode t) ;; 更高版本的emacs的行函数名称与旧版本不一致，未来看能不能通过判断或者用或语句解决这个问题
+  (column-number-mode t)
+
+  (xterm-mouse-mode t)
+
+  (setq visible-bell t)
+  ;;关闭烦人的出错时的提示声
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  (recentf-mode t)
+
+  ;; (save-place-mode t)
+
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 4)
+  (setq c-default-style "linux")
+  (setq c-basic-offset 4)
+
+  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
+  (defun reload-emacs-config ()
+	(interactive)
+	(load-file "~/.emacs.d/init.el"))
+  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+
+  (defun close-current-window ()
+	(interactive)
+	(delete-window)
+	)
+  (global-set-key (kbd "C-c z") 'close-current-window)
+
+  (global-set-key (kbd "M-j") nil)
+
+  (global-set-key (kbd "<F10>") nil)
+
+  (global-set-key (kbd "C-x C-z") nil)
+
+  (global-set-key (kbd "C-M-z") 'indent-region)
+
+  (setq kill-ring-max 200)
+  ;;设置粘贴缓冲条目数量.用一个很大的kill ring(最多的记录个数). 这样防止我不小心删掉重要的东西
+
+  (setq enable-recursive-minibuffers t)
+  ;;可以递归的使用 minibuffer
+
+  (setq scroll-margin 0 scroll-conservatively 10000)
+  ;;防止页面滚动时跳动， scroll-margin 3 可以在靠近屏幕边沿3行时就开始滚动，可以很好的看到上下文。
+
+  (setq default-major-mode 'text-mode) ;; 设置缺少模式为text
+
+  (mouse-avoidance-mode 'animate)
+  ;;光标靠近鼠标指针时，让鼠标指针自动让开，别挡住视线。
+
+  ;; (setq frame-title-format "emacs@%b")
+  (setq frame-title-format "%b")
+  ;;在标题栏显示buffer的名字
+
+  ;; (setq uniquify-buffer-name-style 'forward) ;;好像没起作用
+  ;; ;; 当有两个文件名相同的缓冲时，使用前缀的目录名做 buffer 名字，不用原来的foobar 形式
+
+  (add-hook 'comint-output-filter-functions
+			'comint-watch-for-password-prompt)
+  ;;当你在shell、telnet、w3m等模式下时，必然碰到过要输入密码的情况,此时加密显出你的密码
+
+
+  ;; (setq make-backup-files nil)
+  ;; ;; 设定不产生备份文件
+
+  ;;(setq auto-save-mode nil)
+  ;;自动保存模式
+
+  ;; (setq-default make-backup-files nil)
+  ;; ;; 不生成临时文件
+
+  ;; ;;允许emacs和外部其他程序的粘贴
+  ;; (setq x-select-enable-clipboard t)
+
+  (setq user-full-name "yenao")
+  (setq user-mail-address "hexgio@outlook.com")
+  ;;设置有用的个人信息,这在很多地方有用。
+
+  ;; (setq require-final-newline t)
+  ;; ;; 自动的在文件末增加一新行
+
+  (setq-default transient-mark-mode t)
+  ;; 高亮显示选中区域
+
+  (setq track-eol t)
+  ;; 当光标在行尾上下移动的时候，始终保持在行尾。
+
+  ;; (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+
+  ;; (setq sentence-end-double-space nil)
+  (setq sentence-end-double-space t)
+  ;; 设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
+
+  (defun g-config ()
+	(interactive)
+	(insert "*** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n\n#+end_src")
+	)
+  (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
+	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
+	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:10 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
+  ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
+  (defun g-org-code-block ()
+	(interactive)
+	(insert "*** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
+	)
+  (defun add-code-block ()
+	"在当前位置添加一个代码块，并以时间作为块名进行命名"
+	(interactive)
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
+		   (block-name (concat clean-time))  ; 构建代码块名
+		   (code-block (format
+						"*** %s
+		,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+		%s: name\n1、
+		,#+END_SRC"
+						block-name clean-time block-name)))
+	  (insert code-block)))  ; 在当前位置插入代码块
+
+  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
+  (global-set-key (kbd "C-c SPC r") 'add-code-block)
+
+  (setq auto-mode-alist
+		;; 将文件模式和文件后缀关联起来
+		(append '(("\\.py\\'" . python-mode)
+				  ("\\.s?html?\\'" . html-helper-mode)
+				  ("\\.asp\\'" . html-helper-mode)
+				  ("\\.phtml\\'" . html-helper-mode)
+				  ("\\.css\\'" . css-mode))
+				auto-mode-alist))
+
+  ;; 尝试配置GTD
+  (unless (file-exists-p "~/.emacs.d/OneDrive")
+	(make-directory "~/.emacs.d/OneDrive")
+	);; 检测OneDrive目录是否存在，如果不存在就创建这个目录
+  (unless (file-exists-p "~/.emacs.d/OneDrive/org")
+	(make-directory "~/.emacs.d/OneDrive/org")
+	);; 检测org目录是否存在，如果不存在就创建这个目录
+  (let ((filename "~/.emacs.d/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+	(unless (file-exists-p filename)
+	  (with-temp-file filename
+		;; (insert "这是文件内容") ;; 写入文件内容
+		)))
+  (let ((filename "~/.emacs.d/OneDrive/org/todo.org")) ;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+	(unless (file-exists-p filename)
+	  (with-temp-file filename
+		;; (insert "这是文件内容") ;; 写入文件内容
+		)))
+
+  (load-file "~/.emacs.d/my-agenda.el") ;; 加载my-agenda.el配置文件
+  (setq org-agenda-files '("~/.emacs.d/OneDrive/org")) ;; 指定data存放目录
+  (setq org-default-notes-file "~/.emacs.d/OneDrive/org/todo.org") ;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/Onedrive/org/todo.org文件下
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+  (define-key global-map "\C-cr" 'remember)
+
+  (setq org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAITTING(w)" "SOMEDAY(s)" "|" "DONE(d@/!)" "ABORT(a@/!)")))
+  (setq org-tag-alist '(("@office" . ?w) ("@home" . ?h) ("traffic" . ?t) ("computer" . ?c) ("nocomputer" . ?n) ("either" . ?e) ("immediately" . ?i) ("wait" . ?w) ("action" . ?a)))
+
+  (custom-set-variables  
+   '(eww-search-prefix "https://bing.com/search?q="))
+
+  (prefer-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
+  (setq eww-use-external-webkit t)
+  (setq-default eww-ems-internal-uses-webkit t)
+  ;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
+  ;; (setq browse-url-generic-program "浏览器命令")
+  ;; (setq browse-url-browser-function 'browse-url-generic)
+  ;; (setq browse-url-generic-program "firefox")
+  ;; (setq browse-url-browser-function 'browse-url-generic)
+
+  ;; (when (display-graphic-p)
+  ;; 	(setq eww-toggle-images t))
+
+  (display-time-mode 1);;启用时间显示设置，在minibuffer上面的那个杠上
+  (setq display-time-24hr-format t);;时间使用24小时制
+  (setq display-time-day-and-date t);;时间显示包括日期和具体时间
+  ;; (setq display-time-use-mail-icon t);;时间栏旁边启用邮件设置
+  ;; (setq display-time-interval 10);;时间的变化频率，单位多少来着？
+
+  ;; 设置 calendar 的显示
+  (setq calendar-remove-frame-by-deleting t)
+  (setq calendar-week-start-day 1) ; 设置星期一为每周的第一天
+  (setq mark-diary-entries-in-calendar t) ; 标记calendar上有diary的日期
+  (setq mark-holidays-in-calendar nil) ; 为了突出有diary的日期，calendar上不标记节日
+  (setq view-calendar-holidays-initially nil) ; 打开calendar的时候不显示一堆节日
+
+  ;; 去掉不关心的节日，设定自己在意的节日，在 calendar 上用 h 显示节日
+  (setq christian-holidays nil)
+  (setq hebrew-holidays nil)
+  (setq islamic-holidays nil)
+  (setq solar-holidays nil)
+  (setq general-holidays '((holiday-fixed 1 1 "元旦")
+						   (holiday-fixed 2 14 "情人节")
+						   (holiday-fixed 3 14 "白色情人节")
+						   (holiday-fixed 4 1 "愚人节")
+						   (holiday-fixed 5 1 "劳动节")
+						   (holiday-float 5 0 2 "母亲节")
+						   (holiday-fixed 6 1 "儿童节")
+						   (holiday-float 6 0 3 "父亲节")
+						   (holiday-fixed 7 1 "建党节")
+						   (holiday-fixed 8 1 "建军节")
+						   (holiday-fixed 9 10 "教师节")
+						   (holiday-fixed 10 1 "国庆节")
+						   (holiday-fixed 12 25 "圣诞节")))
+
+  ;;Calendar模式支持各种方式来更改当前日期
+  ;;（这里的“前”是指还没有到来的那一天，“后”是指已经过去的日子）
+  ;; q 退出calendar模式
+  ;; C-f 让当前日期向前一天
+  ;; C-b 让当前日期向后一天
+  ;; C-n 让当前日期向前一周
+  ;; C-p 让当前日期向后一周
+  ;; M-} 让当前日期向前一个月
+  ;; M-{ 让当前日期向后一个月
+  ;; C-x ] 让当前日期向前一年
+  ;; C-x [ 让当前日期向后一年
+  ;; C-a 移动到当前周的第一天
+  ;; C-e 移动到当前周的最后一天
+  ;; M-a 移动到当前月的第一天
+  ;; M-e 多动到当前月的最后一天
+  ;; M-< 移动到当前年的第一天
+  ;; M-> 移动到当前年的最后一天
+
+  ;;Calendar模式支持移动多种移动到特珠日期的方式
+  ;; g d 移动到一个特别的日期
+  ;; o 使某个特殊的月分作为中间的月分
+  ;; . 移动到当天的日期
+  ;; p d 显示某一天在一年中的位置，也显示本年度还有多少天。
+  ;; C-c C-l 刷新Calendar窗口
+
+  ;; Calendar支持生成LATEX代码。
+  ;; t m 按月生成日历
+  ;; t M 按月生成一个美化的日历
+  ;; t d 按当天日期生成一个当天日历
+  ;; t w 1 在一页上生成这个周的日历
+  ;; t w 2 在两页上生成这个周的日历
+  ;; t w 3 生成一个ISO-SYTLE风格的当前周日历
+  ;; t w 4 生成一个从周一开始的当前周日历
+  ;; t y 生成当前年的日历
+
+  ;;EMACS Calendar支持配置节日：
+  ;; h 显示当前的节日
+  ;; x 定义当天为某个节日
+  ;; u 取消当天已被定义的节日
+  ;; e 显示所有这前后共三个月的节日。
+  ;; M-x holiday 在另外的窗口的显示这前后三个月的节日。
+
+
+  ;; 另外，还有一些特殊的，有意思的命令：
+  ;; S 显示当天的日出日落时间(是大写的S)
+  ;; p C 显示农历可以使用
+  ;; g C 使用农历移动日期可以使用
+
+  ;;-----------日历设置结束----------------
+
+  ;;-----------日记设置---------------------
+
+  (unless (file-exists-p "~/diary/")
+	(make-directory "~/diary/")
+	)
+  (let ((filename "~/diary/diary")) 
+	(unless (file-exists-p filename)
+	  (with-temp-file filename)))  
+  (setq diary-file "~/diary/diary");; 默认的日记文件
+  (setq diary-mail-addr "hexgio@outlook.com")
+  (add-hook 'diary-hook 'appt-make-list)
+  ;;当你创建了一个'~/diary'文件，你就可以使用calendar去查看里面的内容。你可以查看当天的事件，相关命令如下 ：
+  ;; d 显示被选中的日期的所有事件
+  ;; s 显示所有事件，包括过期的，未到期的等等
+
+  ;; 创建一个事件的样例：
+  ;; 02/11/1989
+  ;; Bill B. visits Princeton today
+  ;; 2pm Cognitive Studies Committee meeting
+  ;; 2:30-5:30 Liz at Lawrenceville
+  ;; 4:00pm Dentist appt
+  ;; 7:30pm Dinner at George's
+  ;; 8:00-10:00pm concert
+
+  ;; 创建事件的命令：
+  ;; i d 为当天日期添加一个事件
+  ;; i w 为当天周创建一个周事件
+  ;; i m 为当前月创建一个月事件
+  ;; i y 为当前年创建一个年事件
+  ;; i a 为当前日期创建一个周年纪念日
+  ;; i c 创建一个循环的事件
+
+  ;;----------日记设置结束-----------------
+
+  ;; 无差别对所有文件以只读模式打开
+  ;; (defun read-only-setup () 
+  ;;   (read-only-mode)
+  ;;   )
+  ;; (add-hook 'find-file-hook #'read-only-setup)
+#+end_src
