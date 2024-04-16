@@ -3816,8 +3816,6 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 	("C-e" . mwim-end-of-code-or-line))
 #+end_src
 
-
-
 * small_config
 
 ** init.el

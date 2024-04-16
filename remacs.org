@@ -1,7 +1,7 @@
 #+TITLE: emacs配置文件
 #+AUTHOR: yenao
 #+OPTIONS: toc:t num:10 H:10 ^:nil \n:t pri:t
-#+STARTUP: overview
+#+STARTUP: showall
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
 
 * 参考链接
@@ -972,14 +972,14 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 - #+TITLE: \n：设置文档的标题
 - #+AUTHOR: yenao：将文档的作者设置为 "yenao"。
 - #+OPTIONS: toc:t num:3 H:10 ^:nil pri:t：设置导出选项，包括生成目录、章节编号深度、标题级别、上标、下划线格式处理和优先级。
-- #+STARTUP: overview 将文档的默认初始可见性设置为概览模式。
+- #+STARTUP: showall 将文档的默认初始可见性设置为概览模式。
 - #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>：在导出为 HTML 格式时，在 HTML 的头部添加一个链接，引用了一个外部 CSS 文件。
 
 #+begin_src emacs-lisp
   (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
 	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
 	(insert
-	 "#+TITLE: \n#+AUTHOR: yenao\n#+OPTIONS: toc:t num:10 H:10 ^:nil \\n:t broken-links:nil pri:t\n#+STARTUP: overview\n#+HTML_HEAD: \<link rel=\"stylesheet\" type=\"text\/css\" href=\"http:\/\/gongzhitaao.org\/orgcss\/org.css\"\/\>\n"
+	 "#+TITLE: \n#+AUTHOR: yenao\n#+OPTIONS: toc:t num:10 H:10 ^:nil \\n:t broken-links:nil pri:t\n#+STARTUP: showall\n#+HTML_HEAD: \<link rel=\"stylesheet\" type=\"text\/css\" href=\"http:\/\/gongzhitaao.org\/orgcss\/org.css\"\/\>\n"
 	 )) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+OPTIONS: ^:nil、#+TITLE:  和#+AUTHOR: yenao
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
