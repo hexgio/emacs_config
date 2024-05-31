@@ -954,15 +954,17 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   (defun add-code-block ()
 	"在当前位置添加一个代码块，并以时间作为块名进行命名"
 	(interactive)
-	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前日期
+		   (week (format-time-string "%A"))  ; 获取当前星期名称
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
-		   (block-name (concat clean-time))  ; 构建代码块名
+		   (block-name-with-week (concat clean-time " " week))  ; 构建带星期的代码块名
+		   (block-name (concat clean-time))  ; 构建不带星期的代码块名
 		   (code-block (format
 						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
   %s: name\n1、
   ,#+END_SRC\n\n"
-						block-name clean-time block-name)))
+						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
 
   ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
@@ -3026,15 +3028,17 @@ Emacs 内置 EWW 浏览器配置。
   (defun add-code-block ()
 	"在当前位置添加一个代码块，并以时间作为块名进行命名"
 	(interactive)
-	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前日期
+		   (week (format-time-string "%A"))  ; 获取当前星期名称
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
-		   (block-name (concat clean-time))  ; 构建代码块名
+		   (block-name-with-week (concat clean-time " " week))  ; 构建带星期的代码块名
+		   (block-name (concat clean-time))  ; 构建不带星期的代码块名
 		   (code-block (format
-						"*** %s
+						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
   %s: name\n1、
-  ,#+END_SRC"
-						block-name clean-time block-name)))
+  ,#+END_SRC\n\n"
+						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
 
   ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
@@ -3973,18 +3977,21 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 	(interactive)
 	(insert "*** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
 	)
+
   (defun add-code-block ()
 	"在当前位置添加一个代码块，并以时间作为块名进行命名"
 	(interactive)
-	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前日期
+		   (week (format-time-string "%A"))  ; 获取当前星期名称
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
-		   (block-name (concat clean-time))  ; 构建代码块名
+		   (block-name-with-week (concat clean-time " " week))  ; 构建带星期的代码块名
+		   (block-name (concat clean-time))  ; 构建不带星期的代码块名
 		   (code-block (format
-						"*** %s
-		,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-		%s: name\n1、
-		,#+END_SRC"
-						block-name clean-time block-name)))
+						"*** %s\n
+  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+  %s: name\n1、
+  ,#+END_SRC\n\n"
+						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
 
   ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
