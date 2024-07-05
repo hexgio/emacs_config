@@ -1,22 +1,26 @@
 #+TITLE: emacs配置文件
 #+AUTHOR: yenao
 #+OPTIONS: toc:t num:10 H:10 ^:nil \n:t pri:t
-#+STARTUP: showall
+#+STARTUP: overview
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
 
-* 参考链接
+* remacs
 
-** 面向产品经理的Emacs系列教程
+适合高版本的emacs配置
+
+** 参考链接
+
+*** 面向产品经理的Emacs系列教程
 
 [[https://remacs.cc/][remacs的世界]]
 
 [[https://remacs.fun/][remacs的世界]]
 
-** 面向产品经理的Emacs系列教程配套配置文件
+*** 面向产品经理的Emacs系列教程配套配置文件
 
 [[https://github.com/wowhxj/emacs-from-scratch][面向产品经理的Emacs系列教程配套配置文件]]
-
-* early-init.el
+   
+** early-init.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/early-init.el
 :END:
@@ -84,13 +88,13 @@
 	 ;;; early-init.el ends here
 #+END_SRC
 
-* init.el
+** init.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/init.el
 :END:
 =init.el= 是Emacs的主要配置文件。
 
-** init.el 文件头
+*** init.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init.el --- The main init entry for Emacs -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -99,7 +103,7 @@
 
 #+END_SRC
 
-** package包管理配置
+*** package包管理配置
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
@@ -115,7 +119,7 @@
   (package-initialize)
 			#+end_src
 
-** 安装use-package插件
+*** 安装use-package插件
 [[https://github.com/jwiegley/use-package][use-package]] 是一个让Emacs配置更加结构化更加清晰的一个宏插件。
 
 #+begin_src emacs-lisp
@@ -145,13 +149,13 @@
 	:ensure t)
 #+end_src
 
-** quelpa包管理器
+*** quelpa包管理器
 
 [[https://github.com/quelpa/quelpa][quelpa]] 是配合 =package.el= 使用的，基于git的一个包管理器。
 
 使用示例：
 
-*** 示例1 常规操作
+**** 示例1 常规操作
 
 #+begin_src emacs-lisp :tangle no
   (use-package org-super-links
@@ -161,7 +165,7 @@
 	)
 #+end_src
 
-*** 示例2 github访问不了，使用项目镜像链接
+**** 示例2 github访问不了，使用项目镜像链接
 
 #+begin_src emacs-lisp :tangle no
   (quelpa
@@ -190,7 +194,7 @@
 	:ensure t)
 #+END_SRC
 
-** 加载模块化配置
+*** 加载模块化配置
 #+begin_src emacs-lisp
   ;; 将lisp目录放到加载路径的前面以加快启动速度
   (let ((dir (locate-user-emacs-file "lisp")))
@@ -211,18 +215,18 @@
 	(require 'init-browser)               ; 浏览器配置
 	)
 #+end_src
-** init.el 文件尾
+*** init.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init)
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;; init.el ends here
 #+END_SRC
-* init-ui.el
+** init-ui.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-ui.el :mkdirp yes
 :END:
-** init-ui.el 文件头
+*** init-ui.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-ui.el --- UI settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -230,7 +234,7 @@
   ;;; Code:
 
 #+END_SRC
-** spacemacs-theme主题
+*** spacemacs-theme主题
 [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]] 是我非常喜欢的一个主题包。
 
 #+BEGIN_SRC emacs-lisp
@@ -243,7 +247,7 @@
 	)
 #+END_SRC
 
-** 其他UI零散设置项
+*** 其他UI零散设置项
 
 #+begin_src emacs-lisp
   ;; 禁用一些GUI特性
@@ -385,7 +389,7 @@
   (global-set-key (kbd "C-c z") 'close-current-window)
 #+end_src
 
-** 编码设置
+*** 编码设置
 
 统一使用 UTF-8 编码。
 
@@ -395,7 +399,7 @@
   (setq-default buffer-file-coding-system 'utf-8)
 #+end_src
 
-** keycast按键展示
+*** keycast按键展示
 
 [[https://github.com/tarsius/keycast][keycast mode]] 插件可以在模式栏上展示所有的按键，以及对应的函数。
 
@@ -436,7 +440,7 @@
 	)
 #+END_SRC
 
-** shackle窗口管理
+*** shackle窗口管理
 
 [[https://depp.brause.cc/shackle/][shackle]] 插件能自定义窗口的弹出方式。
 
@@ -464,7 +468,7 @@
 			))
 	)
 #+END_SRC
-** popper窗口弹出管理
+*** popper窗口弹出管理
 
 我们通过 [[https://hub.nuaa.cf/karthink/popper][popper]] 插件，来控制窗口的弹出行为，与 [[https://depp.brause.cc/shackle/][shackle]] 一起配合使用。
 
@@ -507,7 +511,7 @@
 	(setq popper-display-control nil)
 	)
 #+END_SRC
-** winner窗口管理
+*** winner窗口管理
 
 内置的 =winner= 插件是一个窗口管理器，可以通过 =winner-undo= 和 =winner-redo= 命令恢复或重做窗口布局。
 
@@ -531,7 +535,7 @@
 	)
 #+END_SRC
 
-** init-ui.el 文件尾
+*** init-ui.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-ui)
@@ -539,12 +543,12 @@
   ;;; init-ui.el ends here
 #+END_SRC
 
-* init-base.el
+** init-base.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-base.el :mkdirp yes
 :END:
 
-** init-base.el 文件头
+*** init-base.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-base.el --- Basical settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -553,7 +557,7 @@
 
 #+END_SRC
 
-** savehist记住迷你缓冲区历史
+*** savehist记住迷你缓冲区历史
 记住迷你缓冲区历史。
 
 #+BEGIN_SRC emacs-lisp
@@ -572,7 +576,7 @@
 	(setq savehist-autosave-interval 300))
 #+END_SRC
 
-** saveplace记住每个文件的光标位置
+*** saveplace记住每个文件的光标位置
 自动记住每个文件的最后一次访问的光标位置。
 
 #+begin_src emacs-lisp
@@ -581,7 +585,7 @@
 	:hook (after-init . save-place-mode))
 #+end_src
 
-** undo-tree撤销设置
+*** undo-tree撤销设置
 
 [[https://www.dr-qubit.org/undo-tree.html][undo-tree]] 插件可以提供一个可视化的撤销、重做系统，我们使用 =C-/= 来撤销，使用 =M-_= 来重做。
 
@@ -595,7 +599,7 @@
 	)
 #+end_src
 
-** super-save自动保存
+*** super-save自动保存
 
 [[https://hub.nuaa.cf/bbatsov/super-save][super-save]] 插件能自动保存缓冲区。它可以设置在某些行为（如窗口切换、或窗口空闲一段时间）下自动保存。
 
@@ -628,7 +632,7 @@
 	)
 #+END_SRC
 
-** init-base.el 文件尾
+*** init-base.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-base)
@@ -636,12 +640,12 @@
   ;;; init-base.el ends here
 #+END_SRC
 
-* init-edit.el
+** init-edit.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-edit.el :mkdirp yes
 :END:
 
-** init-edit.el 文件头
+*** init-edit.el 文件头
 
 #+BEGIN_SRC emacs-lisp
   ;;; init-edit.el --- Editing settings -*- lexical-binding: t -*-
@@ -651,7 +655,7 @@
 
 #+END_SRC
 
-** Emacs备份设置
+*** Emacs备份设置
 
 不使用Emacs的自动备份设置。
 
@@ -660,7 +664,7 @@
   (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
 #+END_SRC
 
-** 解除一些不常用的快捷键
+*** 解除一些不常用的快捷键
 
 将一些不常用的快捷键解除，防止误操作。
 
@@ -673,7 +677,7 @@
   (global-set-key [mouse-2] nil)
 #+END_SRC
 
-** delsel选择文本输入时直接替换
+*** delsel选择文本输入时直接替换
 
 Emacs默认选择文本后直接输入，是不会直接删除所选择的文本进行替换的。通过内置的 =delsel= 插件来实现这个行为。
 
@@ -684,7 +688,7 @@ Emacs默认选择文本后直接输入，是不会直接删除所选择的文本
 	:hook (after-init . delete-selection-mode))
 #+end_src
 
-** 自动重载设置
+*** 自动重载设置
 
 当我们的文件发生了改变后，我们希望Emacs里打开的永远是最新的文件，这个时候，我们需要对自动重载进行设置，让我们的Emacs在文件发生改变的时候自动重载文件。
 
@@ -702,7 +706,7 @@ Emacs默认选择文本后直接输入，是不会直接删除所选择的文本
 	(global-auto-revert-non-file-buffers t))
 #+END_SRC
 
-** avy光标移动
+*** avy光标移动
 
 [[https://github.com/abo-abo/avy][avy]] 是一个光标移动插件，能快速将光标移动到屏幕上的任意字符，非常强大！
 
@@ -712,7 +716,7 @@ Emacs默认选择文本后直接输入，是不会直接删除所选择的文本
 	:bind
 	(("M-j" . avy-goto-char-timer)))
 #+end_src
-** amx 记录命令历史
+*** amx 记录命令历史
 
 [[https://github.com/DarwinAwardWinner/amx][amx - GitHub 主页]]
 
@@ -724,7 +728,7 @@ Emacs默认选择文本后直接输入，是不会直接删除所选择的文本
 	:init (amx-mode))
 #+end_src
 
-** window-numbering 快捷键切换窗口
+*** window-numbering 快捷键切换窗口
 
 分屏之后的emacs在屏幕切换的时候会比较麻烦，针对这个功能有一个可以实现这个的插件，也就是window-numbering。
 
@@ -738,7 +742,7 @@ Emacs默认选择文本后直接输入，是不会直接删除所选择的文本
 	)
 #+end_src
 
-** mwim 优化光标移动到行首/行尾
+*** mwim 优化光标移动到行首/行尾
 
 [[https://github.com/alezost/mwim.el][mwim - GitHub 主页]]
 
@@ -754,7 +758,7 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 	("C-e" . mwim-end-of-code-or-line))
 #+end_src
 
-** dashboard 配置欢迎页面
+*** dashboard 配置欢迎页面
 
 [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard - GitHub 主页]]
 
@@ -772,7 +776,7 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 							(projects . 10))) ;; 显示多少个最近项目
 	(dashboard-setup-startup-hook))
 #+end_src
-*** projectile
+**** projectile
 
 配合dashboard使用
 
@@ -781,7 +785,7 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 	:ensure t)
 #+end_src
 
-** marginalia 为 Emacs minibuffer 中的选项添加注解
+*** marginalia 为 Emacs minibuffer 中的选项添加注解
 
 [[https://github.com/minad/marginalia][marginalia - GitHub 主页]]
 
@@ -795,7 +799,7 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 				("M-A" . marginalia-cycle)))
 #+end_src
 
-** which-key 根据快捷键前缀提示快捷键
+*** which-key 根据快捷键前缀提示快捷键
 
 [[https://github.com/justbur/emacs-which-key][which-key - GitHub 主页]]
 
@@ -807,7 +811,7 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 	:init (which-key-mode))
 #+end_src
 
-** hydra 把一组特定场景的命令组织到一起， 通过简单按键来进行调用
+*** hydra 把一组特定场景的命令组织到一起， 通过简单按键来进行调用
 
 [[https://github.com/abo-abo/hydra][hydra - GitHub 主页]]
 
@@ -818,7 +822,7 @@ hydra 主要功能是把一组特定场景的命令组织到一起， 通过简�
 	:ensure t)
 #+end_src
 
-*** use-package-hydra
+**** use-package-hydra
 
 配合hydra使用
 
@@ -828,7 +832,7 @@ hydra 主要功能是把一组特定场景的命令组织到一起， 通过简�
 	:after hydra) 
 #+end_src
 
-** multiple-cursors多光标编辑
+*** multiple-cursors多光标编辑
 [[https://hub.nuaa.cf/magnars/multiple-cursors.el][multiple-cursors]] 插件能让Emacs实现多光标编辑和移动。
 
 #+BEGIN_SRC emacs-lisp
@@ -866,7 +870,7 @@ hydra 主要功能是把一组特定场景的命令组织到一起， 通过简�
 			("q" nil)))
 #+END_SRC
 
-** highlight-symbol 高亮出当前 Buffer 中所有的、与光标所在处的符号相同的符号
+*** highlight-symbol 高亮出当前 Buffer 中所有的、与光标所在处的符号相同的符号
 
 [[https://github.com/nschum/highlight-symbol.el][highlight-symbol - GitHub 主页]]
 
@@ -883,7 +887,7 @@ hydra 主要功能是把一组特定场景的命令组织到一起， 通过简�
 	) 
 #+end_src
 
-** rainbow-delimiters 用不同颜色标记多级括号，方便看清代码块
+*** rainbow-delimiters 用不同颜色标记多级括号，方便看清代码块
 
 [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters - GitHub 主页]]
 
@@ -895,7 +899,7 @@ hydra 主要功能是把一组特定场景的命令组织到一起， 通过简�
 	:hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-** evil（为 Vim 用户）
+*** evil（为 Vim 用户）
 
 [[https://github.com/emacs-evil/evil][evil - GitHub 主页]]
 
@@ -909,7 +913,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	(("C-x C-z" . evil-mode)))
 #+end_src
 
-** WorkLogReport 工作日志报告
+*** WorkLogReport 工作日志报告
 
 插入工作日志报告模板
 
@@ -950,41 +954,43 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   (defun add-code-block ()
 	"在当前位置添加一个代码块，并以时间作为块名进行命名"
 	(interactive)
-	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前时间
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前日期
+		   (week (format-time-string "%A"))  ; 获取当前星期名称
 		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
-		   (block-name (concat clean-time))  ; 构建代码块名
+		   (block-name-with-week (concat clean-time " " week))  ; 构建带星期的代码块名
+		   (block-name (concat clean-time))  ; 构建不带星期的代码块名
 		   (code-block (format
 						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1、
+    %s: name\n  1、
   ,#+END_SRC\n\n"
-						block-name clean-time block-name)))
+						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
 
   ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
   (global-set-key (kbd "C-c SPC r") 'add-code-block)
 #+end_src
 
-** g-org-insert-note-header 插入一些 Org 模式的头部信息
+*** g-org-insert-note-header 插入一些 Org 模式的头部信息
 
 用于在当前光标位置插入一些 Org 模式的头部信息。这些头部信息包括了一些选项，标题，作者以及一些其他设置
 
 - #+TITLE: \n：设置文档的标题
 - #+AUTHOR: yenao：将文档的作者设置为 "yenao"。
 - #+OPTIONS: toc:t num:3 H:10 ^:nil pri:t：设置导出选项，包括生成目录、章节编号深度、标题级别、上标、下划线格式处理和优先级。
-- #+STARTUP: showall 将文档的默认初始可见性设置为概览模式。
+- #+STARTUP: overview 将文档的默认初始可见性设置为概览模式。
 - #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>：在导出为 HTML 格式时，在 HTML 的头部添加一个链接，引用了一个外部 CSS 文件。
 
 #+begin_src emacs-lisp
   (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
 	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
 	(insert
-	 "#+TITLE: \n#+AUTHOR: yenao\n#+OPTIONS: toc:t num:10 H:10 ^:nil \\n:t broken-links:nil pri:t\n#+STARTUP: showall\n#+HTML_HEAD: \<link rel=\"stylesheet\" type=\"text\/css\" href=\"http:\/\/gongzhitaao.org\/orgcss\/org.css\"\/\>\n"
+	 "#+TITLE: \n#+AUTHOR: yenao\n#+OPTIONS: toc:t num:10 H:10 ^:nil \\n:t broken-links:nil pri:t\n#+STARTUP: overview\n#+HTML_HEAD: \<link rel=\"stylesheet\" type=\"text\/css\" href=\"http:\/\/gongzhitaao.org\/orgcss\/org.css\"\/\>\n"
 	 )) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+OPTIONS: ^:nil、#+TITLE:  和#+AUTHOR: yenao
   ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
 #+end_src
 
-** g-org-emacs-lisp-code-block 插入emacs-lisp代码块
+*** g-org-emacs-lisp-code-block 插入emacs-lisp代码块
 
 用于插入emacs-lisp代码块
 
@@ -995,7 +1001,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+end_src
 
-** g-org-c-code-block 插入C语言代码块
+*** g-org-c-code-block 插入C语言代码块
 
 用于插入c语言的代码块
 
@@ -1006,7 +1012,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+end_src
 
-** g-org-bash-code-block 插入bash语言的代码块
+*** g-org-bash-code-block 插入bash语言的代码块
 
 用于插入bash语言的代码块
 
@@ -1017,7 +1023,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+end_src
 
-** g-org-html-code-block 插入html语言的代码块
+*** g-org-html-code-block 插入html语言的代码块
 
 用于插入html语言的代码块
 
@@ -1028,7 +1034,36 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   )
 #+end_src
 
-** markdown
+*** g-org-javascript-code-block 插入 html 语言的代码块
+
+用于插入html语言的代码块
+
+#+begin_src bash
+  (defun g-org-javascript-code-block ()
+   (interactive)
+   (insert "#+begin_src javascript\n\n#+end_src")
+  )
+#+end_src
+
+*** 英文字符与中文字符中插入或删除空格 - 自定义函数
+
+#+begin_src emacs-lisp
+  (defun insert-space-between-english-and-chinese ()
+	"在英文字符与中文字符之间插入空格"
+	(interactive)
+	(save-excursion
+	  (while (re-search-forward "\\([[:ascii:]]\\)\\(\\cc\\)" nil t)
+		(replace-match "\\1 \\2"))))
+
+  (defun delete-space-between-english-and-chinese ()
+	"删除英文字符与中文字符之间的空格"
+	(interactive)
+	(save-excursion
+	  (while (re-search-forward "\\([[:ascii:]]\\) \\(\\cc\\)" nil t)
+		(replace-match "\\1\\2"))))
+#+end_src
+
+*** markdown
 
 使emacs支持markdown模式编辑文件
 
@@ -1045,7 +1080,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+end_src
 
-** init-edit.el 文件尾
+*** init-edit.el 文件尾
 
 #+BEGIN_SRC emacs-lisp
   ;; (message "init-base configuration: %.2fs"
@@ -1056,12 +1091,12 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   ;;; init-edit.el ends here
 #+END_SRC
 
-* init-org.el
+** init-org.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-org.el :mkdirp yes
 :END:
 
-** init-org.el 文件头
+*** init-org.el 文件头
 
 #+BEGIN_SRC emacs-lisp
   ;;; init-org.el --- Org mode settings -*- lexical-binding: t -*-
@@ -1071,7 +1106,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 
 #+END_SRC
 
-** org-appear自动展开强调链接
+*** org-appear自动展开强调链接
 
 通过 [[https://hub.nuaa.cf/awth13/org-appear][org-appear]] 插件，当我们的光标移动到Org mode里的强调、链接上时，会自动展开，这样方便进行编辑。
 
@@ -1088,7 +1123,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+end_src
 
-** org-auto-tangle自动tangle设置
+*** org-auto-tangle自动tangle设置
 
 [[https://hub.nuaa.cf/yilkalargaw/org-auto-tangle][org-auto-tangle]] 插件可以在Org mode下自动进行tangle。
 
@@ -1101,7 +1136,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-** org-capture快速记录设置
+*** org-capture快速记录设置
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-capture
@@ -1138,7 +1173,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-** denote笔记设置
+*** denote笔记设置
 
 [[https://protesilaos.com/emacs/denote][denote]] 是一个轻量级的笔记插件，拥有良好的文件名命名模板。
 
@@ -1187,7 +1222,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-** consult-notes查找笔记
+*** consult-notes查找笔记
 
 [[https://hub.nuaa.cf/mclear-tools/consult-notes][consult-notes]] 插件可以通过consult快速找到笔记。
 
@@ -1242,7 +1277,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-** org-super-links反链设置
+*** org-super-links反链设置
 
 [[https://github.com/toshism/org-super-links][org-super-links]] 插件可以设置反向链接。
 
@@ -1265,7 +1300,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	(setq	org-super-links-link-prefix 'org-super-links-link-prefix-timestamp))
 #+END_SRC
 
-** ox文件导出通用设置
+*** ox文件导出通用设置
 
 下面是org文件导出的通用设置。
 
@@ -1293,8 +1328,8 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+end_src
 
-** org导出后端设置
-*** ox-html导出HTML设置
+*** org导出后端设置
+**** ox-html导出HTML设置
 
 我们先来对HTML导出做一个基本设置：
 
@@ -1325,7 +1360,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	(htmlize-output-type 'inline-css))
 #+END_SRC
 
-*** ox-latex导出PDF设置
+**** ox-latex导出PDF设置
 
 =ox-latex= 是Org mode自带的功能，可以将Org文件导出为latex文件和PDF文件。
 
@@ -1397,7 +1432,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-*** ox-gfm导出Markdown设置
+**** ox-gfm导出Markdown设置
 
 我们通过 [[https://github.com/larstvei/ox-gfm][ox-gfm]] 插件来导出Github样式的Markdown文件。
 
@@ -1407,7 +1442,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	:after ox)
 #+END_SRC
 
-*** ox-publish导出静态站点设置
+**** ox-publish导出静态站点设置
 
 #+BEGIN_SRC emacs-lisp
   (unless (file-exists-p "~/org")
@@ -1465,7 +1500,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-*** ox-hugo导出博客设置
+**** ox-hugo导出博客设置
 
 [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] 插件可以将 org 文件导出为 [[https://gohugo.io/][hugo]] 需要的 Markdown 文件，并快速通过 hugo 进行博客的生成和发布。
 
@@ -1502,7 +1537,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	)
 #+END_SRC
 
-** toc-org目录自动生成
+*** toc-org目录自动生成
 
 [[https://github.com/snosov1/toc-org][toc-org]] 插件可以在Org文件里自动生成目录，只需给一个标题行设置一个标签为 =toc= 或 =toc_2= 即可（后者只生成2层）。
 
@@ -1512,7 +1547,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	:hook (org-mode . toc-org-mode))
 #+END_SRC
 
-** ol新增链接类型
+*** ol新增链接类型
 
 [[google:Org mode][google Org mode]]
 
@@ -1532,7 +1567,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 							 ("zhihu"         . "https://zhihu.com/question/"))))
 #+END_SRC
 
-** 图片粘贴
+*** 图片粘贴
 
 通过 =pngpaste= 这个命令行工具，将系统剪贴板里的图片，输出到当前文件同名的 =assets= 文件夹下，然后自动在当前org文件的光标处插入图片链接，并设置图片链接的宽度属性。
 
@@ -1580,7 +1615,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 	  )
 	)
 #+END_SRC
-** init-org.el 文件尾
+*** init-org.el 文件尾
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1589,14 +1624,14 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
   ;;; init-org.el ends here
 #+END_SRC
 
-* init-completion.el
+** init-completion.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-completion.el :mkdirp yes
 :END:
 
 Emacs的补全设置。
 
-** init-completion.el 文件头
+*** init-completion.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-completion.el --- Completion settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -1605,7 +1640,7 @@ Emacs的补全设置。
 
 #+END_SRC
 
-** vertico 提供了一个垂直样式的补全系统
+*** vertico 提供了一个垂直样式的补全系统
 
 [[https://github.com/minad/vertico][vertico]] 插件提供了一个垂直样式的补全系统。
 
@@ -1640,7 +1675,7 @@ Emacs的补全设置。
 	)
 #+END_SRC
 
-** orderless 插件提供一种无序的补全新姿势，将一个搜索的范式变成数个以空格分隔的部分
+*** orderless 插件提供一种无序的补全新姿势，将一个搜索的范式变成数个以空格分隔的部分
 
 [[https://github.com/oantolin/orderless][oderless]] 插件提供一种无序的补全新姿势，将一个搜索的范式变成数个以空格分隔的部分，各部分之间没有顺序，你要做的就是根据记忆输入关键词、空格、关键词。
 
@@ -1666,7 +1701,7 @@ Emacs的补全设置。
 	)
 #+END_SRC
 
-** marginalia 给迷你缓冲区的补全候选条目添加一些提示
+*** marginalia 给迷你缓冲区的补全候选条目添加一些提示
 
 [[https://github.com/minad/marginalia][marginalia]] 插件给迷你缓冲区的补全候选条目添加一些提示。
 
@@ -1679,7 +1714,7 @@ Emacs的补全设置。
 	(marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 #+END_SRC
 
-** consult 基于Emacs自带的补全机制，提供了一系列的补全命令
+*** consult 基于Emacs自带的补全机制，提供了一系列的补全命令
 
 [[https://github.com/minad/consult][consult]] 插件基于Emacs自带的补全机制，提供了一系列的补全命令。
 
@@ -1777,7 +1812,7 @@ For locate on MacOS:
 	)
 #+END_SRC
 
-** company Emacs最广为使用的补全插件
+*** company Emacs最广为使用的补全插件
 
 Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][company-mode]]，其官方主页上已有详细的说明。
 
@@ -1795,7 +1830,7 @@ Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][com
 	(setq company-transformers '(company-sort-by-occurrence)))
 #+end_src
 
-** yasnippet模板补全
+*** yasnippet模板补全
 
 [[https://github.com/joaotavora/yasnippet][yasnippet]] 插件是一个非常强大的模板补全系统。
 
@@ -1823,7 +1858,7 @@ Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][com
 		  (ignore-errors (yas-next-field))))))
 #+end_src
 
-*** css for html export
+**** css for html export
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/snippets/CssForHtmlExport
   # -*- mode: snippet -*-
@@ -1837,7 +1872,7 @@ Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][com
   $0
 #+end_src
 
-*** emacslisp
+**** emacslisp
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/snippets/emacslisp
   # -*- mode: snippet -*-
@@ -1849,7 +1884,7 @@ Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][com
   \#+END_SRC
 #+end_src
 
-** embark 插件提供了一系列的迷你缓冲区的类似右键机制的增强
+*** embark 插件提供了一系列的迷你缓冲区的类似右键机制的增强
 
 [[https://github.com/oantolin/embark][embark]] 插件提供了一系列的迷你缓冲区的类似右键机制的增强。
 
@@ -1903,7 +1938,7 @@ Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][com
 	:hook (embark-collect-mode . consult-preview-at-point-mode))
 #+END_SRC
 
-** init-completion.el 文件尾
+*** init-completion.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-completion)
@@ -1911,14 +1946,14 @@ Emacs最广为使用的补全插件便是 [[https://company-mode.github.io/][com
   ;;; init-completion.el ends here
 #+END_SRC
 
-* init-dired.el
+** init-dired.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-dired.el :mkdirp yes
 :END:
 
 Emacs文件管理设置。
 
-** init-dired.el 文件头
+*** init-dired.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-dired.el --- Dired settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -1927,7 +1962,7 @@ Emacs文件管理设置。
 
 #+END_SRC
 
-** init-dired.el 文件尾
+*** init-dired.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-dired)
@@ -1935,12 +1970,12 @@ Emacs文件管理设置。
   ;;; init-dired.el ends here
 #+END_SRC
 
-* init-tools.el
+** init-tools.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-tools.el :mkdirp yes
 :END:
 
-** init-tools.el 文件头
+*** init-tools.el 文件头
 
 #+BEGIN_SRC emacs-lisp
   ;;; init-tools.el --- Tools settings -*- lexical-binding: t -*-
@@ -1950,7 +1985,7 @@ Emacs文件管理设置。
 
 #+END_SRC
 
-** helpful帮助增强
+*** helpful帮助增强
 
 [[https://github.com/Wilfred/helpful][helpful]] 插件提供了帮助增强。
 
@@ -1969,7 +2004,7 @@ Emacs文件管理设置。
 	)
 #+end_src
 
-** pass密码管理
+*** pass密码管理
 
 通过 [[https://github.com/NicolasPetton/pass][pass]] 插件来进行密码管理。
 
@@ -1980,7 +2015,7 @@ Emacs文件管理设置。
 	)
 #+END_SRC
 
-** cnfonts 用于缩放字体
+*** cnfonts 用于缩放字体
 
 cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工 具。可以比较方便地实现中文字体和英文字体等宽（也就是大家常说的中英 文对齐）。
 
@@ -1995,7 +2030,7 @@ cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工
 	)
 #+end_src
 
-** bhj-fonts字体配置
+*** bhj-fonts字体配置
 
 参考链接
 
@@ -2130,7 +2165,7 @@ cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工
   ;; {%/org-mode%}
 #+end_src
 
-** init-tools.el 文件尾
+*** init-tools.el 文件尾
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2139,14 +2174,14 @@ cnfonts 原来叫: chinese-fonts-setup, 是一个 Emacs 中英文字体配置工
   ;;; init-tools.el ends here
 #+END_SRC
 
-* init-rss.el
+** init-rss.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-rss.el :mkdirp yes
 :END:
 
 Emacs的RSS新闻阅读设置
 
-** init-rss.el 文件头
+*** init-rss.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-rss.el --- RSS settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -2155,7 +2190,7 @@ Emacs的RSS新闻阅读设置
 
 #+END_SRC
 
-** elfeed 一个非常棒的RSS新闻阅读客户端
+*** elfeed 一个非常棒的RSS新闻阅读客户端
 
 [[https://github.com/skeeto/elfeed][elfeed]] 插件是一个非常棒的RSS新闻阅读客户端。
 
@@ -2218,7 +2253,7 @@ Emacs的RSS新闻阅读设置
 	)
 #+END_SRC
 
-** elfeed-goodies给elfeed优化增强
+*** elfeed-goodies给elfeed优化增强
 
 我们通过 [[https://github.com/jeetelongname/elfeed-goodies][elfeed-goodies]] 插件给 elfeed 进行优化增强：
 
@@ -2232,21 +2267,21 @@ Emacs的RSS新闻阅读设置
 	)
 #+END_SRC
 
-** init-rss.el 文件尾
+*** init-rss.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-rss)
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;; init-rss.el ends here
 #+END_SRC
-* init-shell.el
+** init-shell.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-shell.el :mkdirp yes
 :END:
 
 Emacs里的shell设置。
 
-** init-shell.el 文件头
+*** init-shell.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-shell.el --- (E)shell settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -2255,7 +2290,7 @@ Emacs里的shell设置。
 
 #+END_SRC
 
-** eshell 基本配置
+*** eshell 基本配置
 
 #+BEGIN_SRC emacs-lisp
   (use-package eshell
@@ -2333,7 +2368,7 @@ Emacs里的shell设置。
 	)
 #+END_SRC
 
-** eshell alias 设置
+*** eshell alias 设置
 
 #+BEGIN_SRC text :tangle ~/.emacs.d/etc/eshell/aliases 
   alias ff find-file $1
@@ -2347,7 +2382,7 @@ Emacs里的shell设置。
   alias more view-file $1
 #+END_SRC
 
-** eshell 里的 C-d
+*** eshell 里的 C-d
 
 让 =C-d= 更智能：
 
@@ -2365,7 +2400,7 @@ Emacs里的shell设置。
 	)
 #+END_SRC
 
-** Eshell 的命令历史
+*** Eshell 的命令历史
 
 #+BEGIN_SRC emacs-lisp
   (use-package em-hist
@@ -2377,7 +2412,7 @@ Emacs里的shell设置。
 	(eshell-save-history-on-exit t))
 #+END_SRC
 
-** 有些命令使用 term
+*** 有些命令使用 term
 
 有一些命令如 top，我们还是使用 term：
 
@@ -2393,7 +2428,7 @@ Emacs里的shell设置。
 	(eshell-destroy-buffer-when-process-dies t))
 #+END_SRC
 
-** eshell-git-prompt 命令行主题
+*** eshell-git-prompt 命令行主题
 
 [[https://github.com/xuchunyang/eshell-git-prompt][eshell-git-prompt]] 插件提供了数个好看的 Eshell 命令行主题。
 
@@ -2408,7 +2443,7 @@ Emacs里的shell设置。
 	)
 #+END_SRC
 
-** eshell-syntax-highlighting 语法高亮
+*** eshell-syntax-highlighting 语法高亮
 
 [[https://github.com/akreisher/eshell-syntax-highlighting][eshell-syntax-highlighting]] 插件为Eshell提供语法高亮。
 
@@ -2422,7 +2457,7 @@ Emacs里的shell设置。
 	)
 #+END_SRC
 
-** capf-autosuggest自动补全
+*** capf-autosuggest自动补全
 
 [[https://github.com/emacsmirror/capf-autosuggest][capf-autosuggest]] 提供Fish类似的Eshell命令自动补全功能。类似的插件还有 [[https://github.com/dieggsy/esh-autosuggest][esh-autosuggest]]。
 
@@ -2435,7 +2470,7 @@ Emacs里的shell设置。
 	)
 #+END_SRC
 
-** eshell-up快速进入父级文件夹
+*** eshell-up快速进入父级文件夹
 
 [[https://github.com/peterwvj/eshell-up][eshell-up]] 插件可以快速进入当前文件夹的任何一个父级文件夹。通过 =up= 命令（已经设置了up 在eshell里的alias）进入当前文件夹的任何一级父目录。
 
@@ -2449,7 +2484,7 @@ Emacs里的shell设置。
 	)
 #+END_SRC
 
-** init-shell.el 文件尾
+*** init-shell.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-shell)
@@ -2457,12 +2492,12 @@ Emacs里的shell设置。
   ;;; init-shell.el ends here
 #+END_SRC
 
-* init-browser.el
+** init-browser.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/lisp/init-browser.el :mkdirp yes
 :END:
 
-** init-browser.el 文件头
+*** init-browser.el 文件头
 #+BEGIN_SRC emacs-lisp
   ;;; init-browser.el --- Browser settings -*- lexical-binding: t -*-
   ;;; Commentary:
@@ -2471,7 +2506,7 @@ Emacs里的shell设置。
 
 #+END_SRC
 
-** EWW 配置
+*** EWW 配置
 
 Emacs 内置 EWW 浏览器配置。
 
@@ -2506,10 +2541,1636 @@ Emacs 内置 EWW 浏览器配置。
 	)
 #+END_SRC
 
-** init-browser.el 文件尾
+*** init-browser.el 文件尾
 #+BEGIN_SRC emacs-lisp
 
   (provide 'init-browser)
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;; init-browser.el ends here
 #+END_SRC
+
+* simple_config
+
+** config
+
+*** init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (load-file "~/.emacs.d/loadFile.el")
+#+end_src
+
+*** loadFile.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/loadFile.el
+  (setq gc-cons-threshold (* 50 1000 1000))
+  ;; Portion of heap used for allocation.  Defaults to 0.1.
+  (setq gc-cons-percentage 0.6)
+
+  ;; 基本配置
+  (load-file "~/.emacs.d/basic_config.el") ;; 我的基本的配置
+  (load-file "~/.emacs.d/use-package.el") ;; 用于安装或者配置插件
+
+  ;; 配置启动欢迎界面
+  ;; (when (display-graphic-p)
+  ;;   (load-file "~/.emacs.d/dashboard.el"))
+  (when (version<= "26.1" emacs-version)
+	(load-file "~/.emacs.d/dashboard.el")
+	)
+  (when (version<= "25.1" emacs-version)
+	(load-file "~/.emacs.d/projectile.el"))
+
+  ;; 主题配置
+  ;; (load-file "~/.emacs.d/doom-themes.el") ;; 主题 
+  ;; (load-file "~/.emacs.d/dracula-theme.el") ;; 主题
+  (load-file "~/.emacs.d/spacemacs-theme.el") ;; 主题
+
+  (load-file "~/.emacs.d/mwim.el") ;; 优化 C-a 与 C-e
+  (load-file "~/.emacs.d/amx.el") ;; 短暂记录命令历史
+  (when (version<= "24.5.1" emacs-version)
+	(load-file "~/.emacs.d/which-key.el") ;; 快捷键提示	  
+	)
+
+  (when (version<= "25.1" emacs-version)
+	(load-file "~/.emacs.d/company.el") ;; 补全文本用  
+	)
+  (load-file "~/.emacs.d/avy.el") ;; 强大插件，可以脱离鼠标使用
+  (load-file "~/.emacs.d/tiny.el")
+  ;; (load-file "~/.emacs.d/treemacs.el")
+  (when (version<= "24.5.1" emacs-version)
+	(load-file "~/.emacs.d/cnfonts.el") ;; 用于缩放字体		
+	)
+  (when (version<= "24.5.1" emacs-version)
+	(load-file "~/.emacs.d/highlight-symbol.el") ;; <F10> 打开符号高亮	
+	)
+
+  (load-file "~/.emacs.d/rainbow-delimiters.el") ;; 标记多级代码块
+  (when (version<= "24.5.1" emacs-version)
+	(load-file "~/.emacs.d/window-numbering.el") ;; 切换窗口用
+	)
+
+  (when (version<= "25.3" emacs-version)
+	(load-file "~/.emacs.d/keycast.el") ;; 用于显示在 emacs中操作的按键，可以插件开启这个插件的模式，自动启动会于minibuffer的行列显示冲突
+	)
+
+  ;; (load-file "~/.emacs.d/good-scroll.el") ;; 优化页面滚动，但是我没感觉出效果
+  ;; (load-file "~/.emacs.d/undo-tree.el") ;; 优化 undo 和 redo,不太习惯,可能是因为用得少或者不够熟悉该插件的使用方法
+
+  ;; 配置代码块
+  (load-file "~/.emacs.d/g-config.el") ;; 配置插件的代码块
+  (load-file "~/.emacs.d/auto-mode-alist.el")
+  (load-file "~/.emacs.d/g-org-insert-note-header.el") ;; 插件org文件头
+  (load-file "~/.emacs.d/g-org-emacs-lisp-code-block.el") ;; 插入一般的代码块
+  (load-file "~/.emacs.d/g-org-c-code-block.el") ;; 插入c代码块
+  (load-file "~/.emacs.d/g-org-bash-code-block.el") ;; 插入bash代码块
+  (load-file "~/.emacs.d/g-org-html-code-block.el") ;; 插入html代码块
+  (load-file "~/.emacs.d/report.el") ;; 插件特定代码块模板用
+  (load-file "~/.emacs.d/insert-timestamp.el") ;; 插入时间戳
+  (load-file "~/.emacs.d/show-current-time.el") ;; 显示时间戳
+  (load-file "~/.emacs.d/create-dated-diary.el") ;; 用于写日记
+  (load-file "~/.emacs.d/web-mode.el") ;; web-mode 提供了很好的wen配件（HTML、JavaScript、CSS、PHP等）的代码缩进、折叠和高亮等出色的功能
+
+  ;; 文本编辑插件
+  (when (version<= "27.1" emacs-version)
+	(load-file "~/.emacs.d/markdown.el") ;; 支持 markdown 模式编写文本  
+	)
+
+  (when (version<= "25.1" emacs-version)
+	(when (version<= "26.1" emacs-version)
+	  (load-file "~/.emacs.d/easy-hugo.el")
+	  )
+	)
+  (when (version<= "26.1" emacs-version)
+	(load-file "~/.emacs.d/ox-pandoc.el")
+	)
+  (when (version<= "26.3" emacs-version)
+	(load-file "~/.emacs.d/ox-hugo.el") ;; 在org文件中执行 C-c C-e 导出文件时可以用于导出 markdown 文本	
+	)
+
+  (load-file "~/.emacs.d/Emacs备份设置.el")
+  (load-file "~/.emacs.d/super-save自动保存.el")
+  (load-file "~/.emacs.d/解除一些不常用的快捷键.el")
+  (load-file "~/.emacs.d/mwim.el")
+
+  ;; GTD任务管理配置
+  (load-file "~/.emacs.d/GTD.el") ;; 用于GTD，还可以再完善，由于目前用的不多，没有过多完善
+
+  ;; 配置日历与日记
+  (load-file "~/.emacs.d/display_time.el")
+  (load-file "~/.emacs.d/display-calendar.el")
+  (load-file "~/.emacs.d/diary.el")
+
+  ;; 配置eww浏览器使用习惯
+  (load-file "~/.emacs.d/eww.el")
+
+  ;; RSS阅读插件
+  ;; (load-file "~/.emacs.d/newsticker.el") ;; 用于rss阅读，emacs自带
+  ;; (load-file "~/.emacs.d/elfeed.el")
+
+  ;; 一个搜索工具，使用外部浏览器
+  ;; (load-file "~/.emacs.d/google-this.el") ;; 在minibuffer输入要搜索内容然后跳转到浏览器进行搜索
+
+  ;; (load-file "~/.emacs.d/ace-window.el") ;; 切换窗口用，感觉没有window-numbering好用
+  ;; (load-file "~/.emacs.d/magit.el") ;; emacs的 git 工具
+  ;; (load-file "~/.emacs.d/yasnippet.el") ;; 可以配置程序模板，不熟练
+
+										   ;;; 疑难杂症区
+  ;; 插件管理器
+  ;; (load-file "~/.emacs.d/el-get.el")
+
+  ;; 配置笔记相关插件
+  ;; (load-file "~/.emacs.d/Msys2.el")
+  ;; (load-file "~/.emacs.d/pdf-tools.el")
+  ;; (load-file "~/.emacs.d/org-noter.el")
+  ;; (load-file "~/.emacs.d/org-roam.el")
+  ;; (load-file "~/.emacs.d/org-roam-ui.el")
+  ;; (load-file "~/.emacs.d/deft.el") ;; 笔记管理工具，不熟悉
+
+  ;; (load-file "~/.emacs.d/graphviz-dot-mode.el")
+
+  ;; 垃圾回收值
+  ;; (load-file "~/.emacs.d/gc-tail.el")
+
+  ;; ;; 无差别对所有文件以只读模式打开
+  ;; (defun read-only-setup () 
+  ;;   (read-only-mode)
+  ;;   )
+  ;; (add-hook 'find-file-hook #'read-only-setup)
+
+  ;; ;; 如何给指定文件添加模式
+  ;; (load-file "~/.emacs.d/read-only-file-list.el")
+#+end_src
+
+*** basic_config
+#+begin_src emacs-lisp :tangle ~/.emacs.d/basic_config.el
+  ;; 获取内存报告，执行"memory-report"
+
+  (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
+  (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+
+  (when tool-bar-mode
+	(tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+  ;; (if tool-bar-mode
+  ;; 	(tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+
+  ;; (if menu-bar-mode
+  ;; 	(menu-bar-mode -1))
+
+  ;; (global-set-key (kbd "C-SPC") 'nil)
+  ;; ;;取消control+space键设为mark
+  (global-set-key (kbd "C-SPC") 'set-mark-command)
+  ;;取消control+space键设为mark
+
+  ;; (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF")) ;; 我最初的主题设定
+  ;; (add-to-list 'default-frame-alist '(background-color . "#000000"))
+
+  ;; (global-linum-mode t)
+
+  ;; (if (string-match-p "28\.2" (emacs-version))
+  ;; 	 (progn
+  ;; 	   (global-linum-mode t)
+  ;; 	   )
+  ;; 	 )
+
+  (when (version<= "29.1" emacs-version)
+	;; 如果当前运行的是 Emacs 29.1 或更高版本，则执行以下代码：
+	(message "global-display-line-numbers-mode")
+	(global-display-line-numbers-mode t))
+
+  (when (version<= emacs-version "28.2")
+	;; 如果当前运行的是 Emacs 28.2 或更低版本，则执行以下代码：
+	(message "global-linum-mode")
+	(global-linum-mode t))
+
+  (when (version<= "28.2" emacs-version)
+	;; 如果当前运行的是 Emacs 28.2 或更高版本，则执行以下代码：
+	(message "save-place-mode")
+	(save-place-mode t))
+
+  (column-number-mode t)
+
+  (xterm-mouse-mode t)
+
+  (setq visible-bell t)
+  ;;关闭烦人的出错时的提示声
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  (recentf-mode t)
+
+  ;; (save-place-mode t)
+
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 4)
+  (setq c-default-style "linux")
+  (setq c-basic-offset 4)
+
+  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
+  (defun reload-emacs-config ()
+	(interactive)
+	(load-file "~/.emacs.d/init.el"))
+  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+
+  (defun close-current-window ()
+	(interactive)
+	(delete-window)
+	)
+  (global-set-key (kbd "C-c z") 'close-current-window)
+
+  (global-set-key (kbd "C-M-z") 'indent-region)
+
+  (global-set-key (kbd "M-j") nil)
+
+  (global-set-key (kbd "<F10>") nil)
+
+  (setq kill-ring-max 200)
+  ;;设置粘贴缓冲条目数量.用一个很大的kill ring(最多的记录个数). 这样防止我不小心删掉重要的东西
+
+  (setq enable-recursive-minibuffers t)
+  ;;可以递归的使用 minibuffer
+
+  (setq scroll-margin 0 scroll-conservatively 10000)
+  ;;防止页面滚动时跳动， scroll-margin 3 可以在靠近屏幕边沿3行时就开始滚动，可以很好的看到上下文。
+
+  ;; (setq-default auto-fill-function 'do-auto-fill)
+  ;; ;; Autofill in all modes;;
+  ;; (setq default-fill-column 120)
+  ;; ;;把 fill-column 设为 60. 这样的文字更好读
+
+  ;; (setq default-major-mode 'text-mode)
+  ;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  ;;设置缺省主模式是text，,并进入auto-fill次模式.而不是基本模式fundamental-mode
+
+  (mouse-avoidance-mode 'animate)
+  ;;光标靠近鼠标指针时，让鼠标指针自动让开，别挡住视线。
+
+  ;; (setq frame-title-format "emacs@%b")
+  (setq frame-title-format "%b")
+  ;;在标题栏显示buffer的名字，而不是 emacs@wangyin.com 这样没用的提示。
+
+  (setq uniquify-buffer-name-style 'forward) ;;好像没起作用
+  ;; 当有两个文件名相同的缓冲时，使用前缀的目录名做 buffer 名字，不用原来的foobar 形式
+
+  (add-hook 'comint-output-filter-functions
+			'comint-watch-for-password-prompt)
+  ;;当你在shell、telnet、w3m等模式下时，必然碰到过要输入密码的情况,此时加密显出你的密码
+
+  ;; (setq version-control t);;启用版本控制，即可以备份多次
+  ;; (setq kept-old-versions 2);;备份最原始的版本两次，及第一次编辑前的文档，和第二次编辑前的文档
+  ;; (setq kept-new-versions 1);;备份最新的版本1次，理解同上
+  ;; (setq delete-old-versions t);;删掉不属于以上3中版本的版本
+  ;; (setq backup-directory-alist '(("." . "~/backups")));;设置备份文件的路径
+  ;; (setq backup-by-copying t);;备份设置方法，直接拷贝
+  ;; Emacs 中，改变文件时，默认都会产生备份文件(以 ~ 结尾的文件)。可以完全去掉; (并不可取)，也可以制定备份的方式。这里采用的是，把所有的文件备份都放在一个固定的地方("~/backups")。对于每个备份文件，保留最原始的两个版本和最新的1个版本。并且备份的时候，备份文件是复本，而不是原件。
+
+  ;; (setq make-backup-files nil)
+  ;; ;; 设定不产生备份文件
+
+  ;; ;;(setq auto-save-mode nil)
+  ;; ;;自动保存模式
+
+  ;; (setq-default make-backup-files nil)
+  ;; ;; 不生成临时文件
+
+  ;; ;;允许emacs和外部其他程序的粘贴
+  ;; (setq x-select-enable-clipboard t)
+
+  (setq mouse-yank-at-point t)
+  ;;使用鼠标中键可以粘贴
+  ;;不要在鼠标点击的那个地方插入剪贴板内容。我不喜欢那样，经常把我的文档搞的一团糟。我觉得先用光标定位，然后鼠标中键点击要好的多。不管你的光标在文档的那个位置，或是在 minibuffer，鼠标中键一点击，X selection 的内容就被插入到那个位置。
+
+  (setq user-full-name "yenao")
+  (setq user-mail-address "hexgio@outlook.com")
+  ;;设置有用的个人信息,这在很多地方有用。
+
+  ;; (setq require-final-newline t)
+  ;; ;; 自动的在文件末增加一新行
+
+  (setq-default transient-mark-mode t)
+  ;; 高亮显示选中区域
+
+  (setq track-eol t)
+  ;; 当光标在行尾上下移动的时候，始终保持在行尾。
+
+  ;; (setq Man-notify-method 'pushy)
+  ;; ;; 当浏览 man page 时，直接跳转到 man buffer。
+
+  ;;(setq next-line-add-newlines nil)
+  ;;Emacs 21 中已经是缺省设置。按 C-n 或向下键时不添加新行。
+
+  ;; (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+  ;; (setq sentence-end-double-space nil)
+  ;; (setq sentence-end-double-space t)
+  ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
+
+  ;; (if (display-graphic-p)
+  ;; 	(progn
+  ;; 	  ;; GUI环境下的配置
+  ;; 	  (load "~/.emacs.d/gui-config.el"))
+  ;;   (progn
+  ;; 	;; 非GUI环境下的配置
+  ;; 	(load "~/.emacs.d/non-gui-config.el")))
+
+#+end_src
+
+*** use-package.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/use-package.el
+  ;; 初始化包管理器
+  (require 'package)
+  (package-initialize)
+
+  ;; 设置软件包源
+  (setq package-archives
+		'(
+		  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+		  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
+		  ;; ("melpa" . "https://melpa.org/packages/")
+		  ("melpa-cn" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
+		  ("nongnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
+		  ("gnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+		  )
+		)
+  ;; 安装 use-package（如果还未安装）
+  (unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+
+  ;; 加载并自动安装软件包
+  (eval-when-compile
+	(require 'use-package))
+  (require 'bind-key)
+  ;; 设置 use-package 的一些常用选项
+  (setq use-package-always-ensure t   ; 自动安装软件包
+		use-package-verbose t        ; 在 *Messages* 缓冲区中详细显示加载信息
+		use-package-compute-statistics t) ; 收集并显示 use-package 使用的时间信息
+
+  ;; Your use-package package configurations start here...
+
+#+end_src
+
+*** dashboard
+#+begin_src emacs-lisp :tangle ~/.emacs.d/dashboard.el
+  (use-package dashboard
+	:ensure t
+	:config
+	;; (setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
+	;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
+	(setq dashboard-startup-banner 'official) ;; 也可以自定义图片
+	(setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
+							(bookmarks . 5)  ;; 显示多少个最近书签
+							(projects . 10))) ;; 显示多少个最近项目
+	(dashboard-setup-startup-hook))
+#+end_src
+
+*** projectile
+#+begin_src emacs-lisp :tangle ~/.emacs.d/projectile.el
+  (use-package projectile
+	:ensure t)
+#+end_src
+*** doom-themes
+#+begin_src emacs-lisp :tangle ~/.emacs.d/doom-themes.el
+  (use-package doom-themes
+	:ensure t
+	:config
+	;; Global settings (defaults)
+	(setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
+		  doom-themes-enable-italic t) ; if nil, italics is universally disabled
+	(load-theme 'doom-monokai-octagon t)
+	(doom-themes-treemacs-config))
+#+end_src
+
+*** dracula-theme
+#+begin_src emacs-lisp :tangle ~/.emacs.d/dracula-theme.el
+  (use-package dracula-theme
+	:ensure t
+	:config
+	(load-theme 'dracula t)
+	)
+#+end_src
+
+*** spacemacs-theme
+#+begin_src emacs-lisp :tangle ~/.emacs.d/spacemacs-theme.el
+  (use-package spacemacs-theme
+	:ensure t
+	:config
+	(load-theme 'spacemacs-dark t)  ; Dark theme
+	;; 或者
+	;; (load-theme 'spacemacs-light t) ; Light theme
+	)
+#+end_src
+
+*** g-config
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-config.el
+  (defun g-config ()
+	(interactive)
+	(insert "*** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n\n#+end_src")
+	)
+#+end_src
+
+*** 英文字符与中文字符中插入或删除空格 - 自定义函数
+
+#+begin_src emacs-lisp
+  (defun insert-space-between-english-and-chinese ()
+	"在英文字符与中文字符之间插入空格"
+	(interactive)
+	(save-excursion
+	  (while (re-search-forward "\\([[:ascii:]]\\)\\(\\cc\\)" nil t)
+		(replace-match "\\1 \\2"))))
+
+  (defun delete-space-between-english-and-chinese ()
+	"删除英文字符与中文字符之间的空格"
+	(interactive)
+	(save-excursion
+	  (while (re-search-forward "\\([[:ascii:]]\\) \\(\\cc\\)" nil t)
+		(replace-match "\\1\\2"))))
+#+end_src
+
+*** g-org-insert-note-header
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-insert-note-header.el
+  (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
+	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
+	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:10 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
+  ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
+#+end_src
+
+*** g-org-emacs-lisp-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-emacs-lisp-code-block.el
+  (defun g-org-emacs-lisp-code-block ()
+	(interactive)
+	(insert "#+begin_src emacs-lisp :tangle no\n\n#+end_src")
+	)
+#+end_src
+
+*** g-org-c-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-c-code-block.el
+  (defun g-org-c-code-block ()
+	(interactive)
+	(insert "#+begin_src c :tangle no\n\n#+end_src")
+	)
+#+end_src
+
+*** g-org-bash-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-bash-code-block.el
+  (defun g-org-bash-code-block ()
+	(interactive)
+	(insert "#+begin_src bash :tangle no\n\n#+end_src")
+	)
+#+end_src
+
+*** g-org-html-code-block
+#+begin_src emacs-lisp :tangle ~/.emacs.d/g-org-html-code-block.el
+  (defun g-org-html-code-block ()
+	(interactive)
+	(insert "#+begin_src html :tangle no\n\n#+end_src")
+	)
+#+end_src
+
+*** report
+#+begin_src emacs-lisp :tangle ~/.emacs.d/report.el
+  (defun add-code-block ()
+	"在当前位置添加一个代码块，并以时间作为块名进行命名"
+	(interactive)
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前日期
+		   (week (format-time-string "%A"))  ; 获取当前星期名称
+		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
+		   (block-name-with-week (concat clean-time " " week))  ; 构建带星期的代码块名
+		   (block-name (concat clean-time))  ; 构建不带星期的代码块名
+		   (code-block (format
+						"*** %s\n
+  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+    %s: name\n  1、
+  ,#+END_SRC\n\n"
+						block-name-with-week block-name block-name)))
+	  (insert code-block)))  ; 在当前位置插入代码块
+
+  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
+  (global-set-key (kbd "C-c SPC r") 'add-code-block)
+
+  ;; 为什么%s会被替换为时间戳而不是其他内容被替换为时间戳，原理是什么
+  ;; 	这是因为在 Emacs Lisp 中，`format` 函数的工作方式类似于 C 语言中的 `printf` 函数。`format` 函数接受一个格式字符串和一系列参数，然后根据格式字符串中的格式指定符（如 `%s`、`%d` 等）将后续的参数插入到格式字符串中。
+
+  ;;   在你的代码中，`format` 函数的格式字符串是：
+
+  ;;   ```lisp
+  ;;   "*** %s
+  ;;   #+BEGIN_SRC emacs-lisp :tangle %s.txt
+  ;;   %s: name\n1、
+  ;;   #+END_SRC"
+  ;;   ```
+
+  ;;   这个字符串中有三个 `%s`，所以 `format` 函数需要三个额外的参数。在你的代码中，这三个参数都是 `block-name`，即你处理过的时间戳。
+
+  ;;   所以，当 `format` 函数运行时，它会依次取出 `block-name`，并将其插入到格式字符串中的 `%s` 的位置。这就是为什么 `%s` 会被替换为时间戳的原理。
+
+  ;;   如果你希望将不同的内容插入到格式字符串中，你只需提供不同的参数即可。例如：
+
+  ;;   ```lisp
+  ;;   (format "Hello, %s! Today is %s." "Alice" "Monday")
+  ;;   ```
+
+  ;;   这段代码会返回字符串 "Hello, Alice! Today is Monday."。
+  ;; ******************************************************************************
+  ;; 这句有什么用：(block-name (concat clean-time))  ; 构建代码块名
+  ;;   这一句 `(block-name (concat clean-time))` 的作用是创建一个新的变量 `block-name`，并将其设置为 `clean-time` 的值。
+
+  ;; 在这个上下文中，`clean-time` 是一个已经去除了破折号和冒号的时间字符串。`concat` 函数通常用于连接多个字符串，但在这里，它只有一个参数 `clean-time`，所以它实际上只是返回 `clean-time` 的值。
+
+  ;; 因此，这一句的效果就是创建了一个新的变量 `block-name`，并将其设置为与 `clean-time` 相同的值。后面的代码中使用 `block-name` 作为代码块的名字。
+
+  ;; 如果你的代码中没有需要使用不同的名称来表示清理过的时间戳，那么这一行代码实际上是不必要的，你可以直接使用 `clean-time`。但是，如果你打算在后续的代码中修改 `block-name` 或 `clean-time` 的值，那么这一行代码就很有用了，因为它确保了 `block-name` 和 `clean-time` 是两个独立的变量，修改一个不会影响另一个。
+  #+end_src
+
+*** insert-timestamp
+#+begin_src emacs-lisp :tangle ~/.emacs.d/insert-timestamp.el
+  (defun insert-timestamp ()
+	(interactive)
+	(insert (format-time-string "%Y%m%d%H%M%S")))
+
+  ;; (global-set-key (kbd "C-c t") 'insert-timestamp)
+#+end_src
+*** show-current-time
+#+begin_src emacs-lisp :tangle ~/.emacs.d/show-current-time.el
+  (defun show-current-time ()
+	(interactive)
+	(let ((current-time (format-time-string "%Y%m%d%H%M%S")))
+	  (message "%s" current-time)))
+
+  (global-set-key (kbd "C-c s") 'show-current-time)  ; 绑定到快捷键 C-c s
+#+end_src
+*** create-dated-diary
+#+begin_src emacs-lisp :tangle ~/.emacs.d/create-dated-diary.el
+  (defun create-dated-diary ()
+	(interactive)
+	(let* ((current-date-time (format-time-string "%Y%m%d%H%M%S"))
+		   (diary-filename (concat "~/diary/diary_" current-date-time ".org")))
+	  (find-file diary-filename)))
+
+  (global-set-key (kbd "C-c d") 'create-dated-diary)
+
+#+end_src
+*** web-mode
+#+begin_src emacs-lisp :tangle ~/.emacs.d/web-mode.el
+  (use-package web-mode
+	:ensure t
+	)
+#+end_src
+
+*** ace-window
+#+begin_src emacs-lisp :tangle ~/.emacs.d/ace-window.el
+  (use-package ace-window
+	:ensure t
+	:defer 3
+	:bind (("C-x o" . 'ace-window)))
+#+end_src
+
+*** GTD
+#+begin_src emacs-lisp :tangle ~/.emacs.d/GTD.el
+  ;; 尝试配置GTD
+  (unless (file-exists-p "~/GTD")
+	(make-directory "~/GTD")
+	);; 检测OneDrive目录是否存在，如果不存在就创建这个目录
+  (unless (file-exists-p "~/GTD/OneDrive")
+	(make-directory "~/GTD/OneDrive")
+	);; 检测OneDrive目录是否存在，如果不存在就创建这个目录
+  (unless (file-exists-p "~/GTD/OneDrive/org")
+	(make-directory "~/GTD/OneDrive/org")
+	);; 检测org目录是否存在，如果不存在就创建这个目录
+  (let ((filename "~/GTD/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+	(unless (file-exists-p filename)
+	  (with-temp-file filename
+		;; (insert "这是文件内容") ;; 写入文件内容
+		)))
+  (let ((filename "~/GTD/OneDrive/org/todo.org")) ;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+	(unless (file-exists-p filename)
+	  (with-temp-file filename
+		;; (insert "这是文件内容") ;; 写入文件内容
+		)))
+
+  (load-file "~/GTD/my-agenda.el") ;; 加载my-agenda.el配置文件
+  (setq org-agenda-files '("~/GTD/OneDrive/org")) ;; 指定data存放目录
+  (setq org-default-notes-file "~/GTD/OneDrive/org/todo.org") ;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/GTD/Onedrive/org/todo.org文件下
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+  (define-key global-map "\C-cr" 'remember)
+
+  (setq org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAITTING(w)" "SOMEDAY(s)" "|" "DONE(d@/!)" "ABORT(a@/!)")))
+  (setq org-tag-alist '(("@office" . ?w) ("@home" . ?h) ("traffic" . ?t) ("computer" . ?c) ("nocomputer" . ?n) ("either" . ?e) ("immediately" . ?i) ("wait" . ?w) ("action" . ?a)))
+#+end_src
+
+*** easy-hugo
+#+begin_src emacs-lisp :tangle ~/.emacs.d/easy-hugo.el
+  (use-package easy-hugo
+	:ensure t
+	:defer 3
+	)
+#+end_src
+
+*** ox-hugo
+#+begin_src emacs-lisp :tangle ~/.emacs.d/ox-hugo.el
+  (unless (file-exists-p "~/hugo/")
+	(make-directory "~/hugo/")
+	)
+  (unless (file-exists-p "~/hugo/project/")
+	(make-directory "~/hugo/project/")
+	)
+  (unless (file-exists-p "~/hugo/static/")
+	(make-directory "~/hugo/static/")
+	)
+  (use-package ox-hugo
+	:ensure t
+	:defer 3
+	:config
+	(setq org-hugo-base-dir "~/hugo/project/")
+	)
+#+end_src
+
+*** org-noter
+#+begin_src emacs-lisp :tangle ~/.emacs.d/org-noter.el
+  (use-package org-noter
+	:ensure t
+	:defer 3
+	)
+#+end_src
+
+*** pdf-tools
+#+begin_src emacs-lisp :tangle ~/.emacs.d/pdf-tools.el
+  (use-package pdf-tools
+	:ensure t
+	:init
+	(pdf-loader-install))
+  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
+
+  (defun pdf-view-kill-rmn-ring-save ()
+	"Copy the region to the `kill-ring' after remove all newline characters."
+	(interactive)
+	(pdf-view-assert-active-region)
+	(let* ((txt (replace-regexp-in-string "\n" " "
+										  (car (pdf-view-active-region-text)))))
+	  (pdf-view-deactivate-region)
+	  (kill-new txt)))
+
+  ;; (use-package pdf-view-mode
+  ;;   :bind
+  ;;   ("C-c C-w" . pdf-view-kill-rmn-ring-save))
+#+end_src
+
+*** org-roam
+#+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam.el
+  (unless (file-exists-p "~/.emacs.d/roam")
+	(make-directory "~/.emacs.d/roam")
+	)
+  (use-package org-roam
+	:ensure t
+	:after org
+	:init
+	(setq org-roam-v2-ack t) ;; Acknowledge V2 upgrade
+	;; :config
+	;; (org-roam-setup) ;; 该配置有问题， 尚不清楚原因
+
+	:custom
+	(org-roam-directory "~/.emacs.d/roam/") ; 设置 org-roam 目录
+	:bind
+	(("C-c n f" . org-roam-node-find)
+	 (:map org-mode-map
+		   (("C-c n i" . org-roam-node-insert)
+			("C-c n o" . org-id-get-create)
+			("C-c n t" . org-roam-tag-add)
+			("C-c n a" . org-roam-alias-add)
+			("C-c n l" . org-roam-buffer-toggle)))))
+#+end_src
+
+*** org-roam-ui
+#+begin_src emacs-lisp :tangle ~/.emacs.d/org-roam-ui.el
+  (use-package org-roam-ui
+	:ensure t
+	:after org-roam
+	:config
+	(setq org-roam-ui-port 9000
+		  org-roam-ui-sync-theme t
+		  org-roam-ui-follow t
+		  org-roam-ui-update-on-save t
+		  org-roam-ui-open-on-start nil))
+#+end_src
+
+*** deft
+#+begin_src emacs-lisp :tangle ~/.emacs.d/deft.el
+  (unless (file-exists-p "~/.emacs.d/roam")
+	(make-directory "~/.emacs.d/roam")
+	)  
+  (use-package deft
+	:ensure t
+	:commands (deft)
+	:custom
+	(deft-directory "~/.emacs.d/roam")
+	(deft-recursive t))
+#+end_src
+
+*** magit
+#+begin_src emacs-lisp :tangle ~/.emacs.d/magit.el
+  (use-package magit
+	:ensure t
+	:defer t
+	)
+#+end_src
+
+*** yasnippet
+#+begin_src emacs-lisp :tangle ~/.emacs.d/yasnippet.el
+  ;; (defun move-file-to-folder (file folder)
+  ;;   "Move FILE to FOLDER. If FOLDER does not exist, create it."
+  ;;   (unless (file-exists-p folder)
+  ;; 	(make-directory folder t))
+  ;;   (let ((new-path (expand-file-name (file-name-nondirectory file) folder)))
+  ;; 	(rename-file file new-path)
+  ;; 	(message "Moved %s to %s" file new-path)
+  ;; 	))
+
+  ;; (move-file-to-folder "~/hugo" "~/snippets/org-mode/")
+
+  ;; (unless (file-exists-p "~/snippets")
+  ;;   (make-directory "~/snippets"))
+  ;; (unless (file-exists-p "~/snippets/org-mode")
+  ;;   (make-directory "~/snippets/org-mode"))
+
+  ;; (unless (file-exists-p "~/snippets")
+  ;;   (make-directory "~/snippets"))
+  ;; (unless (file-exists-p "~/snippets/org-mode")
+  ;;   (make-directory "~/snippets/org-mode"))
+  ;; (defun move-file-to-folder (file folder)
+  ;;   "Move FILE to FOLDER. If FOLDER does not exist, create it."
+  ;;   (unless (file-exists-p folder)
+  ;; 	(make-directory folder t))
+  ;;   (let ((new-path (expand-file-name (file-name-nondirectory file) folder)))
+  ;; 	(rename-file file new-path)
+  ;; 	(message "Moved %s to %s" file new-path)
+  ;; 	))
+
+  ;; (move-file-if-not-exists "~/hugo" "~/snippets/org-mode/")
+  ;; (move-file-to-folder "~/.emacs.d/hugo" "~/.emacs.d/snippets/org-mode/")
+
+  ;; (defun move-file-if-not-exists (file folder)
+  ;;   "Move FILE to FOLDER if FILE does not exist in the folder."
+  ;;   (let ((new-path (expand-file-name (file-name-nondirectory file) folder)))
+  ;; 	(unless (file-exists-p new-path)
+  ;; 	  (rename-file file new-path)
+  ;; 	  (message "Moved %s to %s" file new-path))))
+
+  ;; (move-file-if-not-exists "~/hugo" "~/snippets/org-mode/")
+
+  ;; (use-package yasnippet
+  ;;   :ensure t
+  ;;   :init (yas-global-mode t)
+  ;;   :config
+  ;;   (yas-reload-all)
+  ;;   (add-hook 'prog-mode-hook #'yas-minor-mode)
+  ;;   (add-hook 'org-mode-hook #'yas-minor-mode)
+  ;;   ;; :bind ("C-c y" . yas-expand))
+
+  (use-package yasnippet
+	:ensure t
+	:init (yas-global-mode 1)
+	:config (yas-reload-all))
+
+#+end_src
+
+*** projectile
+#+begin_src emacs-lisp :tangle ~/.emacs.d/projectile.el
+  (use-package projectile
+	:ensure t)
+#+end_src
+
+*** markdown
+#+begin_src emacs-lisp :tangle ~/.emacs.d/markdown.el
+  (use-package markdown-mode
+	:ensure t
+	:defer t
+	:config
+	;;markdown设置
+	(autoload 'markdown-mode "markdown-mode"
+	  "Major mode for editing Markdown files" t)
+	(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+	(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+	(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+	)
+#+end_src
+
+*** ox-pandoc
+#+begin_src emacs-lisp :tangle ~/.emacs.d/ox-pandoc.el
+  (use-package ox-pandoc
+	:ensure t
+	:defer t
+	)
+#+end_src
+
+*** newsticker
+#+begin_src emacs-lisp :tangle ~/.emacs.d/newsticker.el
+  (use-package newsticker
+	:ensure nil
+	:init
+	(setq newsticker-retrieval-interval 0
+		  newsticker-ticker-interval 0)
+	:config
+	(global-set-key (kbd "C-c n") 'newsticker-show-news)
+	(setq newsticker-show-full-article-content t)
+	(defun my/leader-keys ()
+	  "on" '(my/newsticker-treeview-in-new-tab :wk "newsticker"))
+	(defun my/newsticker-treeview-in-new-tab ()
+	  (interactive)
+	  (let (succ)
+		(unwind-protect
+			(progn
+			  (tab-bar-new-tab)
+			  (call-interactively #'newsticker-treeview)
+			  (tab-bar-rename-tab "newsticker")
+			  (setq succ t))
+		  (unless succ
+			(tab-bar-close-tab)))))
+
+	(defun my/newsticker-treeview-quit-and-close-tab ()
+	  (interactive)
+	  (newsticker-treeview-quit)
+	  (newsticker-stop)
+	  (tab-close))
+
+	(defun general-define-key ()
+	  :keymaps 'newsticker-treeview-mode-map
+	  :states 'normal
+	  "q" 'my/newsticker-treeview-quit-and-close-tab)
+
+	:custom
+	(newsticker-url-list '(
+						   ;; ("title" "URL" other options)
+						   ("少数派" "https://sspai.com/feed")
+						   ("Luckydesigner" "https://www.luckydesigner.space/feed")
+						   ("极客部落" "https://g22z.com/feed")
+						   ("国光" "https://www.sqlsec.com/atom.xml")
+						   ("面向信仰的编程" "https://draveness.me/feed.xml")
+						   ))
+	(newsticker-retrieval-method 'extern)
+	(newsticker-wget-name "curl")
+	(newsticker-wget-arguments '("--disable" "--silent" "--location" "--proxy" "socks5://127.0.0.1:7890"))
+	(newsticker-url-list-defaults nil)    ;remove default list (i.e. emacswiki)
+	(newsticker-automatically-mark-items-as-old nil))
+#+end_src
+
+*** mwim
+#+begin_src emacs-lisp :tangle ~/.emacs.d/mwim.el
+  (use-package mwim
+	:ensure t
+	:defer 3
+	:bind
+	("C-a" . mwim-beginning-of-code-or-line)
+	("C-e" . mwim-end-of-code-or-line))
+#+end_src
+
+*** amx
+#+begin_src emacs-lisp :tangle ~/.emacs.d/amx.el
+  (use-package amx
+	:ensure t
+	:defer 3
+	:init (amx-mode))
+#+end_src
+
+*** which-key
+#+begin_src emacs-lisp :tangle ~/.emacs.d/which-key.el
+  (use-package which-key
+	:ensure t
+	:defer 1
+	:init (which-key-mode))
+#+end_src
+
+*** company.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/company.el
+  (use-package company
+	:ensure t
+	:defer 3
+	:init (global-company-mode t)
+	:config
+	(setq company-minimum-prefix-length 1)
+	(setq company-tooltip-align-annotations t)
+	(setq company-idle-delay 0.0)
+	(setq company-show-numbers t)
+	(setq company-selection-wrap-around t)
+	(setq company-transformers '(company-sort-by-occurrence)))
+#+end_src
+
+*** avy
+#+begin_src emacs-lisp :tangle ~/.emacs.d/avy.el
+  (use-package avy
+	:ensure t
+	:defer 3
+	:bind
+	(("M-j" . avy-goto-char-timer)))
+#+end_src
+
+*** tiny
+#+begin_src emacs-lisp :tangle ~/.emacs.d/tiny.el
+  (use-package tiny
+	:ensure t
+	:defer 3
+	;; 可选绑定快捷键，笔者个人感觉不绑定快捷键也无妨
+	:bind
+	("C-;" . tiny-expand))
+#+end_src
+
+*** treemacs
+#+begin_src emacs-lisp :tangle ~/.emacs.d/treemacs.el
+  (use-package treemacs
+	:ensure t
+	:defer 3
+	:config
+	(treemacs-tag-follow-mode)
+	:bind
+	(:map global-map
+		  ("M-0"       . treemacs-select-window)
+		  ("C-x t 1"   . treemacs-delete-other-windows)
+		  ("C-x t t"   . treemacs)
+		  ("C-x t B"   . treemacs-bookmark)
+		  ("C-x t C-t" . treemacs-find-file)
+		  ("C-x t M-t" . treemacs-find-tag))
+	(:map treemacs-mode-map
+		  ("/" . treemacs-advanced-helpful-hydra)))
+
+  (use-package treemacs-projectile
+	:ensure t
+	:after (treemacs projectile))
+
+  (use-package lsp-treemacs
+	:ensure t
+	:after (treemacs lsp))
+#+end_src
+
+*** cnfonts
+参考链接:
+[[https://github.com/tumashu/cnfonts][cnfonts，A simple Chinese fonts config tool]]
+[[https://blog.csdn.net/fareast_mzh/article/details/94720439][emacs 调整字体大小]]
+#+begin_src emacs-lisp :tangle ~/.emacs.d/cnfonts.el
+  (use-package cnfonts
+	:ensure t
+	:defer 3
+	:init (cnfonts-mode t)
+	:config
+	(define-key cnfonts-mode-map (kbd "C--") #'cnfonts-decrease-fontsize)
+	(define-key cnfonts-mode-map (kbd "C-=") #'cnfonts-increase-fontsize)
+	)
+#+end_src
+
+*** highlight-symbol
+#+begin_src emacs-lisp :tangle ~/.emacs.d/highlight-symbol.el
+  (use-package highlight-symbol
+	:ensure t
+	:defer 3
+	:init (highlight-symbol-mode)
+	:bind ("<f10>" . highlight-symbol)) ;; 按下 F10 键就可高亮当前符号
+#+end_src
+
+*** rainbow-delimiters
+#+begin_src emacs-lisp :tangle ~/.emacs.d/rainbow-delimiters.el
+  (use-package rainbow-delimiters
+	:ensure t
+	:defer 3
+	:hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+*** window-numbering
+#+begin_src emacs-lisp :tangle ~/.emacs.d/window-numbering.el
+  (use-package window-numbering
+	:ensure t
+	;; :defer 3
+	:init (window-numbering-mode t)
+	)
+#+end_src
+
+*** keycast
+#+begin_src emacs-lisp :tangle ~/.emacs.d/keycast.el
+  (use-package keycast
+	:ensure t
+	:defer t
+	)
+#+end_src
+
+*** eww
+#+begin_src emacs-lisp :tangle ~/.emacs.d/eww.el
+  (use-package eww
+	:ensure nil
+	:defer 3
+	:config
+	;; (with-eval-after-load 'eww  
+	;; 	(custom-set-variables  
+	;; 	 '(eww-search-prefix "https://bing.com/search?q="))  
+	;; 	)
+	(custom-set-variables  
+	 '(eww-search-prefix "https://bing.com/search?q="))
+
+	(prefer-coding-system 'utf-8)
+	(setq-default buffer-file-coding-system 'utf-8)
+	(setq eww-use-external-webkit t)
+	(setq-default eww-ems-internal-uses-webkit t)
+	;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
+	;; (setq browse-url-generic-program "浏览器命令")
+	;; (setq browse-url-browser-function 'browse-url-generic)
+	;; (setq browse-url-generic-program "firefox")
+	;; (setq browse-url-browser-function 'browse-url-generic)
+
+	;; (when (display-graphic-p)
+	;; 	(setq eww-toggle-images t))
+	)
+#+end_src
+
+*** display_time
+#+begin_src emacs-lisp :tangle ~/.emacs.d/display_time.el
+  (display-time-mode 1);;启用时间显示设置，在minibuffer上面的那个杠上
+  (setq display-time-24hr-format t);;时间使用24小时制
+  (setq display-time-day-and-date t);;时间显示包括日期和具体时间
+  ;; (setq display-time-use-mail-icon t);;时间栏旁边启用邮件设置
+  ;; (setq display-time-interval 10);;时间的变化频率，单位多少来着？
+#+end_src
+
+*** display-calendar
+#+begin_src emacs-lisp :tangle ~/.emacs.d/display-calendar.el
+  ;; 设置 calendar 的显示
+  (setq calendar-remove-frame-by-deleting t)
+  (setq calendar-week-start-day 1) ; 设置星期一为每周的第一天
+  (setq mark-diary-entries-in-calendar t) ; 标记calendar上有diary的日期
+  (setq mark-holidays-in-calendar nil) ; 为了突出有diary的日期，calendar上不标记节日
+  (setq view-calendar-holidays-initially nil) ; 打开calendar的时候不显示一堆节日
+
+  ;; 去掉不关心的节日，设定自己在意的节日，在 calendar 上用 h 显示节日
+  (setq christian-holidays nil)
+  (setq hebrew-holidays nil)
+  (setq islamic-holidays nil)
+  (setq solar-holidays nil)
+  (setq general-holidays '((holiday-fixed 1 1 "元旦")
+						   (holiday-fixed 2 14 "情人节")
+						   (holiday-fixed 3 14 "白色情人节")
+						   (holiday-fixed 4 1 "愚人节")
+						   (holiday-fixed 5 1 "劳动节")
+						   (holiday-float 5 0 2 "母亲节")
+						   (holiday-fixed 6 1 "儿童节")
+						   (holiday-float 6 0 3 "父亲节")
+						   (holiday-fixed 7 1 "建党节")
+						   (holiday-fixed 8 1 "建军节")
+						   (holiday-fixed 9 10 "教师节")
+						   (holiday-fixed 10 1 "国庆节")
+						   (holiday-fixed 12 25 "圣诞节")))
+
+  ;;Calendar模式支持各种方式来更改当前日期
+  ;;（这里的“前”是指还没有到来的那一天，“后”是指已经过去的日子）
+  ;; q 退出calendar模式
+  ;; C-f 让当前日期向前一天
+  ;; C-b 让当前日期向后一天
+  ;; C-n 让当前日期向前一周
+  ;; C-p 让当前日期向后一周
+  ;; M-} 让当前日期向前一个月
+  ;; M-{ 让当前日期向后一个月
+  ;; C-x ] 让当前日期向前一年
+  ;; C-x [ 让当前日期向后一年
+  ;; C-a 移动到当前周的第一天
+  ;; C-e 移动到当前周的最后一天
+  ;; M-a 移动到当前月的第一天
+  ;; M-e 多动到当前月的最后一天
+  ;; M-< 移动到当前年的第一天
+  ;; M-> 移动到当前年的最后一天
+
+  ;;Calendar模式支持移动多种移动到特珠日期的方式
+  ;; g d 移动到一个特别的日期
+  ;; o 使某个特殊的月分作为中间的月分
+  ;; . 移动到当天的日期
+  ;; p d 显示某一天在一年中的位置，也显示本年度还有多少天。
+  ;; C-c C-l 刷新Calendar窗口
+
+  ;; Calendar支持生成LATEX代码。
+  ;; t m 按月生成日历
+  ;; t M 按月生成一个美化的日历
+  ;; t d 按当天日期生成一个当天日历
+  ;; t w 1 在一页上生成这个周的日历
+  ;; t w 2 在两页上生成这个周的日历
+  ;; t w 3 生成一个ISO-SYTLE风格的当前周日历
+  ;; t w 4 生成一个从周一开始的当前周日历
+  ;; t y 生成当前年的日历
+
+  ;;EMACS Calendar支持配置节日：
+  ;; h 显示当前的节日
+  ;; x 定义当天为某个节日
+  ;; u 取消当天已被定义的节日
+  ;; e 显示所有这前后共三个月的节日。
+  ;; M-x holiday 在另外的窗口的显示这前后三个月的节日。
+
+
+  ;; 另外，还有一些特殊的，有意思的命令：
+  ;; S 显示当天的日出日落时间(是大写的S)
+  ;; p C 显示农历可以使用
+  ;; g C 使用农历移动日期可以使用
+
+  ;;-----------日历设置结束----------------
+#+end_src
+
+*** diary
+#+begin_src emacs-lisp :tangle ~/.emacs.d/diary.el
+  ;;-----------日记设置---------------------
+
+  (unless (file-exists-p "~/diary/")
+	(make-directory "~/diary/")
+	)
+  (let ((filename "~/diary/diary")) 
+	(unless (file-exists-p filename)
+	  (with-temp-file filename)))  
+  (setq diary-file "~/diary/diary");; 默认的日记文件
+  (setq diary-mail-addr "hexgio@outlook.com")
+  (add-hook 'diary-hook 'appt-make-list)
+  ;;当你创建了一个'~/diary'文件，你就可以使用calendar去查看里面的内容。你可以查看当天的事件，相关命令如下 ：
+  ;; d 显示被选中的日期的所有事件
+  ;; s 显示所有事件，包括过期的，未到期的等等
+
+  ;; 创建一个事件的样例：
+  ;; 02/11/1989
+  ;; Bill B. visits Princeton today
+  ;; 2pm Cognitive Studies Committee meeting
+  ;; 2:30-5:30 Liz at Lawrenceville
+  ;; 4:00pm Dentist appt
+  ;; 7:30pm Dinner at George's
+  ;; 8:00-10:00pm concert
+
+  ;; 创建事件的命令：
+  ;; i d 为当天日期添加一个事件
+  ;; i w 为当天周创建一个周事件
+  ;; i m 为当前月创建一个月事件
+  ;; i y 为当前年创建一个年事件
+  ;; i a 为当前日期创建一个周年纪念日
+  ;; i c 创建一个循环的事件
+
+  ;;----------日记设置结束-----------------
+#+end_src
+
+*** auto-mode-alist
+#+begin_src emacs-lisp :tangle ~/.emacs.d/auto-mode-alist.el
+  (setq auto-mode-alist
+		;; 将文件模式和文件后缀关联起来
+		(append '(("\\.py\\'" . python-mode)
+				  ("\\.s?html?\\'" . web-mode)
+				  ("\\.asp\\'" . html-helper-mode)
+				  ("\\.phtml\\'" . html-helper-mode)
+				  ("\\.css\\'" . css-mode))
+				auto-mode-alist))
+#+end_src
+
+*** use-package_simple
+#+begin_src emacs-lisp :tangle no
+  (require 'package)
+  (package-initialize)
+  (unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+  (eval-when-compile
+	(require 'use-package))
+  (require 'bind-key)
+#+end_src
+
+*** graphviz-dot-mode
+#+begin_src emacs-lisp :tangle ~/.emacs.d/graphviz-dot-mode.el
+  (use-package graphviz-dot-mode
+	:ensure t
+	:config
+	(setq graphviz-dot-indent-width 4))
+
+  (use-package company-graphviz-dot)
+#+end_src 
+
+*** read-only-file-list
+#+begin_src emacs-lisp :tangle ~/.emacs.d/read-only-file-list.el
+  (defvar read-only-file-list
+	(list
+	 (expand-file-name "~/testReadOnly.org")
+	 ))
+
+  (defun enable-read-only-fn ()
+	(when (member (expand-file-name (buffer-file-name)) read-only-file-list)
+	  (read-only-mode 1)))
+
+  (add-hook 'find-file-hook #'enable-read-only-fn)
+#+end_src
+
+*** Emacs备份设置
+
+不使用Emacs的自动备份设置。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/Emacs备份设置.el
+  (setq make-backup-files nil)                                  ; 不自动备份
+  (setq auto-save-default nil)                                  ; 不使用Emacs自带的自动保存
+#+END_SRC
+
+*** super-save自动保存
+
+[[https://hub.nuaa.cf/bbatsov/super-save][super-save]] 插件能自动保存缓冲区。它可以设置在某些行为（如窗口切换、或窗口空闲一段时间）下自动保存。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/super-save自动保存.el
+  (use-package super-save
+	:ensure t
+	:hook (after-init . super-save-mode)
+	:config
+	;; Emacs空闲是否自动保存，这里不设置
+	(setq super-save-auto-save-when-idle nil)
+	;; 切换窗口自动保存
+	(add-to-list 'super-save-triggers 'other-window)
+	;; 查找文件时自动保存
+	(add-to-list 'super-save-hook-triggers 'find-file-hook)
+	;; 远程文件编辑不自动保存
+	(setq super-save-remote-files nil)
+	;; 特定后缀名的文件不自动保存
+	(setq super-save-exclude '(".gpg"))
+	;; 自动保存时，保存所有缓冲区
+	(defun super-save/save-all-buffers ()
+	  (save-excursion
+		(dolist (buf (buffer-list))
+		  (set-buffer buf)
+		  (when (and buffer-file-name
+					 (buffer-modified-p (current-buffer))
+					 (file-writable-p buffer-file-name)
+					 (if (file-remote-p buffer-file-name) super-save-remote-files t))
+			(save-buffer)))))
+	(advice-add 'super-save-command :override 'super-save/save-all-buffers)
+	)
+#+END_SRC
+
+*** 解除一些不常用的快捷键
+
+将一些不常用的快捷键解除，防止误操作。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/解除一些不常用的快捷键.el
+  ;; 解除不常用的快捷键定义
+  (global-set-key (kbd "s-q") nil)
+  (global-set-key (kbd "M-z") nil)
+  (global-set-key (kbd "M-m") nil)
+  (global-set-key (kbd "C-x C-z") nil)
+  (global-set-key [mouse-2] nil)
+#+END_SRC
+
+*** mwim 优化光标移动到行首/行尾
+
+[[https://github.com/alezost/mwim.el][mwim - GitHub 主页]]
+
+C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当代码有缩进时，前者会把光标移动到行首（到空格之前），后者会移动到代码文字的开头（到空格之后）。那么实际中这两个按法差别较大，且不易区分，使用起来不方便。mwim 就将二者合并，覆盖 C-a 为 mwim-beginning-of-code-or-line，这样按一次 C-a 时移动到代码文字开头，再按一次则是移动到整行的行首，如此反复。
+
+同时，更有意义的是，它还可以覆盖 C-e move-end-of-line 为 mwim-end-of-code-or-line，当本行代码结尾有注释时，第一次按 C-e 将光标移动到代码尾部、注释之前。再按一次则是移动到整行的行尾。 这就大大提高了写代码的效率。
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/mwim.el
+  (use-package mwim
+	:ensure t
+	:bind
+	("C-a" . mwim-beginning-of-code-or-line)
+	("C-e" . mwim-end-of-code-or-line))
+#+end_src
+
+* small_config
+
+** init.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle ~/.emacs.d/init.el
+:END:
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (setq gc-cons-threshold (* 50 1000 1000))
+  (setq gc-cons-percentage 0.6)
+
+  (add-to-list 'default-frame-alist '(foreground-color . "#FFFFFF")) ;; 我最初的主题设定
+  (add-to-list 'default-frame-alist '(background-color . "#000000"))
+
+  (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面
+  (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a
+
+  ;; (when tool-bar-mode
+  ;;   (tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+  (if tool-bar-mode
+	  (tool-bar-mode -1)) ;; 在这个代码片段中，我们首先使用tool-bar-mode函数来检查工具栏的状态。如果工具栏处于打开状态，该函数返回非nil值，表示工具栏被启用。然后，我们使用(tool-bar-mode -1)将工具栏关闭。
+
+  ;; (when menu-bar-mode
+  ;;   (menu-bar-mode -1))
+
+  ;; ;; 禁止滚动条，对gui界面有效，终端环境不支持滚动栏，因此终端环境会报错
+  ;; (when scroll-bar-mode
+  ;;   (scroll-bar-mode -1))
+
+  ;; (global-set-key (kbd "C-SPC") 'nil)
+  ;; ;;取消control+space键设为mark
+  (global-set-key (kbd "C-SPC") 'set-mark-command)
+  ;; 取消control+space键设为mark
+
+  (global-linum-mode t) ;; 更高版本的emacs的行函数名称与旧版本不一致，未来看能不能通过判断或者用或语句解决这个问题
+  (column-number-mode t)
+
+  (xterm-mouse-mode t)
+
+  (setq visible-bell t)
+  ;;关闭烦人的出错时的提示声
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  (recentf-mode t)
+
+  ;; (save-place-mode t)
+
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 4)
+  (setq c-default-style "linux")
+  (setq c-basic-offset 4)
+
+  (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
+  (defun reload-emacs-config ()
+	(interactive)
+	(load-file "~/.emacs.d/init.el"))
+  (global-set-key (kbd "C-c C-SPC") 'reload-emacs-config)
+
+  (defun close-current-window ()
+	(interactive)
+	(delete-window)
+	)
+  (global-set-key (kbd "C-c z") 'close-current-window)
+
+  (global-set-key (kbd "M-j") nil)
+
+  (global-set-key (kbd "<F10>") nil)
+
+  (global-set-key (kbd "C-x C-z") nil)
+
+  (global-set-key (kbd "C-M-z") 'indent-region)
+
+  (setq kill-ring-max 200)
+  ;;设置粘贴缓冲条目数量.用一个很大的kill ring(最多的记录个数). 这样防止我不小心删掉重要的东西
+
+  (setq enable-recursive-minibuffers t)
+  ;;可以递归的使用 minibuffer
+
+  (setq scroll-margin 0 scroll-conservatively 10000)
+  ;;防止页面滚动时跳动， scroll-margin 3 可以在靠近屏幕边沿3行时就开始滚动，可以很好的看到上下文。
+
+  (setq default-major-mode 'text-mode) ;; 设置缺少模式为text
+
+  (mouse-avoidance-mode 'animate)
+  ;;光标靠近鼠标指针时，让鼠标指针自动让开，别挡住视线。
+
+  ;; (setq frame-title-format "emacs@%b")
+  (setq frame-title-format "%b")
+  ;;在标题栏显示buffer的名字
+
+  ;; (setq uniquify-buffer-name-style 'forward) ;;好像没起作用
+  ;; ;; 当有两个文件名相同的缓冲时，使用前缀的目录名做 buffer 名字，不用原来的foobar 形式
+
+  (add-hook 'comint-output-filter-functions
+			'comint-watch-for-password-prompt)
+  ;;当你在shell、telnet、w3m等模式下时，必然碰到过要输入密码的情况,此时加密显出你的密码
+
+
+  ;; (setq make-backup-files nil)
+  ;; ;; 设定不产生备份文件
+
+  ;;(setq auto-save-mode nil)
+  ;;自动保存模式
+
+  ;; (setq-default make-backup-files nil)
+  ;; ;; 不生成临时文件
+
+  ;; ;;允许emacs和外部其他程序的粘贴
+  ;; (setq x-select-enable-clipboard t)
+
+  (setq user-full-name "yenao")
+  (setq user-mail-address "hexgio@outlook.com")
+  ;;设置有用的个人信息,这在很多地方有用。
+
+  ;; (setq require-final-newline t)
+  ;; ;; 自动的在文件末增加一新行
+
+  (setq-default transient-mark-mode t)
+  ;; 高亮显示选中区域
+
+  (defun insert-space-between-english-and-chinese ()
+	"在英文字符与中文字符之间插入空格"
+	(interactive)
+	(save-excursion
+	  (while (re-search-forward "\\([[:ascii:]]\\)\\(\\cc\\)" nil t)
+		(replace-match "\\1 \\2"))))
+
+  (defun delete-space-between-english-and-chinese ()
+	"删除英文字符与中文字符之间的空格"
+	(interactive)
+	(save-excursion
+	  (while (re-search-forward "\\([[:ascii:]]\\) \\(\\cc\\)" nil t)
+		(replace-match "\\1\\2"))))
+
+  (setq track-eol t)
+  ;; 当光标在行尾上下移动的时候，始终保持在行尾。
+
+  ;; (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+
+  ;; (setq sentence-end-double-space nil)
+  (setq sentence-end-double-space t)
+  ;; 设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
+
+  (defun g-config ()
+	(interactive)
+	(insert "*** \n#+begin_src emacs-lisp :tangle ~/.emacs.d/\n\n#+end_src")
+	)
+  (defun g-org-insert-note-header () ;;; 定义一个名为g-org-insert-note-header ()的函数
+	(interactive) ;;; 函数的一个特殊声明，表示函数可以被用户调用
+	(insert "#+options: ^:nil\n#+title: \n#+options: \\n:t\n#+author: yenao\n#+OPTIONS: H:10 toc:t\n")) ;;; insert函数用于在当前 光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title:  和#+author: yenao
+  ;; #+LANGUAGE: zh-CN ;; zh-CN或者en
+  (defun g-org-code-block ()
+	(interactive)
+	(insert "*** \n#+begin_src emacs-lisp :tangle no\n\n#+end_src")
+	)
+
+  (defun add-code-block ()
+	"在当前位置添加一个代码块，并以时间作为块名进行命名"
+	(interactive)
+	(let* ((time (format-time-string "%Y-%m-%d"))  ; 获取当前日期
+		   (week (format-time-string "%A"))  ; 获取当前星期名称
+		   (clean-time (replace-regexp-in-string "[-:]" "" time))  ; 去除时间中的破折号和冒号
+		   (block-name-with-week (concat clean-time " " week))  ; 构建带星期的代码块名
+		   (block-name (concat clean-time))  ; 构建不带星期的代码块名
+		   (code-block (format
+						"*** %s\n
+  ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
+    %s: name\n  1、
+  ,#+END_SRC\n\n"
+						block-name-with-week block-name block-name)))
+	  (insert code-block)))  ; 在当前位置插入代码块
+
+  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数
+  (global-set-key (kbd "C-c SPC r") 'add-code-block)
+
+  (setq auto-mode-alist
+		;; 将文件模式和文件后缀关联起来
+		(append '(("\\.py\\'" . python-mode)
+				  ("\\.s?html?\\'" . html-helper-mode)
+				  ("\\.asp\\'" . html-helper-mode)
+				  ("\\.phtml\\'" . html-helper-mode)
+				  ("\\.css\\'" . css-mode))
+				auto-mode-alist))
+
+  ;; 尝试配置GTD
+  (unless (file-exists-p "~/.emacs.d/OneDrive")
+	(make-directory "~/.emacs.d/OneDrive")
+	);; 检测OneDrive目录是否存在，如果不存在就创建这个目录
+  (unless (file-exists-p "~/.emacs.d/OneDrive/org")
+	(make-directory "~/.emacs.d/OneDrive/org")
+	);; 检测org目录是否存在，如果不存在就创建这个目录
+  (let ((filename "~/.emacs.d/my-agenda.el")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+	(unless (file-exists-p filename)
+	  (with-temp-file filename
+		;; (insert "这是文件内容") ;; 写入文件内容
+		)))
+  (let ((filename "~/.emacs.d/OneDrive/org/todo.org")) ;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可
+	(unless (file-exists-p filename)
+	  (with-temp-file filename
+		;; (insert "这是文件内容") ;; 写入文件内容
+		)))
+
+  (load-file "~/.emacs.d/my-agenda.el") ;; 加载my-agenda.el配置文件
+  (setq org-agenda-files '("~/.emacs.d/OneDrive/org")) ;; 指定data存放目录
+  (setq org-default-notes-file "~/.emacs.d/OneDrive/org/todo.org") ;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/Onedrive/org/todo.org文件下
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+  (define-key global-map "\C-cr" 'remember)
+
+  (setq org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAITTING(w)" "SOMEDAY(s)" "|" "DONE(d@/!)" "ABORT(a@/!)")))
+  (setq org-tag-alist '(("@office" . ?w) ("@home" . ?h) ("traffic" . ?t) ("computer" . ?c) ("nocomputer" . ?n) ("either" . ?e) ("immediately" . ?i) ("wait" . ?w) ("action" . ?a)))
+
+  (custom-set-variables  
+   '(eww-search-prefix "https://bing.com/search?q="))
+
+  (prefer-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
+  (setq eww-use-external-webkit t)
+  (setq-default eww-ems-internal-uses-webkit t)
+  ;; 如果想尝试用外部浏览器浏览网页的话可以考虑折腾下面的命令
+  ;; (setq browse-url-generic-program "浏览器命令")
+  ;; (setq browse-url-browser-function 'browse-url-generic)
+  ;; (setq browse-url-generic-program "firefox")
+  ;; (setq browse-url-browser-function 'browse-url-generic)
+
+  ;; (when (display-graphic-p)
+  ;; 	(setq eww-toggle-images t))
+
+  (display-time-mode 1);;启用时间显示设置，在minibuffer上面的那个杠上
+  (setq display-time-24hr-format t);;时间使用24小时制
+  (setq display-time-day-and-date t);;时间显示包括日期和具体时间
+  ;; (setq display-time-use-mail-icon t);;时间栏旁边启用邮件设置
+  ;; (setq display-time-interval 10);;时间的变化频率，单位多少来着？
+
+  ;; 设置 calendar 的显示
+  (setq calendar-remove-frame-by-deleting t)
+  (setq calendar-week-start-day 1) ; 设置星期一为每周的第一天
+  (setq mark-diary-entries-in-calendar t) ; 标记calendar上有diary的日期
+  (setq mark-holidays-in-calendar nil) ; 为了突出有diary的日期，calendar上不标记节日
+  (setq view-calendar-holidays-initially nil) ; 打开calendar的时候不显示一堆节日
+
+  ;; 去掉不关心的节日，设定自己在意的节日，在 calendar 上用 h 显示节日
+  (setq christian-holidays nil)
+  (setq hebrew-holidays nil)
+  (setq islamic-holidays nil)
+  (setq solar-holidays nil)
+  (setq general-holidays '((holiday-fixed 1 1 "元旦")
+						   (holiday-fixed 2 14 "情人节")
+						   (holiday-fixed 3 14 "白色情人节")
+						   (holiday-fixed 4 1 "愚人节")
+						   (holiday-fixed 5 1 "劳动节")
+						   (holiday-float 5 0 2 "母亲节")
+						   (holiday-fixed 6 1 "儿童节")
+						   (holiday-float 6 0 3 "父亲节")
+						   (holiday-fixed 7 1 "建党节")
+						   (holiday-fixed 8 1 "建军节")
+						   (holiday-fixed 9 10 "教师节")
+						   (holiday-fixed 10 1 "国庆节")
+						   (holiday-fixed 12 25 "圣诞节")))
+
+  ;;Calendar模式支持各种方式来更改当前日期
+  ;;（这里的“前”是指还没有到来的那一天，“后”是指已经过去的日子）
+  ;; q 退出calendar模式
+  ;; C-f 让当前日期向前一天
+  ;; C-b 让当前日期向后一天
+  ;; C-n 让当前日期向前一周
+  ;; C-p 让当前日期向后一周
+  ;; M-} 让当前日期向前一个月
+  ;; M-{ 让当前日期向后一个月
+  ;; C-x ] 让当前日期向前一年
+  ;; C-x [ 让当前日期向后一年
+  ;; C-a 移动到当前周的第一天
+  ;; C-e 移动到当前周的最后一天
+  ;; M-a 移动到当前月的第一天
+  ;; M-e 多动到当前月的最后一天
+  ;; M-< 移动到当前年的第一天
+  ;; M-> 移动到当前年的最后一天
+
+  ;;Calendar模式支持移动多种移动到特珠日期的方式
+  ;; g d 移动到一个特别的日期
+  ;; o 使某个特殊的月分作为中间的月分
+  ;; . 移动到当天的日期
+  ;; p d 显示某一天在一年中的位置，也显示本年度还有多少天。
+  ;; C-c C-l 刷新Calendar窗口
+
+  ;; Calendar支持生成LATEX代码。
+  ;; t m 按月生成日历
+  ;; t M 按月生成一个美化的日历
+  ;; t d 按当天日期生成一个当天日历
+  ;; t w 1 在一页上生成这个周的日历
+  ;; t w 2 在两页上生成这个周的日历
+  ;; t w 3 生成一个ISO-SYTLE风格的当前周日历
+  ;; t w 4 生成一个从周一开始的当前周日历
+  ;; t y 生成当前年的日历
+
+  ;;EMACS Calendar支持配置节日：
+  ;; h 显示当前的节日
+  ;; x 定义当天为某个节日
+  ;; u 取消当天已被定义的节日
+  ;; e 显示所有这前后共三个月的节日。
+  ;; M-x holiday 在另外的窗口的显示这前后三个月的节日。
+
+
+  ;; 另外，还有一些特殊的，有意思的命令：
+  ;; S 显示当天的日出日落时间(是大写的S)
+  ;; p C 显示农历可以使用
+  ;; g C 使用农历移动日期可以使用
+
+  ;;-----------日历设置结束----------------
+
+  ;;-----------日记设置---------------------
+
+  (unless (file-exists-p "~/diary/")
+	(make-directory "~/diary/")
+	)
+  (let ((filename "~/diary/diary")) 
+	(unless (file-exists-p filename)
+	  (with-temp-file filename)))  
+  (setq diary-file "~/diary/diary");; 默认的日记文件
+  (setq diary-mail-addr "hexgio@outlook.com")
+  (add-hook 'diary-hook 'appt-make-list)
+  ;;当你创建了一个'~/diary'文件，你就可以使用calendar去查看里面的内容。你可以查看当天的事件，相关命令如下 ：
+  ;; d 显示被选中的日期的所有事件
+  ;; s 显示所有事件，包括过期的，未到期的等等
+
+  ;; 创建一个事件的样例：
+  ;; 02/11/1989
+  ;; Bill B. visits Princeton today
+  ;; 2pm Cognitive Studies Committee meeting
+  ;; 2:30-5:30 Liz at Lawrenceville
+  ;; 4:00pm Dentist appt
+  ;; 7:30pm Dinner at George's
+  ;; 8:00-10:00pm concert
+
+  ;; 创建事件的命令：
+  ;; i d 为当天日期添加一个事件
+  ;; i w 为当天周创建一个周事件
+  ;; i m 为当前月创建一个月事件
+  ;; i y 为当前年创建一个年事件
+  ;; i a 为当前日期创建一个周年纪念日
+  ;; i c 创建一个循环的事件
+
+  ;;----------日记设置结束-----------------
+
+  ;; 无差别对所有文件以只读模式打开
+  ;; (defun read-only-setup () 
+  ;;   (read-only-mode)
+  ;;   )
+  ;; (add-hook 'find-file-hook #'read-only-setup)
+#+end_src

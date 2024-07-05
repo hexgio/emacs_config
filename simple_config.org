@@ -331,28 +331,28 @@
 
   ;; 设置软件包源
   (setq package-archives
-		'(
-		  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-		  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
-		  ;; ("melpa" . "https://melpa.org/packages/")
-		  ("melpa-cn" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
-		  ("nongnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
-		  ("gnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
-		  )
-		)
+	'(
+	  ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+	  ;; ("MELPA Stable" . "https://stable.melpa.org/packages/")
+	  ;; ("melpa" . "https://melpa.org/packages/")
+	  ("melpa-cn" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
+	  ("nongnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/nongnu/")
+	  ("gnu-cn"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+	  )
+	)
   ;; 安装 use-package（如果还未安装）
   (unless (package-installed-p 'use-package)
-	(package-refresh-contents)
-	(package-install 'use-package))
+    (package-refresh-contents)
+    (package-install 'use-package))
 
   ;; 加载并自动安装软件包
   (eval-when-compile
-	(require 'use-package))
+    (require 'use-package))
   (require 'bind-key)
   ;; 设置 use-package 的一些常用选项
   (setq use-package-always-ensure t   ; 自动安装软件包
-		use-package-verbose t        ; 在 *Messages* 缓冲区中详细显示加载信息
-		use-package-compute-statistics t) ; 收集并显示 use-package 使用的时间信息
+	use-package-verbose t        ; 在 *Messages* 缓冲区中详细显示加载信息
+	use-package-compute-statistics t) ; 收集并显示 use-package 使用的时间信息
 
   ;; Your use-package package configurations start here...
 

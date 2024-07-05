@@ -19,7 +19,7 @@
 *** 面向产品经理的Emacs系列教程配套配置文件
 
 [[https://github.com/wowhxj/emacs-from-scratch][面向产品经理的Emacs系列教程配套配置文件]]
-
+   
 ** early-init.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle ~/.emacs.d/early-init.el
@@ -962,7 +962,7 @@ evil 可以让习惯了 Vim 的用户在 Emacs 中使用 Vim 按键方式，大�
 		   (code-block (format
 						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1、
+    %s: name\n  1、
   ,#+END_SRC\n\n"
 						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
@@ -3036,7 +3036,7 @@ Emacs 内置 EWW 浏览器配置。
 		   (code-block (format
 						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1、
+    %s: name\n  1、
   ,#+END_SRC\n\n"
 						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
@@ -3076,7 +3076,7 @@ Emacs 内置 EWW 浏览器配置。
   ;; 因此，这一句的效果就是创建了一个新的变量 `block-name`，并将其设置为与 `clean-time` 相同的值。后面的代码中使用 `block-name` 作为代码块的名字。
 
   ;; 如果你的代码中没有需要使用不同的名称来表示清理过的时间戳，那么这一行代码实际上是不必要的，你可以直接使用 `clean-time`。但是，如果你打算在后续的代码中修改 `block-name` 或 `clean-time` 的值，那么这一行代码就很有用了，因为它确保了 `block-name` 和 `clean-time` 是两个独立的变量，修改一个不会影响另一个。
-#+end_src
+  #+end_src
 
 *** insert-timestamp
 #+begin_src emacs-lisp :tangle ~/.emacs.d/insert-timestamp.el
@@ -3989,7 +3989,7 @@ C-a 对应了 move-beginning-of-line，M-m 对应了 back-to-indentation。当�
 		   (code-block (format
 						"*** %s\n
   ,#+BEGIN_SRC emacs-lisp :tangle %s.txt
-  %s: name\n1、
+    %s: name\n  1、
   ,#+END_SRC\n\n"
 						block-name-with-week block-name block-name)))
 	  (insert code-block)))  ; 在当前位置插入代码块
